@@ -51,19 +51,39 @@ def achar(item, nomes):
     return ""
 
 
+URL_IMG = re.compile(r"https?://[^\s\"'<>]+\.(?:jpe?g|png|webp|avif)", re.I)
+CAMINHO_IMG = re.compile(r"/(img|image|fotos?|media|thumb)", re.I)
+
+
+def eh_imagem(url, tipo=""):
+    if not url or not url.startswith("http"):
+        return False
+    if tipo and tipo.startswith("image"):
+        return True
+    return bool(EXT_IMG.search(url) or CAMINHO_IMG.search(url))
+
+
 def achar_imagem(item):
-    for filho in item:
-        etiqueta = filho.tag.split("}")[-1]
-        if etiqueta in ("content", "thumbnail", "enclosure"):
-            url = filho.get("url") or filho.get("href") or ""
-            tipo = filho.get("type") or ""
-            if url and (tipo.startswith("image") or EXT_IMG.search(url)):
-                return url
-    for filho in item:
-        if filho.tag.split("}")[-1] in ("encoded", "description", "summary"):
-            achado = IMG_SRC.search(filho.text or "")
+    for elemento in item.iter():
+        for atributo in ("url", "href", "src"):
+            valor = elemento.get(atributo)
+            if eh_imagem(valor, elemento.get("type") or ""):
+                return valor
+    for elemento in item.iter():
+        etiqueta = elemento.tag.split("}")[-1].lower()
+        if etiqueta in ("url", "image", "thumbnail"):
+            texto = (elemento.text or "").strip()
+            if eh_imagem(texto):
+                return texto
+    for elemento in item.iter():
+        if elemento.tag.split("}")[-1] in ("encoded", "description", "summary", "content"):
+            corpo = elemento.text or ""
+            achado = IMG_SRC.search(corpo)
             if achado:
                 return achado.group(1)
+            achado = URL_IMG.search(html.unescape(corpo))
+            if achado:
+                return achado.group(0)
     return ""
 
 
