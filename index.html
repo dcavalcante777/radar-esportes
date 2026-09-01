@@ -48,9 +48,11 @@
     display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:.15s}
   .card:hover{background:var(--card-hover);transform:translateY(-3px);box-shadow:var(--shadow)}
   .thumb{aspect-ratio:16/9;inline-size:100%;object-fit:cover;background:var(--chip);display:block}
-  .ph{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(135deg,#1d2431,#2b3446);color:var(--txt-dim);
-    font-weight:800;font-size:16px;letter-spacing:1px;text-align:center;padding:10px}
+  .ph{aspect-ratio:16/9;display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;
+    color:#fff;text-align:center;padding:12px;position:relative;overflow:hidden}
+  .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(0,0,0,.34))}
+  .ph b{font-weight:800;font-size:17px;letter-spacing:.5px;z-index:1;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+  .ph span{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.85;z-index:1}
   .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
   .meta{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--txt-dim);text-transform:uppercase;letter-spacing:.6px}
   .src{background:var(--chip);border:1px solid var(--border);padding:3px 8px;border-radius:999px;font-weight:700;color:var(--txt)}
@@ -91,6 +93,10 @@
   <div class="status"><span class="dot"></span><span id="status">Carregando as manchetes…</span></div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" hidden>Nenhuma notícia encontrada para esse filtro.</div>
+
+  <div class="section-title">Vídeos do dia</div>
+  <div class="status" style="margin-block-end:12px"><span class="dot"></span><span id="vstatus">Carregando os vídeos…</span></div>
+  <div class="grid" id="vgrid"></div>
 
   <div class="section-title">Contas do X para acompanhar</div>
   <div class="xgrid" id="xgrid"></div>
@@ -289,20 +295,40 @@
     return "";
   }
 
+  var EXT_IMG = /\.(jpe?g|png|webp|avif)(\?|$|&)/i;
+
+  function ehImagem(url, tipo) {
+    if (!url || url.indexOf("http") !== 0) { return false; }
+    if (tipo && tipo.indexOf("image") === 0) { return true; }
+    return EXT_IMG.test(url) || /\/(img|image|fotos?|media|thumb)/i.test(url);
+  }
+
   function firstImage(node) {
-    var tags = ["media:content", "media:thumbnail", "enclosure", "image"];
-    for (var i = 0; i < tags.length; i++) {
-      var list = node.getElementsByTagName(tags[i]);
-      for (var j = 0; j < list.length; j++) {
-        var u = list[j].getAttribute("url") || list[j].getAttribute("href");
-        var t = list[j].getAttribute("type") || "";
-        if (u && (t.indexOf("image") === 0 || /\.(jpg|jpeg|png|webp|avif)/i.test(u))) { return u; }
+    var todos = node.getElementsByTagName("*");
+    for (var i = 0; i < todos.length; i++) {
+      var el = todos[i];
+      var u = el.getAttribute("url") || el.getAttribute("href") || el.getAttribute("src");
+      if (ehImagem(u, el.getAttribute("type"))) { return u; }
+    }
+    for (var k = 0; k < todos.length; k++) {
+      var nome = todos[k].nodeName.split(":").pop().toLowerCase();
+      if (nome === "url" || nome === "image" || nome === "thumbnail") {
+        var t = (todos[k].textContent || "").trim();
+        if (ehImagem(t, "")) { return t; }
       }
     }
-    var blob = txt(node, ["content:encoded", "description", "summary"]);
+    var blob = txt(node, ["content:encoded", "encoded", "description", "summary", "content"]);
     var m = blob.match(/<img[^>]+src=["']([^"']+)["']/i);
     if (m) { return m[1]; }
+    m = blob.match(/https?:\/\/[^\s"\'<>]+\.(?:jpe?g|png|webp|avif)/i);
+    if (m) { return m[0]; }
     return "";
+  }
+
+  function corDaFonte(nome) {
+    var h = 0;
+    for (var i = 0; i < nome.length; i++) { h = (h * 31 + nome.charCodeAt(i)) % 360; }
+    return h;
   }
 
   function clean(html) {
@@ -368,6 +394,20 @@
     return "há " + Math.round(h / 24) + "d";
   }
 
+  function placeholder(it) {
+    var h = corDaFonte(it.src);
+    var d = document.createElement("div");
+    d.className = "ph";
+    d.style.background = "linear-gradient(135deg,hsl(" + h + ",42%,26%),hsl(" + ((h + 42) % 360) + ",48%,17%))";
+    var b = document.createElement("b");
+    b.textContent = it.src;
+    var c = document.createElement("span");
+    c.textContent = it.cat;
+    d.appendChild(b);
+    d.appendChild(c);
+    return d;
+  }
+
   function card(it) {
     var a = document.createElement("a");
     a.className = "card";
@@ -383,17 +423,11 @@
       img.alt = "";
       img.src = it.img;
       img.addEventListener("error", function () {
-        var ph = document.createElement("div");
-        ph.className = "ph";
-        ph.textContent = it.src;
-        if (img.parentNode) { img.parentNode.replaceChild(ph, img); }
+        if (img.parentNode) { img.parentNode.replaceChild(placeholder(it), img); }
       });
       a.appendChild(img);
     } else {
-      var ph2 = document.createElement("div");
-      ph2.className = "ph";
-      ph2.textContent = it.src;
-      a.appendChild(ph2);
+      a.appendChild(placeholder(it));
     }
 
     var body = document.createElement("div");
@@ -449,6 +483,103 @@
         render();
       });
       box.appendChild(b);
+    });
+  }
+
+  var CANAIS = [
+    { nome: "TNT Sports Brasil", handle: "tntsportsbr" },
+    { nome: "ge tv",            handle: "getv" },
+    { nome: "CazéTV",           handle: "CazeTV" },
+    { nome: "ESPN Brasil",      handle: "ESPNBrasil" },
+    { nome: "Lance!",           handle: "lancenet" }
+  ];
+
+  var POR_CANAL = 4;
+
+  function idDoCanal(handle) {
+    var chave = "yt:" + handle;
+    var guardado = null;
+    try { guardado = JSON.parse(localStorage.getItem(chave) || "null"); } catch (e) { guardado = null; }
+    if (guardado && guardado.id && (Date.now() - guardado.em) < 30 * 24 * 3600 * 1000) {
+      return Promise.resolve(guardado.id);
+    }
+    var pagina = "https://www.youtube.com/@" + handle;
+    var i = 0;
+    function tentar() {
+      if (i >= PROXIES.length) { return Promise.resolve(""); }
+      return fetch(PROXIES[i++](pagina), { cache: "no-store" })
+        .then(function (r) { if (!r.ok) { throw new Error("http"); } return r.text(); })
+        .then(function (t) {
+          var m = t.match(/"(?:channelId|externalId)":"(UC[\w-]{20,})"/);
+          if (!m) { throw new Error("sem id"); }
+          try { localStorage.setItem(chave, JSON.stringify({ id: m[1], em: Date.now() })); } catch (e) {}
+          return m[1];
+        })
+        .catch(function () { return tentar(); });
+    }
+    return tentar();
+  }
+
+  function videosDoCanal(canal) {
+    return idDoCanal(canal.handle).then(function (id) {
+      if (!id) { return []; }
+      var feed = "https://www.youtube.com/feeds/videos.xml?channel_id=" + id;
+      var i = 0;
+      function tentar() {
+        if (i >= PROXIES.length) { return Promise.resolve([]); }
+        return fetch(PROXIES[i++](feed), { cache: "no-store" })
+          .then(function (r) { if (!r.ok) { throw new Error("http"); } return r.text(); })
+          .then(function (t) {
+            var doc = new DOMParser().parseFromString(t, "text/xml");
+            if (doc.getElementsByTagName("parsererror").length) { throw new Error("xml"); }
+            var entradas = doc.getElementsByTagName("entry");
+            if (!entradas.length) { throw new Error("vazio"); }
+            var saida = [];
+            for (var k = 0; k < entradas.length && k < POR_CANAL; k++) {
+              var e = entradas[k];
+              var vid = txt(e, ["yt:videoId", "videoId"]);
+              var titulo = clean(txt(e, ["title"]));
+              if (!vid || !titulo) { continue; }
+              var d = txt(e, ["published", "updated"]);
+              var ts = d ? new Date(d).getTime() : 0;
+              saida.push({
+                title: titulo,
+                link: "https://www.youtube.com/watch?v=" + vid,
+                desc: clean(txt(e, ["media:description", "description"])).slice(0, 140),
+                img: "https://i.ytimg.com/vi/" + vid + "/hqdefault.jpg",
+                src: canal.nome,
+                cat: "Vídeo",
+                when: isNaN(ts) ? 0 : ts
+              });
+            }
+            if (!saida.length) { throw new Error("vazio"); }
+            return saida;
+          })
+          .catch(function () { return tentar(); });
+      }
+      return tentar();
+    });
+  }
+
+  function carregarVideos() {
+    var caixa = document.getElementById("vgrid");
+    var aviso = document.getElementById("vstatus");
+    aviso.textContent = "Buscando os vídeos mais recentes…";
+    Promise.all(CANAIS.map(videosDoCanal)).then(function (todos) {
+      var lista = [];
+      var vistos = {};
+      todos.forEach(function (arr) {
+        arr.forEach(function (v) {
+          if (!vistos[v.link]) { vistos[v.link] = 1; lista.push(v); }
+        });
+      });
+      lista.sort(function (a, b) { return b.when - a.when; });
+      lista = lista.slice(0, 12);
+      caixa.textContent = "";
+      lista.forEach(function (v) { caixa.appendChild(card(v)); });
+      aviso.textContent = lista.length
+        ? lista.length + " vídeos de " + Object.keys(lista.reduce(function (o, v) { o[v.src] = 1; return o; }, {})).length + " canais"
+        : "Não consegui carregar os vídeos agora — os canais continuam acessíveis pelo YouTube.";
     });
   }
 
@@ -513,10 +644,12 @@
 
   buildChips();
   buildX();
+  carregarVideos();
   qEl.addEventListener("input", render);
-  document.getElementById("reload").addEventListener("click", load);
+  document.getElementById("reload").addEventListener("click", function () { load(); carregarVideos(); });
   load();
   setInterval(load, 30 * 60 * 1000);
+  setInterval(carregarVideos, 60 * 60 * 1000);
 })();
 </script>
 </body>
