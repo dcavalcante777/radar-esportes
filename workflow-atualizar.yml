@@ -1,0 +1,73 @@
+name: Atualizar Radar Esportes
+
+on:
+  schedule:
+    # A cada 30 minutos, 24h por dia
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: radar-esportes
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Conferir se os arquivos necessários estão no repositório
+        run: |
+          echo "## Arquivos no repositório" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          ls -1 >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          faltando=""
+          for arquivo in index.html atualizar_noticias.py fontes.py; do
+            if [ ! -f "$arquivo" ]; then faltando="$faltando $arquivo"; fi
+          done
+          if [ -n "$faltando" ]; then
+            echo "### ❌ Faltam arquivos:$faltando" >> $GITHUB_STEP_SUMMARY
+            echo "Suba em Add file > Upload files e rode de novo." >> $GITHUB_STEP_SUMMARY
+            echo "FALTAM ARQUIVOS:$faltando"
+            exit 1
+          fi
+          echo "### ✅ Todos os arquivos necessários estão presentes" >> $GITHUB_STEP_SUMMARY
+
+      - name: Buscar as manchetes e os vídeos do momento
+        id: buscar
+        run: |
+          set -o pipefail
+          python atualizar_noticias.py index.html noticias.json 2>&1 | tee saida.txt
+          echo "## Resultado da busca" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -25 saida.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          rm -f saida.txt
+
+      - name: Publicar a página atualizada
+        run: |
+          git config user.name "Radar Esportes"
+          git config user.email "actions@github.com"
+          git add index.html noticias.json
+          if git diff --staged --quiet; then
+            echo "### ℹ️ Nada mudou desde a última rodada" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+          git commit -m "Manchetes atualizadas"
+          git pull --rebase --autostash || true
+          if git push; then
+            echo "### ✅ Página publicada com sucesso" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ❌ Não consegui salvar no repositório" >> $GITHUB_STEP_SUMMARY
+            echo "Vá em Settings > Actions > General > Workflow permissions" >> $GITHUB_STEP_SUMMARY
+            echo "e marque **Read and write permissions**. Depois rode de novo." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
