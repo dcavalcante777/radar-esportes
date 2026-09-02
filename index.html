@@ -140,7 +140,7 @@
       <div class="logo">TS</div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v3</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v4</div>
       </div>
     </div>
     <div class="controls">
@@ -560,6 +560,56 @@
     return v;
   }
 
+  function enderecosDaFoto(url) {
+    if (!url || url.indexOf("http") !== 0) { return []; }
+
+    // Miniatura do YouTube ja e servida sem restricao.
+    if (url.indexOf("ytimg.com") >= 0) { return [url]; }
+
+    var sem = url.replace(/^https?:\/\//, "");
+    var espelho = "https://images.weserv.nl/?url=" + encodeURIComponent(sem)
+      + "&w=640&h=360&fit=cover&we&output=jpg&q=74";
+    var espelho2 = "https://wsrv.nl/?url=" + encodeURIComponent(sem)
+      + "&w=640&h=360&fit=cover&we&output=jpg&q=74";
+
+    return [espelho, espelho2, url];
+  }
+
+  function montarCapa(it) {
+    var capa = document.createElement("div");
+    capa.className = "capa";
+
+    var opcoes = enderecosDaFoto(it.img);
+    var i = 0;
+
+    function reserva() {
+      capa.textContent = "";
+      capa.appendChild(placeholder(it));
+      if (it.tipo === "video") { capa.appendChild(selo()); }
+    }
+
+    function tentar() {
+      if (i >= opcoes.length) { reserva(); return; }
+      var img = document.createElement("img");
+      img.className = "thumb";
+      img.loading = "lazy";
+      img.referrerPolicy = "no-referrer";
+      img.alt = "";
+      img.addEventListener("error", function () {
+        i += 1;
+        capa.textContent = "";
+        tentar();
+        if (it.tipo === "video" && i < opcoes.length) { capa.appendChild(selo()); }
+      });
+      img.src = opcoes[i];
+      capa.appendChild(img);
+    }
+
+    if (opcoes.length) { tentar(); } else { capa.appendChild(placeholder(it)); }
+    if (it.tipo === "video") { capa.appendChild(selo()); }
+    return capa;
+  }
+
   function card(it, novo) {
     var a = document.createElement("a");
     a.className = "card" + (novo ? " novo" : "");
@@ -567,26 +617,7 @@
     a.target = "_blank";
     a.rel = "noopener noreferrer";
 
-    var capa = document.createElement("div");
-    capa.className = "capa";
-    if (it.img && it.img.indexOf("http") === 0) {
-      var img = document.createElement("img");
-      img.className = "thumb";
-      img.loading = "lazy";
-      img.referrerPolicy = "no-referrer";
-      img.alt = "";
-      img.src = it.img;
-      img.addEventListener("error", function () {
-        capa.textContent = "";
-        capa.appendChild(placeholder(it));
-        if (it.tipo === "video") { capa.appendChild(selo()); }
-      });
-      capa.appendChild(img);
-    } else {
-      capa.appendChild(placeholder(it));
-    }
-    if (it.tipo === "video") { capa.appendChild(selo()); }
-    a.appendChild(capa);
+    a.appendChild(montarCapa(it));
 
     var body = document.createElement("div");
     body.className = "body";
