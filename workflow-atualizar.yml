@@ -1,0 +1,75 @@
+name: Atualizar Radar Esportes
+
+on:
+  schedule:
+    # A cada 30 minutos, 24h por dia
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+# Publica direto no site, sem precisar gravar nada no repositório.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Conferir se os arquivos necessários estão no repositório
+        run: |
+          echo "## Arquivos no repositório" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          ls -1 >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          faltando=""
+          for arquivo in index.html atualizar_noticias.py fontes.py; do
+            if [ ! -f "$arquivo" ]; then faltando="$faltando $arquivo"; fi
+          done
+          if [ -n "$faltando" ]; then
+            echo "### ❌ Faltam arquivos:$faltando" >> $GITHUB_STEP_SUMMARY
+            echo "Suba em Add file > Upload files e rode de novo." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+          echo "### ✅ Arquivos necessários presentes" >> $GITHUB_STEP_SUMMARY
+
+      - name: Buscar as manchetes e os vídeos do momento
+        run: |
+          set -o pipefail
+          mkdir -p site
+          cp index.html site/index.html
+          python atualizar_noticias.py site/index.html site/noticias.json 2>&1 | tee saida.txt
+          echo "## Resultado da busca" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -25 saida.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          rm -f saida.txt
+
+      - name: Preparar o site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Publicar
+        id: publicacao
+        uses: actions/deploy-pages@v4
+
+      - name: Confirmar
+        run: |
+          echo "### ✅ Site publicado" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.publicacao.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
