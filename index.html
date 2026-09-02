@@ -140,7 +140,7 @@
       <div class="logo">TS</div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v4</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v5</div>
       </div>
     </div>
     <div class="controls">
@@ -154,7 +154,7 @@
 <main>
   <div class="status"><span class="dot" id="pisca"></span><span id="status">Carregando…</span></div>
   <div class="grid" id="grid"></div>
-  <div class="empty" id="empty" hidden>Nada encontrado nessa aba com esse filtro.</div>
+  <div class="empty" id="empty" hidden></div>
 
   <div class="section-title" id="tvtitulo" hidden>Vídeos</div>
   <div class="grid" id="vgrid"></div>
@@ -170,83 +170,7 @@
   "use strict";
 
   /* INICIO-NOTICIAS */
-  var DADOS = {
-   "atualizado_em": "2026-09-02T00:33:09.971715+00:00",
-   "carimbo": "01/09/2026, 21h33",
-   "categorias": [
-    "FUTEBOL BRASIL",
-    "FUT EUROPEU",
-    "FUT SUL-AMERICANO",
-    "BASQUETE",
-    "F1",
-    "LUTAS",
-    "ESPORTE OLÍMPICO",
-    "OUTROS ESPORTES",
-    "FOFOCAS"
-   ],
-   "itens": [
-    {
-     "title": "Flamengo goleia no Brasileirao",
-     "link": "https://ex.com/a1",
-     "desc": "gols",
-     "img": "https://s.glbimg.com/f.jpg",
-     "src": "ge Futebol",
-     "cat": "FUTEBOL BRASIL",
-     "when": 1788296400000,
-     "tipo": "noticia"
-    },
-    {
-     "title": "Verstappen crava a pole no GP",
-     "link": "https://ex.com/a2",
-     "desc": "",
-     "img": "https://cdn.x.com/b.webp",
-     "src": "ge Futebol",
-     "cat": "FUTEBOL BRASIL",
-     "when": 1788292800000,
-     "tipo": "noticia"
-    },
-    {
-     "title": "Melhores momentos",
-     "link": "https://www.youtube.com/watch?v=ABC123xyz00",
-     "desc": "resumo do jogo",
-     "img": "https://i.ytimg.com/vi/ABC123xyz00/hqdefault.jpg",
-     "src": "TNT Sports Brasil",
-     "cat": "FUTEBOL BRASIL",
-     "when": 1788292800000,
-     "tipo": "video"
-    },
-    {
-     "title": "Neymar em festa com nova namorada",
-     "link": "https://ex.com/a3",
-     "desc": "foto https://img.x.com/c.png",
-     "img": "https://img.x.com/c.png",
-     "src": "ge Futebol",
-     "cat": "FOFOCAS",
-     "when": 1788289200000,
-     "tipo": "noticia"
-    },
-    {
-     "title": "Analise da rodada",
-     "link": "https://www.youtube.com/watch?v=DEF456uvw11",
-     "desc": "",
-     "img": "https://i.ytimg.com/vi/DEF456uvw11/hqdefault.jpg",
-     "src": "TNT Sports Brasil",
-     "cat": "FUTEBOL BRASIL",
-     "when": 1788289200000,
-     "tipo": "video"
-    },
-    {
-     "title": "Lakers vencem na NBA",
-     "link": "https://ex.com/a4",
-     "desc": "basquete",
-     "img": "",
-     "src": "ge Futebol",
-     "cat": "FUTEBOL BRASIL",
-     "when": 1788285600000,
-     "tipo": "noticia"
-    }
-   ]
-  };
+  var DADOS = { "carimbo": "", "categorias": [], "itens": [] };
   /* FIM-NOTICIAS */
 
   var CATEGORIAS = [
@@ -691,7 +615,15 @@
     videos.forEach(function (it) { vgrid.appendChild(card(it, novos)); });
     tvtitulo.hidden = videos.length === 0;
 
-    emptyEl.hidden = (noticias.length + videos.length) > 0;
+    var vazio = (noticias.length + videos.length) === 0;
+    emptyEl.hidden = !vazio;
+    if (vazio) {
+      emptyEl.textContent = itens.length
+        ? "Nada encontrado nessa aba com esse filtro."
+        : "Ainda não há conteúdo. Rode a rotina no GitHub em Actions › Atualizar Radar"
+          + " Esportes › Run workflow — ela cria o arquivo noticias.json que alimenta"
+          + " esta página.";
+    }
     marcarAbas();
   }
 
