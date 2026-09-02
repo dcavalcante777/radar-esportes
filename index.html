@@ -22,14 +22,24 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--txt);
-    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;}
-  header{position:sticky;inset-block-start:0;z-index:20;background:var(--bg-soft);
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    background-image:
+      radial-gradient(900px 420px at 12% -8%, rgba(255,212,0,.10), transparent 60%),
+      radial-gradient(760px 380px at 88% -4%, rgba(226,0,26,.12), transparent 62%);
+    background-attachment:fixed;}
+  header{position:sticky;inset-block-start:0;z-index:20;
+    background:color-mix(in srgb, var(--bg-soft) 88%, transparent);
+    backdrop-filter:saturate(160%) blur(14px);
+    -webkit-backdrop-filter:saturate(160%) blur(14px);
     border-block-end:1px solid var(--border);padding:12px 20px 0;box-shadow:var(--shadow)}
   .top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
   .brand{display:flex;align-items:center;gap:12px}
-  .logo{inline-size:44px;block-size:44px;border-radius:12px;
+  .logo{inline-size:46px;block-size:46px;border-radius:14px;
     background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:flex;align-items:center;justify-content:center;font-weight:800;color:#111;font-size:19px}
+    display:flex;align-items:center;justify-content:center;font-weight:900;color:#111;
+    font-size:19px;letter-spacing:-.5px;box-shadow:0 4px 16px rgba(226,0,26,.34)}
+  h1{background:linear-gradient(90deg,var(--txt),var(--accent));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
   h1{font-size:20px;margin:0;letter-spacing:.3px}
   .sub{font-size:12px;color:var(--txt-dim);margin-block-start:2px}
   .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
@@ -44,9 +54,13 @@
   nav::-webkit-scrollbar{display:none}
   .tab{background:none;border:0;border-block-end:3px solid transparent;border-radius:0;
     color:var(--txt-dim);padding:11px 14px;font-size:13px;font-weight:700;letter-spacing:.4px;
-    text-transform:uppercase;white-space:nowrap;cursor:pointer}
+    text-transform:uppercase;white-space:nowrap;cursor:pointer;position:relative;
+    transition:color .18s}
   .tab:hover{background:none;color:var(--txt)}
   .tab[aria-selected="true"]{color:var(--txt);border-block-end-color:var(--accent)}
+  .tab[aria-selected="true"]::before{content:"";position:absolute;inset:4px 6px 6px;
+    border-radius:9px;background:linear-gradient(180deg,rgba(255,212,0,.16),transparent);
+    z-index:-1}
   .tab .n{font-size:11px;color:var(--txt-dim);margin-inline-start:5px;font-weight:600}
   .placar{position:relative;margin:0 -20px;padding:0;border-block-end:1px solid var(--border);
     background:linear-gradient(90deg,rgba(226,0,26,.10),transparent 30%)}
@@ -91,11 +105,17 @@
   .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
   .card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;
     display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:.15s}
-  .card:hover{background:var(--card-hover);transform:translateY(-3px);box-shadow:var(--shadow)}
-  .card.novo{animation:entra .45s ease}
-  @keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .capa{position:relative;aspect-ratio:16/9;background:var(--chip)}
-  .thumb{inline-size:100%;block-size:100%;object-fit:cover;display:block}
+  .card:hover{background:var(--card-hover);transform:translateY(-4px);
+    box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--accent) 40%,var(--border))}
+  .card:hover .thumb{transform:scale(1.07)}
+  .card:hover .ttl{color:var(--accent)}
+  .card{animation:entra .4s ease backwards}
+  @keyframes entra{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .capa{position:relative;aspect-ratio:16/9;background:var(--chip);overflow:hidden}
+  .capa::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(to top,rgba(0,0,0,.34),transparent 45%)}
+  .thumb{inline-size:100%;block-size:100%;object-fit:cover;display:block;
+    transition:transform .5s cubic-bezier(.2,.7,.3,1)}
   .ph{inline-size:100%;block-size:100%;display:flex;flex-direction:column;gap:6px;
     align-items:center;justify-content:center;color:#fff;text-align:center;padding:12px;
     position:relative;overflow:hidden}
@@ -113,8 +133,28 @@
     border-radius:999px;font-weight:700;color:var(--txt)}
   .tag{padding:3px 8px;border-radius:999px;font-weight:700;font-size:10px;
     background:rgba(255,212,0,.14);color:var(--accent);border:1px solid rgba(255,212,0,.28)}
-  .ttl{font-size:15px;font-weight:700;line-height:1.35;margin:0}
+  .ttl{font-size:15px;font-weight:700;line-height:1.35;margin:0;transition:color .18s}
   .desc{font-size:13px;color:var(--txt-dim);line-height:1.45;margin:0}
+  .grid{grid-auto-flow:dense}
+  .card.destaque{grid-column:span 2;grid-row:span 1}
+  .card.destaque .ttl{font-size:20px;line-height:1.28}
+  .card.destaque .desc{font-size:14px}
+  .card.destaque .capa{aspect-ratio:21/9}
+  .card.destaque .body{padding:16px 18px 18px;gap:10px}
+  .selo-destaque{position:absolute;inset-block-start:10px;inset-inline-start:10px;z-index:2;
+    background:var(--accent);color:#111;font-size:10px;font-weight:900;letter-spacing:1.1px;
+    padding:5px 10px;border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  @media (max-width:760px){.card.destaque{grid-column:span 1}
+    .card.destaque .ttl{font-size:16px}.card.destaque .capa{aspect-ratio:16/9}}
+  .esqueleto{background:var(--card);border:1px solid var(--border);border-radius:14px;
+    overflow:hidden}
+  .esqueleto .barra{background:linear-gradient(90deg,var(--chip) 25%,
+    var(--card-hover) 50%,var(--chip) 75%);background-size:220% 100%;
+    animation:brilho 1.3s linear infinite}
+  .esqueleto .capa-fake{aspect-ratio:16/9}
+  .esqueleto .linha{block-size:11px;border-radius:5px;margin:12px 14px}
+  .esqueleto .linha.curta{inline-size:45%}
+  @keyframes brilho{from{background-position:220% 0}to{background-position:-220% 0}}
   .section-title{font-size:15px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
     color:var(--txt-dim);margin:30px 0 12px;padding-block-end:8px;
     border-block-end:1px solid var(--border)}
@@ -140,6 +180,26 @@
   td.time-col img{inline-size:20px;block-size:20px;object-fit:contain;flex:none}
   .pos{font-weight:800;color:var(--txt-dim);inline-size:28px}
   .pts{font-weight:800;color:var(--accent)}
+  .dia{font-size:13px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;
+    color:var(--txt);margin:26px 0 10px;display:flex;align-items:center;gap:10px}
+  .dia::after{content:"";flex:1;block-size:1px;background:var(--border)}
+  .dia .qtd{font-size:11px;color:var(--txt-dim);font-weight:600;letter-spacing:.4px}
+  .jogos-lista{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+  .linha-jogo{display:flex;align-items:center;gap:12px;background:var(--card);
+    border:1px solid var(--border);border-radius:11px;padding:10px 13px;
+    text-decoration:none;color:inherit;transition:.15s}
+  .linha-jogo:hover{background:var(--card-hover);transform:translateX(3px)}
+  .linha-jogo.vivo{border-color:rgba(226,0,26,.5)}
+  .hora{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;
+    inline-size:46px;flex:none;text-align:center}
+  .hora.agora{color:var(--accent-2)}
+  .confronto{flex:1;display:flex;flex-direction:column;gap:3px;min-inline-size:0}
+  .duelo{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600}
+  .duelo img{inline-size:16px;block-size:16px;object-fit:contain;flex:none}
+  .duelo span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .duelo .x{color:var(--txt-dim);font-size:11px;font-weight:700;flex:none}
+  .liga-nome{font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--txt-dim)}
+  .placar-mini{font-weight:800;font-variant-numeric:tabular-nums;flex:none;font-size:14px}
   .carregando{padding:34px;text-align:center;color:var(--txt-dim);font-size:14px}
   .xgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
   .xcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;
@@ -166,7 +226,7 @@
       <div class="logo">TS</div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v11</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v13</div>
       </div>
     </div>
     <div class="controls">
@@ -185,6 +245,11 @@
   <div id="tabelas" hidden>
     <div class="tabela-topo" id="comp-chips"></div>
     <div id="tabela-corpo"></div>
+  </div>
+
+  <div id="agenda" hidden>
+    <div class="tabela-topo" id="agenda-chips"></div>
+    <div id="agenda-corpo"></div>
   </div>
 
   <div class="section-title" id="tvtitulo" hidden>Vídeos</div>
@@ -994,7 +1059,7 @@
     Array.prototype.forEach.call(abasEl.children, function (b) {
       var cat = b.getAttribute("data-cat");
       var n = 0;
-      if (cat !== "TABELAS") {
+      if (cat !== "TABELAS" && cat !== "AGENDA") {
         itens.forEach(function (it) {
           if (cat !== "TUDO" && it.cat !== cat) { return; }
           if (combina(it, q)) { n += 1; }
@@ -1006,6 +1071,20 @@
   }
 
   function render(novos) {
+    if (abaAtiva === "AGENDA") {
+      agendaEl.hidden = false;
+      tabelasEl.hidden = true;
+      grid.textContent = "";
+      vgrid.textContent = "";
+      tvtitulo.hidden = true;
+      emptyEl.hidden = true;
+      statusEl.textContent = "Próximos jogos dos principais campeonatos";
+      carregarAgenda(agendaAtiva);
+      marcarAbas();
+      return;
+    }
+    agendaEl.hidden = true;
+
     if (abaAtiva === "TABELAS") {
       tabelasEl.hidden = false;
       grid.textContent = "";
@@ -1023,10 +1102,25 @@
     var videos = filtrar("video");
 
     grid.textContent = "";
-    noticias.forEach(function (it) { grid.appendChild(card(it, novos)); });
+    noticias.forEach(function (it, i) {
+      var c = card(it, novos);
+      c.style.animationDelay = Math.min(i * 35, 500) + "ms";
+      if (i === 0 && noticias.length >= 3) {
+        c.className += " destaque";
+        var selo2 = document.createElement("span");
+        selo2.className = "selo-destaque";
+        selo2.textContent = "DESTAQUE";
+        c.children[0].appendChild(selo2);
+      }
+      grid.appendChild(c);
+    });
 
     vgrid.textContent = "";
-    videos.forEach(function (it) { vgrid.appendChild(card(it, novos)); });
+    videos.forEach(function (it, i) {
+      var c = card(it, novos);
+      c.style.animationDelay = Math.min(i * 35, 400) + "ms";
+      vgrid.appendChild(c);
+    });
     tvtitulo.hidden = videos.length === 0;
 
     var vazio = (noticias.length + videos.length) === 0;
@@ -1042,7 +1136,7 @@
   }
 
   function montarAbas() {
-    CATEGORIAS.concat(["TABELAS", "TUDO"]).forEach(function (cat) {
+    CATEGORIAS.concat(["AGENDA", "TABELAS", "TUDO"]).forEach(function (cat) {
       var b = document.createElement("button");
       b.className = "tab";
       b.type = "button";
@@ -1058,7 +1152,8 @@
         abaAtiva = cat;
         window.scrollTo({ top: 0, behavior: "smooth" });
         render(false);
-        if (antes === "TABELAS" && cat !== "TABELAS" && itens.length) { aviso("json"); }
+        var especiais = { "TABELAS": 1, "AGENDA": 1 };
+        if (especiais[antes] && !especiais[cat] && itens.length) { aviso("json"); }
       });
       abasEl.appendChild(b);
     });
@@ -1190,6 +1285,213 @@
     { rotulo: "GC", nomes: ["pointsAgainst", "goalsAgainst"] },
     { rotulo: "SG", nomes: ["pointDifferential", "goalDifference"] }
   ];
+
+  var DIAS_AGENDA = 8;
+  var agendaAtiva = "TODOS";
+  var cacheAgenda = {};
+  var agendaEl = document.getElementById("agenda");
+  var corpoAgenda = document.getElementById("agenda-corpo");
+
+  function aaaammdd(data) {
+    var m = String(data.getMonth() + 1);
+    var d = String(data.getDate());
+    if (m.length < 2) { m = "0" + m; }
+    if (d.length < 2) { d = "0" + d; }
+    return String(data.getFullYear()) + m + d;
+  }
+
+  function janelaAgenda() {
+    var hoje = new Date();
+    var fim = new Date(hoje.getTime() + DIAS_AGENDA * 24 * 3600 * 1000);
+    return aaaammdd(hoje) + "-" + aaaammdd(fim);
+  }
+
+  function jogosDaComp(comp) {
+    var endereco = "https://site.api.espn.com/apis/site/v2/sports/soccer/"
+      + comp.liga + "/scoreboard?dates=" + janelaAgenda();
+    return pegarJson(endereco).then(function (dados) {
+      if (!dados || !dados.events) { return []; }
+      var saida = [];
+      dados.events.forEach(function (ev) {
+        var c = ev.competitions && ev.competitions[0];
+        if (!c || !c.competitors || c.competitors.length < 2) { return; }
+        var casa = null;
+        var fora = null;
+        c.competitors.forEach(function (t) {
+          if (t.homeAway === "home") { casa = t; } else { fora = t; }
+        });
+        if (!casa || !fora) { return; }
+        var st = (ev.status && ev.status.type) || {};
+        var quando = ev.date ? new Date(ev.date).getTime() : 0;
+        if (!quando) { return; }
+        saida.push({
+          comp: comp.nome,
+          quando: quando,
+          estado: st.state || "pre",
+          relogio: (ev.status && ev.status.displayClock) || "",
+          link: (ev.links && ev.links[0] && ev.links[0].href) || "",
+          casa: dadosTime(casa),
+          fora: dadosTime(fora)
+        });
+      });
+      return saida;
+    });
+  }
+
+  function nomeDoDia(ts) {
+    var d = new Date(ts);
+    var hoje = new Date();
+    var amanha = new Date(hoje.getTime() + 86400000);
+    function igual(a, b) {
+      return a.getDate() === b.getDate() && a.getMonth() === b.getMonth()
+        && a.getFullYear() === b.getFullYear();
+    }
+    if (igual(d, hoje)) { return "Hoje"; }
+    if (igual(d, amanha)) { return "Amanhã"; }
+    var semana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+    return semana[d.getDay()] + ", "
+      + d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+  }
+
+  function ladoDoDuelo(t, mostrarPlacar) {
+    var d = document.createElement("div");
+    d.className = "duelo";
+    if (t.logo) {
+      var img = document.createElement("img");
+      img.src = t.logo;
+      img.alt = "";
+      img.loading = "lazy";
+      img.referrerPolicy = "no-referrer";
+      img.addEventListener("error", function () { img.remove(); });
+      d.appendChild(img);
+    }
+    var n = document.createElement("span");
+    n.textContent = t.nome;
+    d.appendChild(n);
+    if (mostrarPlacar) {
+      var g = document.createElement("b");
+      g.className = "placar-mini";
+      g.textContent = t.gols;
+      d.appendChild(g);
+    }
+    return d;
+  }
+
+  function linhaAgenda(j) {
+    var a = document.createElement("a");
+    a.className = "linha-jogo" + (j.estado === "in" ? " vivo" : "");
+    a.href = j.link || "#";
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+
+    var hora = document.createElement("div");
+    hora.className = "hora" + (j.estado === "in" ? " agora" : "");
+    if (j.estado === "in") {
+      hora.textContent = j.relogio || "AO VIVO";
+    } else if (j.estado === "post") {
+      hora.textContent = "FIM";
+    } else {
+      hora.textContent = new Date(j.quando)
+        .toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+    }
+    a.appendChild(hora);
+
+    var meio = document.createElement("div");
+    meio.className = "confronto";
+    var mostrar = j.estado !== "pre";
+    meio.appendChild(ladoDoDuelo(j.casa, mostrar));
+    meio.appendChild(ladoDoDuelo(j.fora, mostrar));
+    var liga = document.createElement("div");
+    liga.className = "liga-nome";
+    liga.textContent = j.comp;
+    meio.appendChild(liga);
+    a.appendChild(meio);
+    return a;
+  }
+
+  function desenharAgenda(lista) {
+    corpoAgenda.textContent = "";
+    if (!lista.length) {
+      var v = document.createElement("div");
+      v.className = "carregando";
+      v.textContent = "Nenhum jogo marcado para os próximos dias nessa competição.";
+      corpoAgenda.appendChild(v);
+      return;
+    }
+    var porDia = {};
+    var ordem = [];
+    lista.forEach(function (j) {
+      var chave = aaaammdd(new Date(j.quando));
+      if (!porDia[chave]) { porDia[chave] = []; ordem.push(chave); }
+      porDia[chave].push(j);
+    });
+    ordem.sort();
+    ordem.forEach(function (chave) {
+      var jogosDoDia = porDia[chave];
+      var titulo = document.createElement("div");
+      titulo.className = "dia";
+      titulo.appendChild(document.createTextNode(nomeDoDia(jogosDoDia[0].quando)));
+      var qtd = document.createElement("span");
+      qtd.className = "qtd";
+      qtd.textContent = jogosDoDia.length + (jogosDoDia.length > 1 ? " jogos" : " jogo");
+      titulo.appendChild(qtd);
+      corpoAgenda.appendChild(titulo);
+
+      var caixa = document.createElement("div");
+      caixa.className = "jogos-lista";
+      jogosDoDia.forEach(function (j) { caixa.appendChild(linhaAgenda(j)); });
+      corpoAgenda.appendChild(caixa);
+    });
+  }
+
+  function carregarAgenda(chave) {
+    if (cacheAgenda[chave]) { desenharAgenda(cacheAgenda[chave]); return; }
+
+    corpoAgenda.textContent = "";
+    var carregando = document.createElement("div");
+    carregando.className = "carregando";
+    carregando.textContent = "Carregando os próximos jogos…";
+    corpoAgenda.appendChild(carregando);
+
+    var alvos = chave === "TODOS"
+      ? TABELAS
+      : TABELAS.filter(function (c) { return c.liga === chave; });
+
+    Promise.all(alvos.map(jogosDaComp)).then(function (todos) {
+      if (agendaAtiva !== chave) { return; }
+      var lista = [];
+      var vistos = {};
+      todos.forEach(function (arr) {
+        arr.forEach(function (j) {
+          var id = j.quando + j.casa.nome + j.fora.nome;
+          if (!vistos[id]) { vistos[id] = 1; lista.push(j); }
+        });
+      });
+      lista.sort(function (a, b) { return a.quando - b.quando; });
+      cacheAgenda[chave] = lista;
+      desenharAgenda(lista);
+    });
+  }
+
+  function montarChipsAgenda() {
+    var caixa = document.getElementById("agenda-chips");
+    var opcoes = [{ nome: "Todos os campeonatos", liga: "TODOS" }].concat(TABELAS);
+    opcoes.forEach(function (comp) {
+      var b = document.createElement("button");
+      b.className = "comp-chip";
+      b.type = "button";
+      b.textContent = comp.nome;
+      b.setAttribute("aria-pressed", comp.liga === agendaAtiva ? "true" : "false");
+      b.addEventListener("click", function () {
+        agendaAtiva = comp.liga;
+        Array.prototype.forEach.call(caixa.children, function (x) {
+          x.setAttribute("aria-pressed", x === b ? "true" : "false");
+        });
+        carregarAgenda(comp.liga);
+      });
+      caixa.appendChild(b);
+    });
+  }
 
   var tabelaAtiva = TABELAS[0].liga;
   var cacheTabela = {};
@@ -1426,11 +1728,30 @@
       });
   }
 
+  function esqueletos(quantos) {
+    grid.textContent = "";
+    for (var i = 0; i < quantos; i++) {
+      var e = document.createElement("div");
+      e.className = "esqueleto";
+      var capa = document.createElement("div");
+      capa.className = "capa-fake barra";
+      e.appendChild(capa);
+      ["", "", " curta"].forEach(function (extra) {
+        var l = document.createElement("div");
+        l.className = "linha barra" + extra;
+        e.appendChild(l);
+      });
+      grid.appendChild(e);
+    }
+  }
+
   montarAbas();
   montarChipsTabela();
+  montarChipsAgenda();
   montarX();
   ligarPlacar();
 
+  esqueletos(8);
   var inicio = melhorInicio();
   aplicar(inicio.dados, false);
   if (itens.length) { aviso(inicio.origem === "salvo" ? "salvo" : "embutido"); }
