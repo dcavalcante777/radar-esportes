@@ -49,9 +49,32 @@
     padding:9px 14px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600}
   button:hover{background:var(--card-hover)}
   button.primary{background:var(--accent);color:#111;border-color:var(--accent)}
-  nav{display:flex;gap:4px;overflow-x:auto;margin-block-start:12px;
-    scrollbar-width:none;-ms-overflow-style:none}
+  .nav-caixa{position:relative;margin-block-start:12px}
+  nav{display:flex;gap:4px;overflow-x:auto;scroll-behavior:smooth;
+    scrollbar-width:none;-ms-overflow-style:none;padding-inline:4px}
   nav::-webkit-scrollbar{display:none}
+  .nav-caixa::before,.nav-caixa::after{content:"";position:absolute;inset-block:0;
+    inline-size:36px;pointer-events:none;z-index:2;opacity:0;transition:opacity .2s}
+  .nav-caixa::before{inset-inline-start:0;
+    background:linear-gradient(to right,var(--bg-soft),transparent)}
+  .nav-caixa::after{inset-inline-end:0;
+    background:linear-gradient(to left,var(--bg-soft),transparent)}
+  .nav-caixa.tem-esq::before{opacity:1}
+  .nav-caixa.tem-dir::after{opacity:1}
+  .nav-seta{position:absolute;inset-block-start:50%;transform:translateY(-50%);z-index:3;
+    inline-size:26px;block-size:26px;padding:0;border-radius:50%;display:none;
+    align-items:center;justify-content:center;font-size:15px;line-height:1;
+    background:var(--card);border:1px solid var(--border);color:var(--txt)}
+  .nav-seta.esq{inset-inline-start:-2px}
+  .nav-seta.dir{inset-inline-end:-2px}
+  .nav-caixa.tem-esq .nav-seta.esq{display:flex}
+  .nav-caixa.tem-dir .nav-seta.dir{display:flex}
+  @media (max-width:700px){.nav-seta{display:none!important}
+    nav{scroll-snap-type:x proximity}
+    .tab{scroll-snap-align:center}}
+  .aviso-abas{font-size:10.5px;color:var(--txt-dim);letter-spacing:.3px;
+    padding:0 4px 6px;display:none}
+  @media (max-width:700px){.aviso-abas{display:block}}
   .tab{background:none;border:0;border-block-end:3px solid transparent;border-radius:0;
     color:var(--txt-dim);padding:11px 14px;font-size:13px;font-weight:700;letter-spacing:.4px;
     text-transform:uppercase;white-space:nowrap;cursor:pointer;position:relative;
@@ -141,6 +164,10 @@
   .card.destaque .desc{font-size:14px}
   .card.destaque .capa{aspect-ratio:21/9}
   .card.destaque .body{padding:16px 18px 18px;gap:10px}
+  button[aria-pressed="true"]{background:var(--accent);color:#111;border-color:var(--accent)}
+  .tag-idioma{font-size:9px;letter-spacing:.6px;padding:2px 6px;border-radius:4px;
+    background:var(--chip);border:1px solid var(--border);color:var(--txt-dim);font-weight:700}
+  .traduzindo{opacity:.55}
   .selo-breaking{position:absolute;inset-block-start:10px;inset-inline-end:10px;z-index:2;
     background:var(--accent-2);color:#fff;font-size:10px;font-weight:900;letter-spacing:1.1px;
     padding:5px 10px;border-radius:6px;display:flex;align-items:center;gap:5px;
@@ -233,15 +260,21 @@
       <div class="logo">TS</div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v14</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v15</div>
       </div>
     </div>
     <div class="controls">
       <input type="search" id="q" placeholder="Buscar time, jogador, tema…" aria-label="Buscar">
+      <button id="traduzir" type="button" aria-pressed="false" title="Traduzir os títulos em outros idiomas">🌐 Traduzir</button>
       <button id="reload" class="primary" type="button">Atualizar agora</button>
     </div>
   </div>
-  <nav id="abas" role="tablist"></nav>
+  <div class="nav-caixa" id="nav-caixa">
+    <button class="nav-seta esq" id="nav-esq" type="button" aria-label="Abas anteriores">‹</button>
+    <nav id="abas" role="tablist"></nav>
+    <button class="nav-seta dir" id="nav-dir" type="button" aria-label="Próximas abas">›</button>
+  </div>
+  <div class="aviso-abas">← arraste para ver todas as seções →</div>
 </header>
 
 <main>
@@ -1033,6 +1066,99 @@
     return capa;
   }
 
+  // ---------- Tradução dos títulos estrangeiros ----------
+  // Usa o MyMemory: gratuito, sem cadastro. O resultado fica guardado no
+  // navegador, então cada texto é traduzido uma vez só.
+  var IDIOMA_POR_FONTE = {
+    "Gazzetta": "it", "Gazzetta Serie A": "it", "Gazzetta Copas": "it",
+    "Gazzetta Mercado": "it", "Corriere dello Sport": "it", "Tuttosport": "it",
+    "RMC Sport": "fr", "RMC Ligue 1": "fr", "RMC Champions": "fr", "SO FOOT": "fr",
+    "Kicker": "de", "Sportschau": "de", "FussballTransfers": "de", "Bulinews": "en",
+    "MARCA": "es", "AS": "es", "AS Champions": "es", "SPORT": "es",
+    "Olé": "es", "Olé Últimas": "es", "Clarín Deportes": "es",
+    "Infobae Deportes": "es", "Depor": "es",
+    "BBC Football": "en", "BBC Sport": "en", "BBC F1": "en", "BBC Boxe": "en",
+    "BBC Tênis": "en", "BBC Olimpíadas": "en", "BBC Premier League": "en",
+    "Sky Sports": "en", "Guardian Futebol": "en", "talkSPORT": "en",
+    "FourFourTwo": "en", "Sports Mole": "en", "Football España": "en",
+    "ESPN FC": "en", "ESPN NBA": "en", "ESPN MMA": "en", "Goal": "en",
+    "NBA.com": "en", "Motorsport": "en", "Autosport": "en"
+  };
+
+  var CACHE_TRAD = "radar:trad:";
+  var traduzindoAtivo = false;
+  var filaTrad = [];
+  var traduzindoAgora = 0;
+  var LIMITE_TRAD = 2;
+  var pedidosTrad = {};
+
+  function idiomaDe(fonte) { return IDIOMA_POR_FONTE[fonte] || ""; }
+
+  function tradGuardada(texto) {
+    try { return localStorage.getItem(CACHE_TRAD + texto.slice(0, 120)); }
+    catch (e) { return null; }
+  }
+
+  function guardarTrad(texto, resultado) {
+    try { localStorage.setItem(CACHE_TRAD + texto.slice(0, 120), resultado); }
+    catch (e) { /* espaço cheio */ }
+  }
+
+  function baixarTraducao(texto, idioma) {
+    var curto = texto.slice(0, 460);
+    var alvo = "https://api.mymemory.translated.net/get?q="
+      + encodeURIComponent(curto) + "&langpair=" + idioma + "%7Cpt-br";
+    return fetch(alvo, { cache: "force-cache" })
+      .then(function (r) { if (!r.ok) { throw new Error("http"); } return r.json(); })
+      .then(function (d) {
+        var t = d && d.responseData && d.responseData.translatedText;
+        if (!t || t.length < 2) { throw new Error("vazio"); }
+        if (/MYMEMORY WARNING|QUOTA/i.test(t)) { throw new Error("limite"); }
+        return t;
+      })
+      .catch(function () { return ""; });
+  }
+
+  function proximaTrad() {
+    if (traduzindoAgora >= LIMITE_TRAD || !filaTrad.length) { return; }
+    var tarefa = filaTrad.shift();
+    traduzindoAgora += 1;
+    baixarTraducao(tarefa.texto, tarefa.idioma).then(function (resultado) {
+      traduzindoAgora -= 1;
+      var chamados = pedidosTrad[tarefa.texto] || [];
+      delete pedidosTrad[tarefa.texto];
+      if (resultado) {
+        guardarTrad(tarefa.texto, resultado);
+        chamados.forEach(function (fn) { fn(resultado); });
+      } else {
+        chamados.forEach(function (fn) { fn(""); });
+      }
+      proximaTrad();
+    });
+    proximaTrad();
+  }
+
+  function pedirTraducao(texto, idioma, aoTraduzir) {
+    var guardada = tradGuardada(texto);
+    if (guardada) { aoTraduzir(guardada); return; }
+    if (pedidosTrad[texto]) { pedidosTrad[texto].push(aoTraduzir); return; }
+    if (filaTrad.length > 40) { aoTraduzir(""); return; }
+    pedidosTrad[texto] = [aoTraduzir];
+    filaTrad.push({ texto: texto, idioma: idioma });
+    proximaTrad();
+  }
+
+  function aplicarTraducao(elemento, it) {
+    var idioma = idiomaDe(it.src);
+    if (!traduzindoAtivo || !idioma) { return; }
+    var original = it.title;
+    elemento.className += " traduzindo";
+    pedirTraducao(original, idioma, function (resultado) {
+      elemento.className = elemento.className.replace(" traduzindo", "");
+      if (resultado) { elemento.textContent = resultado; }
+    });
+  }
+
   var LIMITE_BREAKING = 30 * 60 * 1000;
 
   function ehBreaking(it) {
@@ -1081,6 +1207,14 @@
     var h = document.createElement("p");
     h.className = "ttl";
     h.textContent = it.title;
+    aplicarTraducao(h, it);
+    var idi = idiomaDe(it.src);
+    if (idi) {
+      var tagI = document.createElement("span");
+      tagI.className = "tag-idioma";
+      tagI.textContent = idi.toUpperCase();
+      meta.appendChild(tagI);
+    }
     body.appendChild(meta);
     body.appendChild(h);
     if (it.desc) {
@@ -1121,6 +1255,7 @@
       b.setAttribute("aria-selected", cat === abaAtiva ? "true" : "false");
       b.querySelector(".n").textContent = n ? n : "";
     });
+    atualizarSetasAbas();
   }
 
   function render(novos) {
@@ -1188,6 +1323,40 @@
     marcarAbas();
   }
 
+  function atualizarSetasAbas() {
+    var caixa = document.getElementById("nav-caixa");
+    if (!caixa) { return; }
+    var sobra = abasEl.scrollWidth - abasEl.clientWidth;
+    var temEsq = abasEl.scrollLeft > 6;
+    var temDir = sobra > 6 && abasEl.scrollLeft < (sobra - 6);
+    if (temEsq) { caixa.classList.add("tem-esq"); } else { caixa.classList.remove("tem-esq"); }
+    if (temDir) { caixa.classList.add("tem-dir"); } else { caixa.classList.remove("tem-dir"); }
+  }
+
+  function rolarAtePerto(botao) {
+    if (!botao || !botao.offsetLeft) { return; }
+    var alvo = botao.offsetLeft - (abasEl.clientWidth / 2) + (botao.offsetWidth / 2);
+    abasEl.scrollTo({ left: Math.max(0, alvo), behavior: "smooth" });
+  }
+
+  function ligarSetasAbas() {
+    var esq = document.getElementById("nav-esq");
+    var dir = document.getElementById("nav-dir");
+    if (esq) {
+      esq.addEventListener("click", function () {
+        abasEl.scrollBy({ left: -220, behavior: "smooth" });
+      });
+    }
+    if (dir) {
+      dir.addEventListener("click", function () {
+        abasEl.scrollBy({ left: 220, behavior: "smooth" });
+      });
+    }
+    abasEl.addEventListener("scroll", atualizarSetasAbas);
+    window.addEventListener("resize", atualizarSetasAbas);
+    setTimeout(atualizarSetasAbas, 50);
+  }
+
   function montarAbas() {
     CATEGORIAS.concat(["AGENDA", "TABELAS", "TUDO"]).forEach(function (cat) {
       var b = document.createElement("button");
@@ -1203,6 +1372,7 @@
       b.addEventListener("click", function () {
         var antes = abaAtiva;
         abaAtiva = cat;
+        rolarAtePerto(b);
         window.scrollTo({ top: 0, behavior: "smooth" });
         render(false);
         var especiais = { "TABELAS": 1, "AGENDA": 1 };
@@ -1825,6 +1995,7 @@
   }
 
   montarAbas();
+  ligarSetasAbas();
   montarChipsTabela();
   montarChipsAgenda();
   montarX();
@@ -1835,6 +2006,19 @@
   aplicar(inicio.dados, false);
   if (itens.length) { aviso(inicio.origem === "salvo" ? "salvo" : "embutido"); }
   buscar(true);
+
+  var botaoTrad = document.getElementById("traduzir");
+  try {
+    if (localStorage.getItem("radar:traduzir") === "1") { traduzindoAtivo = true; }
+  } catch (e) { /* sem armazenamento */ }
+  botaoTrad.setAttribute("aria-pressed", traduzindoAtivo ? "true" : "false");
+  botaoTrad.addEventListener("click", function () {
+    traduzindoAtivo = !traduzindoAtivo;
+    botaoTrad.setAttribute("aria-pressed", traduzindoAtivo ? "true" : "false");
+    try { localStorage.setItem("radar:traduzir", traduzindoAtivo ? "1" : "0"); }
+    catch (e) { /* sem armazenamento */ }
+    render(false);
+  });
 
   qEl.addEventListener("input", function () { render(false); });
   document.getElementById("reload").addEventListener("click", function () {
