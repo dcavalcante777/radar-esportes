@@ -118,6 +118,29 @@
   .section-title{font-size:15px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
     color:var(--txt-dim);margin:30px 0 12px;padding-block-end:8px;
     border-block-end:1px solid var(--border)}
+  .tabela-topo{display:flex;gap:8px;flex-wrap:wrap;margin-block-end:16px}
+  .comp-chip{background:var(--chip);border:1px solid var(--border);color:var(--txt-dim);
+    padding:7px 13px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer}
+  .comp-chip[aria-pressed="true"]{background:var(--accent);color:#111;
+    border-color:var(--accent);font-weight:800}
+  .grupo-nome{font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+    color:var(--txt-dim);margin:22px 0 8px}
+  .tab-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;
+    background:var(--card)}
+  table{border-collapse:collapse;inline-size:100%;font-size:13px;min-inline-size:520px}
+  thead th{position:sticky;inset-block-start:0;background:var(--bg-soft);color:var(--txt-dim);
+    font-size:11px;letter-spacing:.8px;text-transform:uppercase;font-weight:800;
+    padding:9px 8px;text-align:center;border-block-end:1px solid var(--border)}
+  thead th.esq{text-align:start}
+  tbody td{padding:8px;text-align:center;border-block-end:1px solid var(--border);
+    font-variant-numeric:tabular-nums}
+  tbody tr:last-child td{border-block-end:0}
+  tbody tr:hover{background:var(--card-hover)}
+  td.time-col{text-align:start;display:flex;align-items:center;gap:8px;white-space:nowrap}
+  td.time-col img{inline-size:20px;block-size:20px;object-fit:contain;flex:none}
+  .pos{font-weight:800;color:var(--txt-dim);inline-size:28px}
+  .pts{font-weight:800;color:var(--accent)}
+  .carregando{padding:34px;text-align:center;color:var(--txt-dim);font-size:14px}
   .xgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
   .xcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;
     text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:3px}
@@ -143,7 +166,7 @@
       <div class="logo">TS</div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v9</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v10</div>
       </div>
     </div>
     <div class="controls">
@@ -158,6 +181,11 @@
   <div class="status"><span class="dot" id="pisca"></span><span id="status">Carregando…</span></div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" hidden></div>
+
+  <div id="tabelas" hidden>
+    <div class="tabela-topo" id="comp-chips"></div>
+    <div id="tabela-corpo"></div>
+  </div>
 
   <div class="section-title" id="tvtitulo" hidden>Vídeos</div>
   <div class="grid" id="vgrid"></div>
@@ -966,16 +994,31 @@
     Array.prototype.forEach.call(abasEl.children, function (b) {
       var cat = b.getAttribute("data-cat");
       var n = 0;
-      itens.forEach(function (it) {
-        if (cat !== "TUDO" && it.cat !== cat) { return; }
-        if (combina(it, q)) { n += 1; }
-      });
+      if (cat !== "TABELAS") {
+        itens.forEach(function (it) {
+          if (cat !== "TUDO" && it.cat !== cat) { return; }
+          if (combina(it, q)) { n += 1; }
+        });
+      }
       b.setAttribute("aria-selected", cat === abaAtiva ? "true" : "false");
       b.querySelector(".n").textContent = n ? n : "";
     });
   }
 
   function render(novos) {
+    if (abaAtiva === "TABELAS") {
+      tabelasEl.hidden = false;
+      grid.textContent = "";
+      vgrid.textContent = "";
+      tvtitulo.hidden = true;
+      emptyEl.hidden = true;
+      statusEl.textContent = "Classificação ao vivo das principais competições";
+      carregarTabela(tabelaAtiva);
+      marcarAbas();
+      return;
+    }
+    tabelasEl.hidden = true;
+
     var noticias = filtrar("noticia");
     var videos = filtrar("video");
 
@@ -999,7 +1042,7 @@
   }
 
   function montarAbas() {
-    CATEGORIAS.concat(["TUDO"]).forEach(function (cat) {
+    CATEGORIAS.concat(["TABELAS", "TUDO"]).forEach(function (cat) {
       var b = document.createElement("button");
       b.className = "tab";
       b.type = "button";
@@ -1011,9 +1054,11 @@
       n.className = "n";
       b.appendChild(n);
       b.addEventListener("click", function () {
+        var antes = abaAtiva;
         abaAtiva = cat;
         window.scrollTo({ top: 0, behavior: "smooth" });
         render(false);
+        if (antes === "TABELAS" && cat !== "TABELAS" && itens.length) { aviso("json"); }
       });
       abasEl.appendChild(b);
     });
@@ -1114,6 +1159,198 @@
     statusEl.textContent = texto2;
   }
 
+  var TABELAS = [
+    { nome: "Brasileirão A", liga: "bra.1" },
+    { nome: "Brasileirão B", liga: "bra.2" },
+    { nome: "Libertadores", liga: "conmebol.libertadores" },
+    { nome: "Sul-Americana", liga: "conmebol.sudamericana" },
+    { nome: "Copa do Brasil", liga: "bra.copa_do_brazil" },
+    { nome: "Premier League", liga: "eng.1" },
+    { nome: "LaLiga", liga: "esp.1" },
+    { nome: "Serie A", liga: "ita.1" },
+    { nome: "Ligue 1", liga: "fra.1" },
+    { nome: "Saudita", liga: "ksa.1" },
+    { nome: "MLS", liga: "usa.1" },
+    { nome: "Argentino", liga: "arg.1" }
+  ];
+
+  var COLUNAS = [
+    { rotulo: "P", nomes: ["points"], destaque: true },
+    { rotulo: "J", nomes: ["gamesPlayed"] },
+    { rotulo: "V", nomes: ["wins"] },
+    { rotulo: "E", nomes: ["ties", "draws"] },
+    { rotulo: "D", nomes: ["losses"] },
+    { rotulo: "GP", nomes: ["pointsFor", "goalsFor"] },
+    { rotulo: "GC", nomes: ["pointsAgainst", "goalsAgainst"] },
+    { rotulo: "SG", nomes: ["pointDifferential", "goalDifference"] }
+  ];
+
+  var tabelaAtiva = TABELAS[0].liga;
+  var cacheTabela = {};
+  var tabelasEl = document.getElementById("tabelas");
+  var corpoTabela = document.getElementById("tabela-corpo");
+
+  function valorStat(stats, nomes) {
+    if (!stats) { return "-"; }
+    for (var i = 0; i < stats.length; i++) {
+      for (var j = 0; j < nomes.length; j++) {
+        if (stats[i].name === nomes[j] || stats[i].abbreviation === nomes[j]) {
+          var v = stats[i].displayValue;
+          if (v === undefined || v === null) { v = stats[i].value; }
+          return (v === undefined || v === null) ? "-" : String(v);
+        }
+      }
+    }
+    return "-";
+  }
+
+  function gruposDaResposta(dados) {
+    if (!dados) { return []; }
+    var grupos = [];
+    if (dados.children && dados.children.length) {
+      dados.children.forEach(function (c) {
+        var ent = c.standings && c.standings.entries;
+        if (ent && ent.length) {
+          grupos.push({ nome: c.name || c.displayName || "", entradas: ent });
+        }
+      });
+    }
+    if (!grupos.length && dados.standings && dados.standings.entries) {
+      grupos.push({ nome: "", entradas: dados.standings.entries });
+    }
+    return grupos;
+  }
+
+  function linhaTabela(entrada, posicao) {
+    var tr = document.createElement("tr");
+    var time = entrada.team || {};
+
+    var tdPos = document.createElement("td");
+    tdPos.className = "pos";
+    tdPos.textContent = posicao;
+    tr.appendChild(tdPos);
+
+    var tdTime = document.createElement("td");
+    tdTime.className = "time-col";
+    var escudo = time.logo || (time.logos && time.logos[0] && time.logos[0].href) || "";
+    if (escudo) {
+      var img = document.createElement("img");
+      img.src = escudo;
+      img.alt = "";
+      img.loading = "lazy";
+      img.referrerPolicy = "no-referrer";
+      img.addEventListener("error", function () { img.remove(); });
+      tdTime.appendChild(img);
+    }
+    var nome = document.createElement("span");
+    nome.textContent = time.displayName || time.shortDisplayName || time.name || "-";
+    tdTime.appendChild(nome);
+    tr.appendChild(tdTime);
+
+    COLUNAS.forEach(function (col) {
+      var td = document.createElement("td");
+      if (col.destaque) { td.className = "pts"; }
+      td.textContent = valorStat(entrada.stats, col.nomes);
+      tr.appendChild(td);
+    });
+    return tr;
+  }
+
+  function montarTabela(grupo) {
+    var caixa = document.createElement("div");
+    caixa.className = "tab-wrap";
+    var tabela = document.createElement("table");
+
+    var thead = document.createElement("thead");
+    var trh = document.createElement("tr");
+    var vazio = document.createElement("th");
+    trh.appendChild(vazio);
+    var thTime = document.createElement("th");
+    thTime.className = "esq";
+    thTime.textContent = "Time";
+    trh.appendChild(thTime);
+    COLUNAS.forEach(function (c) {
+      var th = document.createElement("th");
+      th.textContent = c.rotulo;
+      trh.appendChild(th);
+    });
+    thead.appendChild(trh);
+    tabela.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    grupo.entradas.forEach(function (e, i) {
+      tbody.appendChild(linhaTabela(e, i + 1));
+    });
+    tabela.appendChild(tbody);
+    caixa.appendChild(tabela);
+    return caixa;
+  }
+
+  function desenharTabela(grupos, comp) {
+    corpoTabela.textContent = "";
+    if (!grupos.length) {
+      var aviso2 = document.createElement("div");
+      aviso2.className = "carregando";
+      aviso2.textContent = "O " + comp.nome + " não tem tabela de classificação no momento"
+        + " — competições de mata-mata só voltam a ter tabela na fase de grupos.";
+      corpoTabela.appendChild(aviso2);
+      return;
+    }
+    grupos.forEach(function (g) {
+      if (g.nome && grupos.length > 1) {
+        var t = document.createElement("div");
+        t.className = "grupo-nome";
+        t.textContent = g.nome;
+        corpoTabela.appendChild(t);
+      }
+      corpoTabela.appendChild(montarTabela(g));
+    });
+  }
+
+  function carregarTabela(liga) {
+    var comp = null;
+    TABELAS.forEach(function (c) { if (c.liga === liga) { comp = c; } });
+    if (!comp) { return; }
+
+    if (cacheTabela[liga]) {
+      desenharTabela(cacheTabela[liga], comp);
+      return;
+    }
+
+    corpoTabela.textContent = "";
+    var carregando = document.createElement("div");
+    carregando.className = "carregando";
+    carregando.textContent = "Carregando a tabela do " + comp.nome + "…";
+    corpoTabela.appendChild(carregando);
+
+    var endereco = "https://site.api.espn.com/apis/v2/sports/soccer/" + liga + "/standings";
+    pegarJson(endereco).then(function (dados) {
+      if (tabelaAtiva !== liga) { return; }
+      var grupos = gruposDaResposta(dados);
+      cacheTabela[liga] = grupos;
+      desenharTabela(grupos, comp);
+    });
+  }
+
+  function montarChipsTabela() {
+    var caixa = document.getElementById("comp-chips");
+    TABELAS.forEach(function (comp) {
+      var b = document.createElement("button");
+      b.className = "comp-chip";
+      b.type = "button";
+      b.textContent = comp.nome;
+      b.setAttribute("aria-pressed", comp.liga === tabelaAtiva ? "true" : "false");
+      b.addEventListener("click", function () {
+        tabelaAtiva = comp.liga;
+        Array.prototype.forEach.call(caixa.children, function (x) {
+          x.setAttribute("aria-pressed", x === b ? "true" : "false");
+        });
+        carregarTabela(comp.liga);
+      });
+      caixa.appendChild(b);
+    });
+  }
+
   var LIMITE_IDADE = 90 * 60 * 1000;
 
   function maisRecente() {
@@ -1184,6 +1421,7 @@
   }
 
   montarAbas();
+  montarChipsTabela();
   montarX();
   ligarPlacar();
 
