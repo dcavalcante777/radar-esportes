@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Radar Esportes — TNT Sports</title>
 <style>
   :root{
@@ -140,7 +143,7 @@
       <div class="logo">TS</div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v6</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v7</div>
       </div>
     </div>
     <div class="controls">
@@ -953,10 +956,43 @@
     if (origem === "aovivo") {
       texto2 += " • buscado direto nos sites";
     }
+    if (origem === "velho") {
+      var horas = Math.round((Date.now() - maisRecente()) / 3600000);
+      texto2 += " • a notícia mais nova tem " + horas + "h — as fontes não responderam"
+        + " agora, tente pelo botão Atualizar agora ou por outra rede";
+    }
     if (origem === "embutido") {
       texto2 += " • cópia embutida na página";
     }
     statusEl.textContent = texto2;
+  }
+
+  var LIMITE_IDADE = 90 * 60 * 1000;
+
+  function maisRecente() {
+    var topo = 0;
+    itens.forEach(function (i) { if (i.when > topo) { topo = i.when; } });
+    return topo;
+  }
+
+  function estaVelho() {
+    var topo = maisRecente();
+    if (!topo) { return true; }
+    return (Date.now() - topo) > LIMITE_IDADE;
+  }
+
+  function completarAoVivo() {
+    statusEl.textContent = "O conteúdo salvo está atrasado — buscando direto nos sites…";
+    return buscarAoVivo().then(function (lista) {
+      if (!lista.length) { aviso("velho"); return; }
+      var novoTopo = lista[0].when || 0;
+      if (novoTopo > maisRecente()) {
+        aplicar({ carimbo: "", categorias: [], itens: lista }, true);
+        aviso("aovivo");
+      } else {
+        aviso("velho");
+      }
+    });
   }
 
   function buscar(primeira) {
@@ -975,6 +1011,7 @@
         var mudou = dados.itens.length > 0 && dados.itens[0].link !== antes;
         aplicar(dados, !primeira && mudou);
         aviso("json");
+        if (estaVelho()) { return completarAoVivo(); }
       })
       .catch(function () {
         return buscarAoVivo().then(function (lista) {
@@ -985,7 +1022,7 @@
           }
           aplicar(DADOS, false);
           if (itens.length) {
-            aviso("embutido");
+            aviso(estaVelho() ? "velho" : "embutido");
           } else {
             statusEl.textContent = "Não consegui carregar as manchetes por nenhum caminho."
               + " Isso costuma ser bloqueio de rede — tente por outra conexão.";
