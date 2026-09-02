@@ -143,7 +143,7 @@
       <div class="logo">TS</div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v8</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v9</div>
       </div>
     </div>
     <div class="controls">
@@ -1039,11 +1039,49 @@
     });
   }
 
-  function aplicar(dados, novos) {
+  var CHAVE_CONTEUDO = "radar:conteudo";
+
+  function salvarConteudo(dados) {
+    try {
+      localStorage.setItem(CHAVE_CONTEUDO, JSON.stringify({
+        carimbo: dados.carimbo || "",
+        itens: dados.itens.slice(0, 120),
+        em: Date.now()
+      }));
+    } catch (e) { /* espaco cheio, sem problema */ }
+  }
+
+  function conteudoSalvo() {
+    try {
+      var bruto = localStorage.getItem(CHAVE_CONTEUDO);
+      if (!bruto) { return null; }
+      var d = JSON.parse(bruto);
+      if (!d || !d.itens || !d.itens.length) { return null; }
+      return d;
+    } catch (e) { return null; }
+  }
+
+  function maisNovoDe(lista) {
+    var topo = 0;
+    (lista || []).forEach(function (i) { if (i.when > topo) { topo = i.when; } });
+    return topo;
+  }
+
+  function melhorInicio() {
+    var salvo = conteudoSalvo();
+    if (!salvo) { return { dados: DADOS, origem: "embutido" }; }
+    if (maisNovoDe(salvo.itens) >= maisNovoDe(DADOS.itens)) {
+      return { dados: salvo, origem: "salvo" };
+    }
+    return { dados: DADOS, origem: "embutido" };
+  }
+
+  function aplicar(dados, novos, guardar) {
     if (!dados || !dados.itens || !dados.itens.length) { return false; }
     itens = dados.itens;
     carimbo = dados.carimbo || "";
     render(novos);
+    if (guardar) { salvarConteudo(dados); }
     return true;
   }
 
@@ -1070,6 +1108,9 @@
     if (origem === "embutido") {
       texto2 += " • cópia embutida na página";
     }
+    if (origem === "salvo") {
+      texto2 += " • última busca guardada neste aparelho";
+    }
     statusEl.textContent = texto2;
   }
 
@@ -1093,7 +1134,7 @@
       if (!lista.length) { aviso("velho"); return; }
       var novoTopo = lista[0].when || 0;
       if (novoTopo > maisRecente()) {
-        aplicar({ carimbo: "", categorias: [], itens: lista }, true);
+        aplicar({ carimbo: "", categorias: [], itens: lista }, true, true);
         aviso("aovivo");
       } else {
         aviso("velho");
@@ -1115,20 +1156,21 @@
       .then(function (dados) {
         var antes = itens.length ? itens[0].link : "";
         var mudou = dados.itens.length > 0 && dados.itens[0].link !== antes;
-        aplicar(dados, !primeira && mudou);
+        aplicar(dados, !primeira && mudou, true);
         aviso("json");
         if (estaVelho()) { return completarAoVivo(); }
       })
       .catch(function () {
         return buscarAoVivo().then(function (lista) {
           if (lista.length) {
-            aplicar({ carimbo: "", categorias: [], itens: lista }, !primeira);
+            aplicar({ carimbo: "", categorias: [], itens: lista }, !primeira, true);
             aviso("aovivo");
             return;
           }
-          aplicar(DADOS, false);
+          var reserva = melhorInicio();
+          aplicar(reserva.dados, false);
           if (itens.length) {
-            aviso(estaVelho() ? "velho" : "embutido");
+            aviso(estaVelho() ? "velho" : reserva.origem);
           } else {
             statusEl.textContent = "Não consegui carregar as manchetes por nenhum caminho."
               + " Isso costuma ser bloqueio de rede — tente por outra conexão.";
@@ -1144,7 +1186,10 @@
   montarAbas();
   montarX();
   ligarPlacar();
-  aplicar(DADOS, false);
+
+  var inicio = melhorInicio();
+  aplicar(inicio.dados, false);
+  if (itens.length) { aviso(inicio.origem === "salvo" ? "salvo" : "embutido"); }
   buscar(true);
 
   qEl.addEventListener("input", function () { render(false); });
