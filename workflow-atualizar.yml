@@ -1,0 +1,36 @@
+name: Atualizar Radar Esportes
+
+on:
+  schedule:
+    # A cada 30 minutos, 24h por dia
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: radar-esportes
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Buscar as manchetes e os vídeos do momento
+        run: python atualizar_noticias.py index.html noticias.json
+
+      - name: Publicar a página atualizada
+        run: |
+          git config user.name "Radar Esportes"
+          git config user.email "actions@github.com"
+          git add index.html noticias.json
+          git diff --staged --quiet || git commit -m "Manchetes atualizadas"
+          git pull --rebase --autostash || true
+          git push

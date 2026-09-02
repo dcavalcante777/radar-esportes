@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Radar Esportes — TNT Sports</title>
+<style>
+  :root{
+    --bg:#0d0f14; --bg-soft:#151922; --card:#171c26; --card-hover:#1e2430;
+    --border:#252c3a; --txt:#eef1f6; --txt-dim:#9aa5b8; --accent:#ffd400;
+    --accent-2:#e2001a; --chip:#1d2431; --shadow:0 6px 22px rgba(0,0,0,.45);
+    color-scheme: dark light;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f5f6f9; --bg-soft:#ffffff; --card:#ffffff; --card-hover:#f0f2f7;
+      --border:#e0e4ec; --txt:#12151c; --txt-dim:#5c6579; --chip:#eef1f6;
+      --shadow:0 4px 16px rgba(20,25,40,.10); }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;}
+  header{position:sticky;inset-block-start:0;z-index:20;background:var(--bg-soft);
+    border-block-end:1px solid var(--border);padding:12px 20px 0;box-shadow:var(--shadow)}
+  .top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{inline-size:44px;block-size:44px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#111;font-size:19px}
+  h1{font-size:20px;margin:0;letter-spacing:.3px}
+  .sub{font-size:12px;color:var(--txt-dim);margin-block-start:2px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  input[type=search]{background:var(--chip);border:1px solid var(--border);color:var(--txt);
+    padding:9px 12px;border-radius:10px;min-inline-size:200px;font-size:14px}
+  button{background:var(--chip);border:1px solid var(--border);color:var(--txt);
+    padding:9px 14px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600}
+  button:hover{background:var(--card-hover)}
+  button.primary{background:var(--accent);color:#111;border-color:var(--accent)}
+  nav{display:flex;gap:4px;overflow-x:auto;margin-block-start:12px;
+    scrollbar-width:none;-ms-overflow-style:none}
+  nav::-webkit-scrollbar{display:none}
+  .tab{background:none;border:0;border-block-end:3px solid transparent;border-radius:0;
+    color:var(--txt-dim);padding:11px 14px;font-size:13px;font-weight:700;letter-spacing:.4px;
+    text-transform:uppercase;white-space:nowrap;cursor:pointer}
+  .tab:hover{background:none;color:var(--txt)}
+  .tab[aria-selected="true"]{color:var(--txt);border-block-end-color:var(--accent)}
+  .tab .n{font-size:11px;color:var(--txt-dim);margin-inline-start:5px;font-weight:600}
+  main{padding:20px;max-inline-size:1500px;margin-inline:auto}
+  .status{font-size:13px;color:var(--txt-dim);margin-block-end:14px;
+    display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .dot{inline-size:8px;block-size:8px;border-radius:50%;background:var(--accent);
+    display:inline-block;flex:none}
+  .dot.on{animation:pulsa 1.1s ease-in-out infinite}
+  @keyframes pulsa{0%,100%{opacity:1}50%{opacity:.25}}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+    display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:.15s}
+  .card:hover{background:var(--card-hover);transform:translateY(-3px);box-shadow:var(--shadow)}
+  .card.novo{animation:entra .45s ease}
+  @keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .capa{position:relative;aspect-ratio:16/9;background:var(--chip)}
+  .thumb{inline-size:100%;block-size:100%;object-fit:cover;display:block}
+  .ph{inline-size:100%;block-size:100%;display:flex;flex-direction:column;gap:6px;
+    align-items:center;justify-content:center;color:#fff;text-align:center;padding:12px;
+    position:relative;overflow:hidden}
+  .ph::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(0,0,0,.34))}
+  .ph b{font-weight:800;font-size:17px;letter-spacing:.5px;z-index:1;
+    text-shadow:0 1px 3px rgba(0,0,0,.4)}
+  .ph span{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.85;z-index:1}
+  .play{position:absolute;inset-block-end:8px;inset-inline-start:8px;background:rgba(226,0,26,.94);
+    color:#fff;font-size:11px;font-weight:800;letter-spacing:.8px;padding:4px 9px;border-radius:6px}
+  .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:11px;
+    color:var(--txt-dim);text-transform:uppercase;letter-spacing:.6px}
+  .src{background:var(--chip);border:1px solid var(--border);padding:3px 8px;
+    border-radius:999px;font-weight:700;color:var(--txt)}
+  .tag{padding:3px 8px;border-radius:999px;font-weight:700;font-size:10px;
+    background:rgba(255,212,0,.14);color:var(--accent);border:1px solid rgba(255,212,0,.28)}
+  .ttl{font-size:15px;font-weight:700;line-height:1.35;margin:0}
+  .desc{font-size:13px;color:var(--txt-dim);line-height:1.45;margin:0}
+  .section-title{font-size:15px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+    color:var(--txt-dim);margin:30px 0 12px;padding-block-end:8px;
+    border-block-end:1px solid var(--border)}
+  .xgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+  .xcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;
+    text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:3px}
+  .xcard:hover{background:var(--card-hover)}
+  .xname{font-weight:700;font-size:14px}
+  .xhandle{font-size:12px;color:var(--txt-dim)}
+  .empty{padding:40px;text-align:center;color:var(--txt-dim);font-size:14px}
+  footer{padding:24px 20px 40px;text-align:center;color:var(--txt-dim);font-size:12px}
+  @media print{header{position:static}.card:hover{transform:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div class="brand">
+      <div class="logo">TS</div>
+      <div>
+        <h1>Radar Esportes</h1>
+        <div class="sub">Atualiza sozinho a cada 30 minutos</div>
+      </div>
+    </div>
+    <div class="controls">
+      <input type="search" id="q" placeholder="Buscar time, jogador, tema…" aria-label="Buscar">
+      <button id="reload" class="primary" type="button">Atualizar agora</button>
+    </div>
+  </div>
+  <nav id="abas" role="tablist"></nav>
+</header>
+
+<main>
+  <div class="status"><span class="dot" id="pisca"></span><span id="status">Carregando…</span></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>Nada encontrado nessa aba com esse filtro.</div>
+
+  <div class="section-title" id="tvtitulo" hidden>Vídeos</div>
+  <div class="grid" id="vgrid"></div>
+
+  <div class="section-title">Contas do X para acompanhar</div>
+  <div class="xgrid" id="xgrid"></div>
+</main>
+
+<footer>Radar Esportes • as manchetes se renovam sozinhas, sem precisar recarregar a página.</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* INICIO-NOTICIAS */
+  var DADOS = {
+   "atualizado_em": "2026-09-02T00:33:09.971715+00:00",
+   "carimbo": "01/09/2026, 21h33",
+   "categorias": [
+    "FUTEBOL BRASIL",
+    "FUT EUROPEU",
+    "FUT SUL-AMERICANO",
+    "BASQUETE",
+    "F1",
+    "LUTAS",
+    "ESPORTE OLÍMPICO",
+    "OUTROS ESPORTES",
+    "FOFOCAS"
+   ],
+   "itens": [
+    {
+     "title": "Flamengo goleia no Brasileirao",
+     "link": "https://ex.com/a1",
+     "desc": "gols",
+     "img": "https://s.glbimg.com/f.jpg",
+     "src": "ge Futebol",
+     "cat": "FUTEBOL BRASIL",
+     "when": 1788296400000,
+     "tipo": "noticia"
+    },
+    {
+     "title": "Verstappen crava a pole no GP",
+     "link": "https://ex.com/a2",
+     "desc": "",
+     "img": "https://cdn.x.com/b.webp",
+     "src": "ge Futebol",
+     "cat": "FUTEBOL BRASIL",
+     "when": 1788292800000,
+     "tipo": "noticia"
+    },
+    {
+     "title": "Melhores momentos",
+     "link": "https://www.youtube.com/watch?v=ABC123xyz00",
+     "desc": "resumo do jogo",
+     "img": "https://i.ytimg.com/vi/ABC123xyz00/hqdefault.jpg",
+     "src": "TNT Sports Brasil",
+     "cat": "FUTEBOL BRASIL",
+     "when": 1788292800000,
+     "tipo": "video"
+    },
+    {
+     "title": "Neymar em festa com nova namorada",
+     "link": "https://ex.com/a3",
+     "desc": "foto https://img.x.com/c.png",
+     "img": "https://img.x.com/c.png",
+     "src": "ge Futebol",
+     "cat": "FOFOCAS",
+     "when": 1788289200000,
+     "tipo": "noticia"
+    },
+    {
+     "title": "Analise da rodada",
+     "link": "https://www.youtube.com/watch?v=DEF456uvw11",
+     "desc": "",
+     "img": "https://i.ytimg.com/vi/DEF456uvw11/hqdefault.jpg",
+     "src": "TNT Sports Brasil",
+     "cat": "FUTEBOL BRASIL",
+     "when": 1788289200000,
+     "tipo": "video"
+    },
+    {
+     "title": "Lakers vencem na NBA",
+     "link": "https://ex.com/a4",
+     "desc": "basquete",
+     "img": "",
+     "src": "ge Futebol",
+     "cat": "FUTEBOL BRASIL",
+     "when": 1788285600000,
+     "tipo": "noticia"
+    }
+   ]
+  };
+  /* FIM-NOTICIAS */
+
+  var CATEGORIAS = [
+    "FUTEBOL BRASIL",
+    "FUT EUROPEU",
+    "FUT SUL-AMERICANO",
+    "BASQUETE",
+    "F1",
+    "LUTAS",
+    "ESPORTE OLÍMPICO",
+    "OUTROS ESPORTES",
+    "FOFOCAS"
+  ];
+
+  var ROTULOS = { "FOFOCAS": "Fofocas" };
+
+  var X_ACCOUNTS = [
+    { n: "TNT Sports Brasil", h: "TNTSportsBR" },
+    { n: "Fabrizio Romano",   h: "FabrizioRomano" },
+    { n: "ge",                h: "geglobo" },
+    { n: "ESPN Brasil",       h: "ESPNBrasil" },
+    { n: "Lance!",            h: "lancenet" },
+    { n: "CazéTV",            h: "CazeTVoficial" },
+    { n: "UEFA Champions",    h: "ChampionsLeague" },
+    { n: "CBF Futebol",       h: "CBF_Futebol" },
+    { n: "Brasileirão",       h: "Brasileirao" },
+    { n: "NBA Brasil",        h: "NBABrasil" },
+    { n: "Fórmula 1",         h: "F1" },
+    { n: "UFC Brasil",        h: "ufcbrasil" }
+  ];
+
+  var INTERVALO = 30 * 60 * 1000;
+
+  var itens = [];
+  var carimbo = "";
+  var abaAtiva = CATEGORIAS[0];
+  var buscando = false;
+
+  var grid = document.getElementById("grid");
+  var vgrid = document.getElementById("vgrid");
+  var tvtitulo = document.getElementById("tvtitulo");
+  var statusEl = document.getElementById("status");
+  var piscaEl = document.getElementById("pisca");
+  var emptyEl = document.getElementById("empty");
+  var qEl = document.getElementById("q");
+  var abasEl = document.getElementById("abas");
+
+  function rotulo(c) { return ROTULOS[c] || c; }
+
+  function ago(ts) {
+    if (!ts) { return ""; }
+    var mins = Math.round((Date.now() - ts) / 60000);
+    if (mins < 1) { return "agora"; }
+    if (mins < 60) { return "há " + mins + " min"; }
+    var h = Math.round(mins / 60);
+    if (h < 24) { return "há " + h + "h"; }
+    return "há " + Math.round(h / 24) + "d";
+  }
+
+  function corDaFonte(nome) {
+    var h = 0;
+    for (var i = 0; i < nome.length; i++) { h = (h * 31 + nome.charCodeAt(i)) % 360; }
+    return h;
+  }
+
+  function placeholder(it) {
+    var h = corDaFonte(it.src);
+    var d = document.createElement("div");
+    d.className = "ph";
+    d.style.background = "linear-gradient(135deg,hsl(" + h + ",42%,26%),hsl("
+      + ((h + 42) % 360) + ",48%,17%))";
+    var b = document.createElement("b");
+    b.textContent = it.src;
+    var c = document.createElement("span");
+    c.textContent = rotulo(it.cat);
+    d.appendChild(b);
+    d.appendChild(c);
+    return d;
+  }
+
+  function selo() {
+    var v = document.createElement("span");
+    v.className = "play";
+    v.textContent = "▶ VÍDEO";
+    return v;
+  }
+
+  function card(it, novo) {
+    var a = document.createElement("a");
+    a.className = "card" + (novo ? " novo" : "");
+    a.href = it.link;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+
+    var capa = document.createElement("div");
+    capa.className = "capa";
+    if (it.img && it.img.indexOf("http") === 0) {
+      var img = document.createElement("img");
+      img.className = "thumb";
+      img.loading = "lazy";
+      img.referrerPolicy = "no-referrer";
+      img.alt = "";
+      img.src = it.img;
+      img.addEventListener("error", function () {
+        capa.textContent = "";
+        capa.appendChild(placeholder(it));
+        if (it.tipo === "video") { capa.appendChild(selo()); }
+      });
+      capa.appendChild(img);
+    } else {
+      capa.appendChild(placeholder(it));
+    }
+    if (it.tipo === "video") { capa.appendChild(selo()); }
+    a.appendChild(capa);
+
+    var body = document.createElement("div");
+    body.className = "body";
+    var meta = document.createElement("div");
+    meta.className = "meta";
+    var s = document.createElement("span");
+    s.className = "src";
+    s.textContent = it.src;
+    meta.appendChild(s);
+    if (abaAtiva === "TUDO") {
+      var g = document.createElement("span");
+      g.className = "tag";
+      g.textContent = rotulo(it.cat);
+      meta.appendChild(g);
+    }
+    var t = document.createElement("span");
+    t.textContent = ago(it.when);
+    meta.appendChild(t);
+
+    var h = document.createElement("p");
+    h.className = "ttl";
+    h.textContent = it.title;
+    body.appendChild(meta);
+    body.appendChild(h);
+    if (it.desc) {
+      var d = document.createElement("p");
+      d.className = "desc";
+      d.textContent = it.desc;
+      body.appendChild(d);
+    }
+    a.appendChild(body);
+    return a;
+  }
+
+  function combina(it, q) {
+    if (!q) { return true; }
+    return (it.title + " " + it.desc + " " + it.src).toLowerCase().indexOf(q) >= 0;
+  }
+
+  function filtrar(tipo) {
+    var q = qEl.value.toLowerCase().trim();
+    return itens.filter(function (it) {
+      if (it.tipo !== tipo) { return false; }
+      if (abaAtiva !== "TUDO" && it.cat !== abaAtiva) { return false; }
+      return combina(it, q);
+    });
+  }
+
+  function marcarAbas() {
+    var q = qEl.value.toLowerCase().trim();
+    Array.prototype.forEach.call(abasEl.children, function (b) {
+      var cat = b.getAttribute("data-cat");
+      var n = 0;
+      itens.forEach(function (it) {
+        if (cat !== "TUDO" && it.cat !== cat) { return; }
+        if (combina(it, q)) { n += 1; }
+      });
+      b.setAttribute("aria-selected", cat === abaAtiva ? "true" : "false");
+      b.querySelector(".n").textContent = n ? n : "";
+    });
+  }
+
+  function render(novos) {
+    var noticias = filtrar("noticia");
+    var videos = filtrar("video");
+
+    grid.textContent = "";
+    noticias.forEach(function (it) { grid.appendChild(card(it, novos)); });
+
+    vgrid.textContent = "";
+    videos.forEach(function (it) { vgrid.appendChild(card(it, novos)); });
+    tvtitulo.hidden = videos.length === 0;
+
+    emptyEl.hidden = (noticias.length + videos.length) > 0;
+    marcarAbas();
+  }
+
+  function montarAbas() {
+    CATEGORIAS.concat(["TUDO"]).forEach(function (cat) {
+      var b = document.createElement("button");
+      b.className = "tab";
+      b.type = "button";
+      b.setAttribute("role", "tab");
+      b.setAttribute("data-cat", cat);
+      b.setAttribute("aria-selected", cat === abaAtiva ? "true" : "false");
+      b.appendChild(document.createTextNode(rotulo(cat)));
+      var n = document.createElement("span");
+      n.className = "n";
+      b.appendChild(n);
+      b.addEventListener("click", function () {
+        abaAtiva = cat;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        render(false);
+      });
+      abasEl.appendChild(b);
+    });
+  }
+
+  function montarX() {
+    var box = document.getElementById("xgrid");
+    X_ACCOUNTS.forEach(function (acc) {
+      var a = document.createElement("a");
+      a.className = "xcard";
+      a.href = "https://x.com/" + acc.h;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      var n = document.createElement("span");
+      n.className = "xname";
+      n.textContent = acc.n;
+      var hh = document.createElement("span");
+      hh.className = "xhandle";
+      hh.textContent = "@" + acc.h;
+      a.appendChild(n);
+      a.appendChild(hh);
+      box.appendChild(a);
+    });
+  }
+
+  function aplicar(dados, novos) {
+    if (!dados || !dados.itens || !dados.itens.length) { return false; }
+    itens = dados.itens;
+    carimbo = dados.carimbo || "";
+    render(novos);
+    return true;
+  }
+
+  function contarFontes() {
+    var f = {};
+    itens.forEach(function (i) { f[i.src] = 1; });
+    return Object.keys(f).length;
+  }
+
+  function aviso() {
+    var agora = new Date();
+    statusEl.textContent = itens.length + " itens de " + contarFontes() + " fontes • "
+      + (carimbo ? "conteúdo de " + carimbo + " • " : "")
+      + "verificado às "
+      + agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function buscar(primeira) {
+    if (buscando) { return; }
+    buscando = true;
+    piscaEl.classList.add("on");
+    if (primeira && !itens.length) { statusEl.textContent = "Carregando as manchetes…"; }
+
+    fetch("noticias.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) {
+        if (!r.ok) { throw new Error("indisponivel"); }
+        return r.json();
+      })
+      .then(function (dados) {
+        var antes = itens.length ? itens[0].link : "";
+        var mudou = dados.itens.length > 0 && dados.itens[0].link !== antes;
+        aplicar(dados, !primeira && mudou);
+        aviso();
+      })
+      .catch(function () {
+        if (!itens.length) { aplicar(DADOS, false); }
+        if (itens.length) {
+          aviso();
+        } else {
+          statusEl.textContent = "Não consegui carregar as manchetes agora.";
+        }
+      })
+      .then(function () {
+        buscando = false;
+        piscaEl.classList.remove("on");
+      });
+  }
+
+  montarAbas();
+  montarX();
+  aplicar(DADOS, false);
+  buscar(true);
+
+  qEl.addEventListener("input", function () { render(false); });
+  document.getElementById("reload").addEventListener("click", function () { buscar(false); });
+
+  setInterval(function () { buscar(false); }, INTERVALO);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) { buscar(false); }
+  });
+})();
+</script>
+</body>
+</html>
