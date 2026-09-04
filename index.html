@@ -153,6 +153,9 @@
     position:relative;overflow:hidden}
   .ph::after{content:"";position:absolute;inset:0;
     background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(0,0,0,.34))}
+  .escudo-fundo{position:absolute;inline-size:52%;block-size:52%;object-fit:contain;
+    opacity:.9;z-index:1;filter:drop-shadow(0 3px 10px rgba(0,0,0,.45))}
+  .ph:has(.escudo-fundo) b,.ph:has(.escudo-fundo) span{display:none}
   .ph b{font-weight:800;font-size:17px;letter-spacing:.5px;z-index:1;
     text-shadow:0 1px 3px rgba(0,0,0,.4)}
   .ph span{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.85;z-index:1}
@@ -355,6 +358,88 @@
     display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
   .rodada-nome{flex:1;text-align:center;font-size:13px;font-weight:800;letter-spacing:.5px;
     text-transform:uppercase;color:var(--txt)}
+  .ficha-fundo{position:fixed;inset:0;z-index:60;background:rgba(6,8,12,.72);
+    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+    animation:apareceFundo .18s ease}
+  @keyframes apareceFundo{from{opacity:0}to{opacity:1}}
+  .ficha{background:var(--bg-soft);border:1px solid var(--border);border-radius:16px;
+    inline-size:min(680px,100%);max-block-size:88vh;overflow-y:auto;box-shadow:var(--shadow);
+    animation:sobeFicha .22s cubic-bezier(.2,.8,.3,1)}
+  @keyframes sobeFicha{from{opacity:0;transform:translateY(14px) scale(.98)}
+    to{opacity:1;transform:none}}
+  .ficha-topo{position:sticky;inset-block-start:0;background:var(--bg-soft);z-index:2;
+    padding:16px 18px 12px;border-block-end:1px solid var(--border);
+    display:flex;align-items:flex-start;gap:12px}
+  .ficha-topo .quem2{flex:1;min-inline-size:0}
+  .ficha-fechar{inline-size:32px;block-size:32px;padding:0;border-radius:50%;flex:none;
+    display:flex;align-items:center;justify-content:center;font-size:17px}
+  .ficha-placar{display:flex;align-items:center;justify-content:center;gap:14px;
+    padding:16px 18px;font-size:15px}
+  .ficha-time{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;
+    text-align:center;min-inline-size:0}
+  .ficha-time img{inline-size:44px;block-size:44px;object-fit:contain}
+  .ficha-time span{font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;
+    white-space:nowrap;max-inline-size:100%}
+  .ficha-gols{font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;flex:none;
+    letter-spacing:-1px}
+  .ficha-estado{font-size:11px;letter-spacing:1px;text-transform:uppercase;
+    color:var(--txt-dim);text-align:center;padding-block-end:6px}
+  .ficha-estado.vivo2{color:var(--accent-2);font-weight:800}
+  .ficha-secao{padding:14px 18px;border-block-start:1px solid var(--border)}
+  .ficha-secao h3{margin:0 0 11px;font-size:11px;font-weight:800;letter-spacing:1px;
+    text-transform:uppercase;color:var(--txt-dim)}
+  .lance{display:flex;align-items:baseline;gap:10px;padding:6px 0;font-size:13px}
+  .lance .min{inline-size:38px;flex:none;font-weight:800;color:var(--txt-dim);font-size:12px;
+    font-variant-numeric:tabular-nums}
+  .lance .ico{inline-size:18px;flex:none;text-align:center}
+  .lance .txt2{flex:1;min-inline-size:0}
+  .barra-est{margin-block-end:11px}
+  .barra-est .rot{display:flex;justify-content:space-between;font-size:11.5px;
+    margin-block-end:4px;color:var(--txt-dim)}
+  .barra-est .rot b{color:var(--txt);font-variant-numeric:tabular-nums}
+  .barra-est .trilha{block-size:6px;border-radius:3px;background:var(--chip);overflow:hidden;
+    display:flex}
+  .barra-est .esq2{background:var(--accent)}
+  .barra-est .dir2{background:var(--accent-2)}
+  .escala{display:grid;gap:14px;grid-template-columns:1fr 1fr;font-size:12.5px}
+  .escala h4{margin:0 0 7px;font-size:11px;color:var(--txt-dim);font-weight:800;
+    text-transform:uppercase;letter-spacing:.6px}
+  .escala li{list-style:none;padding:3px 0;overflow:hidden;text-overflow:ellipsis;
+    white-space:nowrap}
+  .escala ul{margin:0;padding:0}
+  .escala .cam{color:var(--txt-dim);font-variant-numeric:tabular-nums;
+    display:inline-block;inline-size:20px}
+  .forma{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+  .forma-time{min-inline-size:0}
+  .forma-time h5{margin:0 0 7px;font-size:11px;color:var(--txt-dim);font-weight:800;
+    text-transform:uppercase;letter-spacing:.5px;overflow:hidden;text-overflow:ellipsis;
+    white-space:nowrap}
+  .selos-forma{display:flex;gap:5px;margin-block-end:6px}
+  .selo-f{inline-size:23px;block-size:23px;border-radius:6px;display:flex;
+    align-items:center;justify-content:center;font-size:11px;font-weight:900;flex:none;
+    color:#fff}
+  .selo-f.v{background:#2ecc71;color:#0b2e1c}
+  .selo-f.e{background:#7c8798}
+  .selo-f.d{background:#e74c3c}
+  .resumo-forma{font-size:11.5px;color:var(--txt-dim)}
+  .h2h{display:flex;flex-direction:column;gap:5px}
+  .h2h-linha{display:flex;align-items:center;gap:9px;font-size:12.5px;
+    padding:5px 0;border-block-end:1px solid var(--border)}
+  .h2h-linha:last-child{border-block-end:0}
+  .h2h-data{inline-size:56px;flex:none;color:var(--txt-dim);font-size:11px}
+  .h2h-times{flex:1;min-inline-size:0;overflow:hidden;text-overflow:ellipsis;
+    white-space:nowrap}
+  .h2h-placar{font-weight:800;flex:none;font-variant-numeric:tabular-nums}
+  .h2h-resumo{display:flex;gap:14px;justify-content:center;padding:8px 0 12px;
+    font-size:12px;color:var(--txt-dim);text-align:center}
+  .h2h-resumo b{display:block;font-size:19px;color:var(--txt);font-weight:900}
+  @media (max-width:560px){.forma{grid-template-columns:1fr}}
+  .ficha-rodape{padding:13px 18px 17px;border-block-start:1px solid var(--border)}
+  .ficha-rodape a{color:var(--accent);font-size:12.5px;text-decoration:none;font-weight:600}
+  .ficha-rodape a:hover{text-decoration:underline}
+  @media (max-width:560px){.escala{grid-template-columns:1fr}
+    .ficha-gols{font-size:28px}.ficha{max-block-size:94vh}}
   .aviso-vazio{padding:18px;text-align:center;color:var(--txt-dim);font-size:13px;
     background:var(--card);border:1px solid var(--border);border-radius:12px}
   .legenda{display:flex;gap:14px;flex-wrap:wrap;margin:10px 2px 0;font-size:11px;
@@ -396,7 +481,7 @@
       <div class="logo"><img src="data:image/png;base64,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" alt="Radar Esportes"></div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v30</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v36</div>
       </div>
     </div>
     <div class="controls">
@@ -593,6 +678,17 @@
     { nome: "Seleções",       liga: "fifa.friendly" }
   ];
 
+  // Outros esportes: mesmo formato do futebol, entram no carrossel e na agenda
+  // (mas não nas tabelas, que seguem só com futebol).
+  var OUTROS_PLACARES = [
+    { nome: "NBA", caminho: "basketball/nba" },
+    { nome: "NFL", caminho: "football/nfl" },
+    { nome: "MLB", caminho: "baseball/mlb" },
+    { nome: "NHL", caminho: "hockey/nhl" },
+    { nome: "UFC", caminho: "mma/ufc" },
+    { nome: "WNBA", caminho: "basketball/wnba" }
+  ];
+
   var PROXIES = [
     function (u) { return "https://api.allorigins.win/raw?url=" + encodeURIComponent(u); },
     function (u) { return "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(u); },
@@ -683,8 +779,9 @@
   }
 
   function lerCompeticao(comp) {
-    var endereco = "https://site.api.espn.com/apis/site/v2/sports/soccer/"
-      + comp.liga + "/scoreboard";
+    var endereco = comp.caminho
+      ? ("https://site.api.espn.com/apis/site/v2/sports/" + comp.caminho + "/scoreboard")
+      : ("https://site.api.espn.com/apis/site/v2/sports/soccer/" + comp.liga + "/scoreboard");
     return pegarJson(endereco).then(function (dados) {
       if (!dados || !dados.events) { return []; }
       var saida = [];
@@ -707,6 +804,8 @@
         if (!mesmoDia && st.state !== "in") { return; }
         saida.push({
           comp: comp.nome,
+          ligaId: comp.liga,
+          caminho: comp.caminho || "",
           estado: st.state || "pre",
           detalhe: st.shortDetail || "",
           relogio: (ev.status && ev.status.displayClock) || "",
@@ -724,6 +823,7 @@
   function dadosTime(t) {
     var time = t.team || {};
     return {
+      id: time.id || "",
       nome: time.shortDisplayName || time.abbreviation || time.displayName || "",
       logo: time.logo || "",
       gols: (t.score === undefined || t.score === null) ? "" : String(t.score),
@@ -765,12 +865,448 @@
     return d;
   }
 
+  // ---------------- Ficha do jogo ----------------
+  // Abre um painel com gols, cartões, estatísticas e escalações.
+  var fichaAberta = null;
+
+  function fecharFicha() {
+    if (fichaAberta && fichaAberta.parentNode) {
+      fichaAberta.parentNode.removeChild(fichaAberta);
+    }
+    fichaAberta = null;
+  }
+
+  function idDoJogo(link) {
+    if (!link) { return ""; }
+    var m = String(link).match(/(?:gameId|event)[=\/](\d+)/i);
+    if (m) { return m[1]; }
+    m = String(link).match(/\/(\d{6,})(?:\/|$|\?)/);
+    return m ? m[1] : "";
+  }
+
+  function bloco(titulo) {
+    var d = document.createElement("div");
+    d.className = "ficha-secao";
+    var h = document.createElement("h3");
+    h.textContent = titulo;
+    d.appendChild(h);
+    return d;
+  }
+
+  function iconeLance(texto) {
+    var t = String(texto || "").toLowerCase();
+    if (t.indexOf("goal") >= 0 || t.indexOf("gol") >= 0) { return "⚽"; }
+    if (t.indexOf("yellow") >= 0 || t.indexOf("amarelo") >= 0) { return "🟨"; }
+    if (t.indexOf("red") >= 0 || t.indexOf("vermelho") >= 0) { return "🟥"; }
+    if (t.indexOf("substitution") >= 0 || t.indexOf("subst") >= 0) { return "🔄"; }
+    if (t.indexOf("penalty") >= 0 || t.indexOf("pênalti") >= 0) { return "🎯"; }
+    return "•";
+  }
+
+  function montarLances(dados, destino) {
+    var lista = dados.keyEvents || dados.plays || [];
+    if (!lista.length) { return; }
+    var sec = bloco("Lances principais");
+    var n = 0;
+    lista.forEach(function (e) {
+      if (n >= 22) { return; }
+      var tipo = (e.type && (e.type.text || e.type.name)) || e.text || "";
+      var min = (e.clock && e.clock.displayValue) || (e.time && e.time.displayValue) || "";
+      var quem = "";
+      if (e.participants && e.participants.length) {
+        var p = e.participants[0].athlete || e.participants[0];
+        quem = p.displayName || p.shortName || "";
+      }
+      if (!quem && e.athletesInvolved && e.athletesInvolved.length) {
+        quem = e.athletesInvolved[0].displayName || "";
+      }
+      var texto = e.text || tipo;
+      if (!texto) { return; }
+      n += 1;
+      var linha = document.createElement("div");
+      linha.className = "lance";
+      var m = document.createElement("span");
+      m.className = "min";
+      m.textContent = min;
+      var ic = document.createElement("span");
+      ic.className = "ico";
+      ic.textContent = iconeLance(tipo + " " + texto);
+      var tx = document.createElement("span");
+      tx.className = "txt2";
+      tx.textContent = quem ? (quem + " — " + texto) : texto;
+      linha.appendChild(m);
+      linha.appendChild(ic);
+      linha.appendChild(tx);
+      sec.appendChild(linha);
+    });
+    if (n) { destino.appendChild(sec); }
+  }
+
+  function montarEstatisticas(dados, destino) {
+    var times = (dados.boxscore && dados.boxscore.teams) || [];
+    if (times.length < 2) { return; }
+    var casa = times[0].statistics || [];
+    var fora = times[1].statistics || [];
+    if (!casa.length) { return; }
+
+    var sec = bloco("Estatísticas");
+    var mostrou = 0;
+    casa.forEach(function (st, i) {
+      if (mostrou >= 10) { return; }
+      var rotulo = st.label || st.displayName || st.name || "";
+      var va = st.displayValue !== undefined ? st.displayValue : st.value;
+      var vb = fora[i] ? (fora[i].displayValue !== undefined ? fora[i].displayValue : fora[i].value) : "";
+      if (va === undefined || va === null || vb === "" || vb === undefined) { return; }
+      var na = parseFloat(String(va).replace("%", "")) || 0;
+      var nb = parseFloat(String(vb).replace("%", "")) || 0;
+      var soma = na + nb;
+      mostrou += 1;
+
+      var caixa = document.createElement("div");
+      caixa.className = "barra-est";
+      var rot = document.createElement("div");
+      rot.className = "rot";
+      var b1 = document.createElement("b");
+      b1.textContent = String(va);
+      var meio = document.createElement("span");
+      meio.textContent = rotulo;
+      var b2 = document.createElement("b");
+      b2.textContent = String(vb);
+      rot.appendChild(b1);
+      rot.appendChild(meio);
+      rot.appendChild(b2);
+      var trilha = document.createElement("div");
+      trilha.className = "trilha";
+      var e1 = document.createElement("i");
+      e1.className = "esq2";
+      e1.style.inlineSize = (soma ? (na / soma * 100) : 50) + "%";
+      var e2 = document.createElement("i");
+      e2.className = "dir2";
+      e2.style.inlineSize = (soma ? (nb / soma * 100) : 50) + "%";
+      trilha.appendChild(e1);
+      trilha.appendChild(e2);
+      caixa.appendChild(rot);
+      caixa.appendChild(trilha);
+      sec.appendChild(caixa);
+    });
+    if (mostrou) { destino.appendChild(sec); }
+  }
+
+  function montarEscalacoes(dados, destino) {
+    var times = dados.rosters || [];
+    if (times.length < 2) { return; }
+    var sec = bloco("Escalações");
+    var grade = document.createElement("div");
+    grade.className = "escala";
+    times.slice(0, 2).forEach(function (t) {
+      var col = document.createElement("div");
+      var h = document.createElement("h4");
+      h.textContent = (t.team && (t.team.displayName || t.team.shortDisplayName)) || "";
+      col.appendChild(h);
+      var ul = document.createElement("ul");
+      var titulares = (t.roster || []).filter(function (p) { return p.starter; });
+      if (!titulares.length) { titulares = (t.roster || []).slice(0, 11); }
+      titulares.forEach(function (p) {
+        var li = document.createElement("li");
+        var cam = document.createElement("span");
+        cam.className = "cam";
+        cam.textContent = p.jersey || "";
+        li.appendChild(cam);
+        li.appendChild(document.createTextNode(
+          (p.athlete && (p.athlete.displayName || p.athlete.shortName)) || ""));
+        ul.appendChild(li);
+      });
+      col.appendChild(ul);
+      grade.appendChild(col);
+    });
+    sec.appendChild(grade);
+    destino.appendChild(sec);
+  }
+
+  // ---------------- Forma recente e confronto direto ----------------
+  function selosDaForma(jogos, idTime) {
+    var saida = [];
+    (jogos || []).forEach(function (g) {
+      if (saida.length >= 5) { return; }
+      var meu = null;
+      var dele = null;
+      var comps = (g.competitors || g.teams || []);
+      comps.forEach(function (c) {
+        var tid = String((c.team && c.team.id) || c.id || "");
+        var pts = parseInt(c.score !== undefined ? c.score : (c.points || 0), 10);
+        if (isNaN(pts)) { pts = 0; }
+        if (tid === String(idTime)) { meu = pts; } else { dele = pts; }
+      });
+      if (meu === null || dele === null) { return; }
+      saida.push(meu > dele ? "v" : (meu === dele ? "e" : "d"));
+    });
+    return saida;
+  }
+
+  function montarForma(dados, j, destino) {
+    var ultimos = dados.lastFiveGames || dados.teamRecords || [];
+    if (!ultimos.length) { return; }
+
+    var sec = bloco("Forma recente");
+    var grade = document.createElement("div");
+    grade.className = "forma";
+    var mostrou = 0;
+
+    ultimos.slice(0, 2).forEach(function (bloco2) {
+      var time = bloco2.team || {};
+      var nome = time.displayName || time.shortDisplayName || "";
+      var jogos = bloco2.events || bloco2.games || [];
+      var selos = selosDaForma(jogos, time.id);
+      if (!selos.length) { return; }
+      mostrou += 1;
+
+      var col = document.createElement("div");
+      col.className = "forma-time";
+      var h = document.createElement("h5");
+      h.textContent = nome;
+      col.appendChild(h);
+
+      var linha = document.createElement("div");
+      linha.className = "selos-forma";
+      selos.forEach(function (r) {
+        var e = document.createElement("span");
+        e.className = "selo-f " + r;
+        e.textContent = r === "v" ? "V" : (r === "e" ? "E" : "D");
+        e.title = r === "v" ? "Vitória" : (r === "e" ? "Empate" : "Derrota");
+        linha.appendChild(e);
+      });
+      col.appendChild(linha);
+
+      var v = 0;
+      var emp = 0;
+      var d = 0;
+      selos.forEach(function (r) {
+        if (r === "v") { v += 1; } else if (r === "e") { emp += 1; } else { d += 1; }
+      });
+      var resumo = document.createElement("div");
+      resumo.className = "resumo-forma";
+      resumo.textContent = v + "V · " + emp + "E · " + d + "D nos últimos "
+        + selos.length;
+      col.appendChild(resumo);
+      grade.appendChild(col);
+    });
+
+    if (mostrou) {
+      sec.appendChild(grade);
+      destino.appendChild(sec);
+    }
+  }
+
+  function montarConfronto(dados, j, destino) {
+    var lista = dados.headToHeadGames || [];
+    var jogos = [];
+    if (lista.length && lista[0].events) {
+      jogos = lista[0].events;
+    } else if (lista.length) {
+      jogos = lista;
+    }
+    if (!jogos.length) { return; }
+
+    var sec = bloco("Confronto direto");
+    var vc = 0;
+    var ve = 0;
+    var vf = 0;
+    var caixa = document.createElement("div");
+    caixa.className = "h2h";
+
+    jogos.slice(0, 6).forEach(function (g) {
+      var comps = g.competitors || [];
+      if (comps.length < 2) { return; }
+      var a = comps[0];
+      var b = comps[1];
+      var pa = parseInt(a.score, 10);
+      var pb = parseInt(b.score, 10);
+      if (isNaN(pa) || isNaN(pb)) { return; }
+
+      var nomeA = (a.team && (a.team.abbreviation || a.team.shortDisplayName)) || "";
+      var nomeB = (b.team && (b.team.abbreviation || b.team.shortDisplayName)) || "";
+      var idCasa = String((j.casa && j.casa.id) || "");
+      var venceuA = pa > pb;
+      if (pa === pb) {
+        ve += 1;
+      } else if ((String((a.team && a.team.id) || "") === idCasa) === venceuA) {
+        vc += 1;
+      } else {
+        vf += 1;
+      }
+
+      var linha = document.createElement("div");
+      linha.className = "h2h-linha";
+      var dt = document.createElement("span");
+      dt.className = "h2h-data";
+      dt.textContent = g.date
+        ? new Date(g.date).toLocaleDateString("pt-BR",
+          { day: "2-digit", month: "2-digit", year: "2-digit" })
+        : "";
+      var tm = document.createElement("span");
+      tm.className = "h2h-times";
+      tm.textContent = nomeA + " × " + nomeB;
+      var pl = document.createElement("span");
+      pl.className = "h2h-placar";
+      pl.textContent = pa + "-" + pb;
+      linha.appendChild(dt);
+      linha.appendChild(tm);
+      linha.appendChild(pl);
+      caixa.appendChild(linha);
+    });
+
+    if (!caixa.children.length) { return; }
+
+    if (vc + ve + vf > 0) {
+      var res = document.createElement("div");
+      res.className = "h2h-resumo";
+      [[vc, j.casa.nome], [ve, "Empates"], [vf, j.fora.nome]].forEach(function (par) {
+        var d2 = document.createElement("div");
+        var n = document.createElement("b");
+        n.textContent = String(par[0]);
+        d2.appendChild(n);
+        d2.appendChild(document.createTextNode(par[1]));
+        res.appendChild(d2);
+      });
+      sec.appendChild(res);
+    }
+    sec.appendChild(caixa);
+    destino.appendChild(sec);
+  }
+
+  function abrirFicha(j) {
+    fecharFicha();
+
+    var fundo = document.createElement("div");
+    fundo.className = "ficha-fundo";
+    fundo.addEventListener("click", function (e) {
+      if (e.target === fundo) { fecharFicha(); }
+    });
+
+    var cx = document.createElement("div");
+    cx.className = "ficha";
+
+    var topo = document.createElement("div");
+    topo.className = "ficha-topo";
+    var quem = document.createElement("div");
+    quem.className = "quem2";
+    var t1 = document.createElement("b");
+    t1.textContent = j.comp || "Detalhes do jogo";
+    quem.appendChild(t1);
+    var fechar = document.createElement("button");
+    fechar.className = "ficha-fechar";
+    fechar.type = "button";
+    fechar.textContent = "×";
+    fechar.setAttribute("aria-label", "Fechar");
+    fechar.addEventListener("click", fecharFicha);
+    topo.appendChild(quem);
+    topo.appendChild(fechar);
+    cx.appendChild(topo);
+
+    var est = document.createElement("div");
+    est.className = "ficha-estado" + (j.estado === "in" ? " vivo2" : "");
+    est.textContent = j.estado === "in"
+      ? ("AO VIVO · " + (j.relogio || ""))
+      : (j.estado === "post" ? "ENCERRADO"
+        : new Date(j.quando).toLocaleString("pt-BR",
+          { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }));
+    cx.appendChild(est);
+
+    var placar = document.createElement("div");
+    placar.className = "ficha-placar";
+    [j.casa, null, j.fora].forEach(function (t) {
+      if (t === null) {
+        var g = document.createElement("span");
+        g.className = "ficha-gols";
+        g.textContent = j.estado === "pre" ? "×" : (j.casa.gols + " · " + j.fora.gols);
+        placar.appendChild(g);
+        return;
+      }
+      var d = document.createElement("div");
+      d.className = "ficha-time";
+      if (t.logo) {
+        var img = document.createElement("img");
+        img.src = t.logo;
+        img.alt = "";
+        img.referrerPolicy = "no-referrer";
+        img.addEventListener("error", function () { img.remove(); });
+        d.appendChild(img);
+      }
+      var nm = document.createElement("span");
+      nm.textContent = t.nome;
+      d.appendChild(nm);
+      placar.appendChild(d);
+    });
+    cx.appendChild(placar);
+
+    var miolo = document.createElement("div");
+    var carregando = document.createElement("div");
+    carregando.className = "ficha-secao";
+    carregando.textContent = "Buscando os detalhes do jogo…";
+    miolo.appendChild(carregando);
+    cx.appendChild(miolo);
+
+    var rodape = document.createElement("div");
+    rodape.className = "ficha-rodape";
+    if (j.link) {
+      var a = document.createElement("a");
+      a.href = j.link;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Ver a partida completa na ESPN →";
+      rodape.appendChild(a);
+    }
+    cx.appendChild(rodape);
+
+    fundo.appendChild(cx);
+    document.body.appendChild(fundo);
+    fichaAberta = fundo;
+
+    var id = idDoJogo(j.link);
+    var liga = j.ligaId || "bra.1";
+    if (!id) {
+      carregando.textContent = "Não consegui identificar este jogo. Use o link abaixo.";
+      return;
+    }
+
+    var base2 = j.caminho
+      ? ("https://site.api.espn.com/apis/site/v2/sports/" + j.caminho)
+      : ("https://site.api.espn.com/apis/site/v2/sports/soccer/" + liga);
+    var url = base2 + "/summary?event=" + id;
+    pegarJson(url, 60 * 1000).then(function (d) {
+      if (fichaAberta !== fundo) { return; }
+      miolo.textContent = "";
+      if (!d) {
+        var v = document.createElement("div");
+        v.className = "ficha-secao";
+        v.textContent = "Os detalhes deste jogo não estão disponíveis agora.";
+        miolo.appendChild(v);
+        return;
+      }
+      try { montarForma(d, j, miolo); } catch (e) { /* segue */ }
+      try { montarConfronto(d, j, miolo); } catch (e) { /* segue */ }
+      try { montarLances(d, miolo); } catch (e) { /* segue */ }
+      try { montarEstatisticas(d, miolo); } catch (e) { /* segue */ }
+      try { montarEscalacoes(d, miolo); } catch (e) { /* segue */ }
+      if (!miolo.children.length) {
+        var v2 = document.createElement("div");
+        v2.className = "ficha-secao";
+        v2.textContent = "Ainda não há detalhes publicados para este jogo.";
+        miolo.appendChild(v2);
+      }
+    });
+  }
+
   function cardJogo(j) {
     var a = document.createElement("a");
     a.className = "jogo" + (j.estado === "in" ? " vivo" : "");
     a.href = j.link || "#";
     a.target = "_blank";
     a.rel = "noopener noreferrer";
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      abrirFicha(j);
+    });
 
     var topo = document.createElement("div");
     topo.className = "jogo-topo";
@@ -820,7 +1356,9 @@
   function buscarPlacar() {
     if (buscandoPlacar) { return; }
     buscandoPlacar = true;
-    Promise.all(COMPETICOES.map(lerCompeticao)).then(function (todas) {
+    Promise.all(COMPETICOES.concat(OUTROS_PLACARES).map(function (c) {
+      return lerCompeticao(c).catch(function () { return []; });
+    })).then(function (todas) {
       var lista = [];
       todas.forEach(function (arr) { arr.forEach(function (j) { lista.push(j); }); });
       lista.sort(function (a, b) {
@@ -877,6 +1415,10 @@
     ["Globo Esporte / Cruzeiro", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Cruzeiro&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
     ["Globo Esporte / Grêmio e Inter", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+(Gr%C3%AAmio+OR+Internacional)&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
     ["Lance!", "FUTEBOL BRASIL", "https://www.lance.com.br/feed"],
+    ["Brasileirão", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=Brasileir%C3%A3o+quando:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Copa do Brasil", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=%22Copa+do+Brasil%22+futebol+quando:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["UOL Esporte / Futebol", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:uol.com.br+futebol+quando:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Lance! / Busca", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:lance.com.br+quando:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
     ["Gazeta Esportiva", "FUTEBOL BRASIL", "https://www.gazetaesportiva.com/feed/"],
     ["Globo Esporte", "AUTO", "https://ge.globo.com/rss/ge/"],
     ["UOL Esporte", "AUTO", "https://rss.uol.com.br/feed/esporte.xml"],
@@ -1040,7 +1582,7 @@
           if (!nos.length) { nos = doc.getElementsByTagName("entry"); }
           if (!nos.length) { throw new Error("vazio"); }
           var saida = [];
-          for (var k = 0; k < nos.length && k < 8; k++) {
+          for (var k = 0; k < nos.length && k < 6; k++) {
             var n = nos[k];
             var titulo = semTags(texto(n, ["title"]));
             var link = texto(n, ["link"]);
@@ -1079,6 +1621,62 @@
 
   // Busca as fontes em pequenos grupos e vai mostrando o que chega,
   // em vez de esperar as 38 responderem.
+  // ---------------- Notícias da ESPN por competição ----------------
+  // Vantagem sobre o RSS: vem com foto em alta e resumo já prontos.
+  var NOTICIAS_ESPN = [
+    ["ESPN Brasileirão", "FUTEBOL BRASIL", "soccer/bra.1"],
+    ["ESPN Copa do Brasil", "FUTEBOL BRASIL", "soccer/bra.copa_do_brazil"],
+    ["ESPN Libertadores", "FUT SUL-AMERICANO", "soccer/conmebol.libertadores"],
+    ["ESPN Sul-Americana", "FUT SUL-AMERICANO", "soccer/conmebol.sudamericana"],
+    ["ESPN Champions", "FUT EUROPEU", "soccer/uefa.champions"],
+    ["ESPN Premier League", "FUT EUROPEU", "soccer/eng.1"],
+    ["ESPN LaLiga", "FUT EUROPEU", "soccer/esp.1"],
+    ["ESPN NBA", "OUTROS ESPORTES", "basketball/nba"],
+    ["ESPN NFL", "OUTROS ESPORTES", "football/nfl"],
+    ["ESPN Fórmula 1", "OUTROS ESPORTES", "racing/f1"],
+    ["ESPN MMA", "OUTROS ESPORTES", "mma/ufc"]
+  ];
+
+  function lerNoticiasEspn(fonte) {
+    var nome = fonte[0];
+    var cat = fonte[1];
+    var caminho = fonte[2];
+    var url = "https://site.api.espn.com/apis/site/v2/sports/" + caminho + "/news";
+
+    return pegarJson(url, 10 * 60 * 1000).then(function (d) {
+      if (!d || !d.articles || !d.articles.length) { return []; }
+      var saida = [];
+      d.articles.forEach(function (a) {
+        if (saida.length >= 6) { return; }
+        var titulo = a.headline || a.title || "";
+        var link = (a.links && a.links.web && a.links.web.href) || "";
+        if (!titulo || !link) { return; }
+        var foto = "";
+        if (a.images && a.images.length) {
+          for (var i = 0; i < a.images.length; i++) {
+            if (a.images[i].url && a.images[i].type !== "Media") {
+              foto = a.images[i].url;
+              break;
+            }
+          }
+          if (!foto) { foto = a.images[0].url || ""; }
+        }
+        var ts = a.published ? new Date(a.published).getTime() : 0;
+        saida.push({
+          title: titulo,
+          link: link,
+          desc: (a.description || "").slice(0, 170),
+          img: foto,
+          src: nome,
+          cat: classificar(titulo + " " + (a.description || ""), cat),
+          when: isNaN(ts) ? 0 : ts,
+          tipo: "noticia"
+        });
+      });
+      return saida;
+    }).catch(function () { return []; });
+  }
+
   function buscarAoVivo(aoChegar) {
     var lista = [];
     var vistos = {};
@@ -1097,17 +1695,22 @@
       return novidade;
     }
 
+    var TODAS = FEEDS_VIVO.concat(NOTICIAS_ESPN.map(function (f) { return ["espn", f]; }));
+
     return new Promise(function (resolve) {
       function seguir() {
-        if (proxima >= FEEDS_VIVO.length) { return; }
-        var fonte = FEEDS_VIVO[proxima++];
-        lerFeed(fonte).then(function (itens) {
+        if (proxima >= TODAS.length) { return; }
+        var fonte = TODAS[proxima++];
+        var busca = (fonte[0] === "espn")
+          ? lerNoticiasEspn(fonte[1])
+          : lerFeed(fonte);
+        busca.catch(function () { return []; }).then(function (itens) {
           prontas += 1;
           var novidade = guardar(itens);
           statusEl.textContent = "Buscando manchetes… " + prontas + " de "
-            + FEEDS_VIVO.length + " fontes • " + lista.length + " notícias";
+            + TODAS.length + " fontes • " + lista.length + " notícias";
           if (novidade && aoChegar) { aoChegar(lista.slice()); }
-          if (prontas >= FEEDS_VIVO.length) {
+          if (prontas >= TODAS.length) {
             resolve(lista);
           } else {
             seguir();
@@ -1146,6 +1749,16 @@
     return "há " + Math.round(h / 24) + "d";
   }
 
+  function sombrear(hex) {
+    var m = String(hex).match(/^#?([0-9a-f]{6})$/i);
+    if (!m) { return "#12151c"; }
+    var n = parseInt(m[1], 16);
+    var r = Math.round(((n >> 16) & 255) * 0.45);
+    var g2 = Math.round(((n >> 8) & 255) * 0.45);
+    var b = Math.round((n & 255) * 0.45);
+    return "rgb(" + r + "," + g2 + "," + b + ")";
+  }
+
   function corDaFonte(nome) {
     var h = 0;
     for (var i = 0; i < nome.length; i++) { h = (h * 31 + nome.charCodeAt(i)) % 360; }
@@ -1158,6 +1771,24 @@
     d.className = "ph";
     d.style.background = "linear-gradient(135deg,hsl(" + h + ",42%,26%),hsl("
       + ((h + 42) % 360) + ",48%,17%))";
+
+    var clube2 = clubeNoTitulo(it.title || "");
+    if (clube2) {
+      var g = clubeGuardado(clube2);
+      if (g && g.cor) {
+        d.style.background = "linear-gradient(135deg," + g.cor + ","
+          + sombrear(g.cor) + ")";
+      }
+      if (g && g.escudo) {
+        var esc = document.createElement("img");
+        esc.className = "escudo-fundo";
+        esc.src = g.escudo;
+        esc.alt = "";
+        esc.referrerPolicy = "no-referrer";
+        esc.addEventListener("error", function () { esc.remove(); });
+        d.appendChild(esc);
+      }
+    }
     var b = document.createElement("b");
     b.textContent = it.src;
     var c = document.createElement("span");
@@ -1317,6 +1948,7 @@
       tentar();
     } else {
       capa.appendChild(placeholder(it));
+      // 1) tenta a foto da própria matéria
       pedirFoto(it.link, function (url) {
         it.img = url;
         opcoes = enderecosDaFoto(url);
@@ -1325,6 +1957,20 @@
         tentar();
         if (it.tipo === "video") { capa.appendChild(selo()); }
       });
+      // 2) enquanto isso, usa a imagem do clube citado no título
+      var clube = clubeNoTitulo(it.title);
+      if (clube) {
+        pedirClube(clube, function (dados) {
+          if (it.img) { return; }
+          if (dados.cor) { it.corClube = dados.cor; }
+          if (!dados.fundo) { return; }
+          opcoes = enderecosDaFoto(dados.fundo);
+          i = 0;
+          capa.textContent = "";
+          tentar();
+          if (it.tipo === "video") { capa.appendChild(selo()); }
+        });
+      }
     }
     if (it.tipo === "video") { capa.appendChild(selo()); }
     return capa;
@@ -1652,6 +2298,119 @@
     }
   }
 
+  // ---------------- Identidade visual dos clubes ----------------
+  // TheSportsDB entrega escudo, imagem de fundo e as cores oficiais.
+  // Usamos isso quando a notícia chega sem foto.
+  var CHAVE_CLUBE = "radar:clube:";
+  var VALIDADE_CLUBE = 30 * 24 * 3600 * 1000;
+
+  var CLUBES_CONHECIDOS = [
+    "Flamengo", "Palmeiras", "Corinthians", "São Paulo", "Santos", "Vasco",
+    "Fluminense", "Botafogo", "Grêmio", "Internacional", "Cruzeiro",
+    "Atlético Mineiro", "Bahia", "Vitória", "Fortaleza", "Ceará", "Sport",
+    "Athletico Paranaense", "Bragantino", "Juventude", "Mirassol",
+    "Real Madrid", "Barcelona", "Manchester City", "Manchester United",
+    "Liverpool", "Arsenal", "Chelsea", "Tottenham", "Bayern Munich",
+    "Borussia Dortmund", "Juventus", "AC Milan", "Inter Milan", "Napoli",
+    "Paris SG", "Atletico Madrid", "Benfica", "Porto", "Sporting CP",
+    "Boca Juniors", "River Plate"
+  ];
+
+  var APELIDOS = {
+    "Atlético-MG": "Atlético Mineiro", "Atletico-MG": "Atlético Mineiro",
+    "Galo": "Atlético Mineiro", "Athletico-PR": "Athletico Paranaense",
+    "PSG": "Paris SG", "Bayern": "Bayern Munich", "Milan": "AC Milan",
+    "Inter de Milão": "Inter Milan", "Atlético de Madrid": "Atletico Madrid",
+    "Timão": "Corinthians", "Verdão": "Palmeiras", "Mengão": "Flamengo",
+    "Tricolor Paulista": "São Paulo", "Peixe": "Santos", "Colorado": "Internacional"
+  };
+
+  function clubeGuardado(nome) {
+    try {
+      var bruto = localStorage.getItem(CHAVE_CLUBE + nome);
+      if (!bruto) { return null; }
+      var d = JSON.parse(bruto);
+      if (Date.now() - d.em > VALIDADE_CLUBE) { return null; }
+      return d;
+    } catch (e) { return null; }
+  }
+
+  function guardarClube(nome, dados) {
+    try {
+      dados.em = Date.now();
+      localStorage.setItem(CHAVE_CLUBE + nome, JSON.stringify(dados));
+    } catch (e) { /* espaço cheio */ }
+  }
+
+  function semAcento(txt) {
+    return String(txt).toLowerCase()
+      .replace(/[áàâãä]/g, "a").replace(/[éèêë]/g, "e")
+      .replace(/[íìîï]/g, "i").replace(/[óòôõö]/g, "o")
+      .replace(/[úùûü]/g, "u").replace(/ç/g, "c");
+  }
+
+  function clubeNoTitulo(texto) {
+    var t = semAcento(texto);
+    var achado = null;
+    Object.keys(APELIDOS).forEach(function (ap) {
+      if (!achado && t.indexOf(semAcento(ap)) >= 0) { achado = APELIDOS[ap]; }
+    });
+    if (achado) { return achado; }
+    CLUBES_CONHECIDOS.forEach(function (c) {
+      if (!achado && t.indexOf(semAcento(c)) >= 0) { achado = c; }
+    });
+    return achado;
+  }
+
+  var filaClube = [];
+  var buscandoClube = 0;
+  var pedidosClube = {};
+
+  function baixarClube(nome) {
+    var url = "https://www.thesportsdb.com/api/v1/json/123/searchteams.php?t="
+      + encodeURIComponent(nome);
+    return tentarUmaVez(url).then(function (d) {
+      if (!d || !d.teams || !d.teams.length) { return null; }
+      var t = d.teams[0];
+      var fundo = t.strFanart1 || t.strFanart2 || t.strBanner || "";
+      return {
+        escudo: t.strBadge || t.strLogo || "",
+        fundo: fundo,
+        cor: t.strColour1 && t.strColour1 !== "#000000"
+          ? t.strColour1
+          : (t.strColour2 || "")
+      };
+    }).catch(function () { return null; });
+  }
+
+  function proximoClube() {
+    if (buscandoClube >= 2 || !filaClube.length) { return; }
+    var nome = filaClube.shift();
+    buscandoClube += 1;
+    baixarClube(nome).then(function (dados) {
+      buscandoClube -= 1;
+      var chamados = pedidosClube[nome] || [];
+      delete pedidosClube[nome];
+      guardarClube(nome, dados || { escudo: "", fundo: "", cor: "" });
+      if (dados) { chamados.forEach(function (fn) { fn(dados); }); }
+      proximoClube();
+    });
+    proximoClube();
+  }
+
+  function pedirClube(nome, aoAchar) {
+    var guardado = clubeGuardado(nome);
+    if (guardado) {
+      if (guardado.fundo || guardado.escudo) { aoAchar(guardado); }
+      return;
+    }
+    if (pedidosClube[nome]) { pedidosClube[nome].push(aoAchar); return; }
+    if (filaClube.length > 25) { return; }
+    pedidosClube[nome] = [aoAchar];
+    filaClube.push(nome);
+    proximoClube();
+  }
+
   var LIMITE_BREAKING = 30 * 60 * 1000;
 
   function ehBreaking(it) {
@@ -1739,6 +2498,21 @@
     return (it.title + " " + it.desc + " " + it.src).toLowerCase().indexOf(q) >= 0;
   }
 
+  // Nenhuma fonte pode ocupar a aba inteira. Reveza os veículos: pega até
+  // TETO_FONTE de cada um por vez, depois volta e pega mais.
+  var TETO_FONTE = 4;
+
+  function revezarFontes(lista) {
+    var conta = {};
+    var frente = [];
+    var resto = [];
+    lista.forEach(function (it) {
+      conta[it.src] = (conta[it.src] || 0) + 1;
+      if (conta[it.src] <= TETO_FONTE) { frente.push(it); } else { resto.push(it); }
+    });
+    return frente.concat(resto);
+  }
+
   function filtrar(tipo) {
     var q = qEl.value.toLowerCase().trim();
     var base = abaAtiva === "SALVOS" ? listaSalvos() : itens;
@@ -1760,6 +2534,7 @@
         if (qa !== qb) { return qb - qa; }
         return b.when - a.when;
       });
+      if (!q) { lista = revezarFontes(lista); }
     }
     return lista;
   }
@@ -2102,8 +2877,10 @@
   }
 
   function jogosDaComp(comp) {
-    var endereco = "https://site.api.espn.com/apis/site/v2/sports/soccer/"
-      + comp.liga + "/scoreboard?dates=" + janelaAgenda();
+    var base = comp.caminho
+      ? ("https://site.api.espn.com/apis/site/v2/sports/" + comp.caminho)
+      : ("https://site.api.espn.com/apis/site/v2/sports/soccer/" + comp.liga);
+    var endereco = base + "/scoreboard?dates=" + janelaAgenda();
     return pegarJson(endereco).then(function (dados) {
       if (!dados || !dados.events) { return []; }
       var saida = [];
@@ -2139,6 +2916,8 @@
         } catch (e) { canais = []; }
         saida.push({
           comp: comp.nome,
+          ligaId: comp.liga,
+          caminho: comp.caminho || "",
           canais: canais,
           quando: quando,
           estado: st.state || "pre",
@@ -2211,6 +2990,11 @@
     a.href = j.link || "#";
     a.target = "_blank";
     a.rel = "noopener noreferrer";
+    a.title = "Toque para ver gols, estatísticas e escalações";
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      abrirFicha(j);
+    });
 
     var hora = document.createElement("div");
     hora.className = "hora" + (j.estado === "in" ? " agora" : "");
@@ -2308,9 +3092,14 @@
     carregando.textContent = "Carregando os próximos jogos…";
     corpoAgenda.appendChild(carregando);
 
-    var alvos = chave === "TODOS"
-      ? TABELAS
-      : TABELAS.filter(function (c) { return c.liga === chave; });
+    var alvos;
+    if (chave === "TODOS") {
+      alvos = TABELAS.concat(OUTROS_PLACARES);
+    } else if (chave === "OUTROS") {
+      alvos = OUTROS_PLACARES;
+    } else {
+      alvos = TABELAS.filter(function (c) { return c.liga === chave; });
+    }
 
     // Vai desenhando conforme cada competição responde, em vez de
     // esperar as 18 juntas.
@@ -2370,7 +3159,8 @@
       caixa.appendChild(btnMinhas);
     }
 
-    var opcoes = [{ nome: "Todos os campeonatos", liga: "TODOS" }].concat(TABELAS);
+    var opcoes = [{ nome: "Todos os campeonatos", liga: "TODOS" },
+      { nome: "🏀 Outros esportes", liga: "OUTROS" }].concat(TABELAS);
     opcoes.forEach(function (comp) {
       var b = document.createElement("button");
       b.className = "comp-chip";
@@ -2866,7 +3656,7 @@
             if (!rodada && ev.week && ev.week.number) { rodada = ev.week.number; }
             var st = (ev.status && ev.status.type) || {};
             jogos.push({
-              comp: "", canais: [],
+              comp: "", canais: [], ligaId: liga,
               quando: ev.date ? new Date(ev.date).getTime() : 0,
               estado: st.state || "pre",
               relogio: (ev.status && ev.status.displayClock) || "",
@@ -3184,6 +3974,10 @@
     marcarBusca();
     render(false);
     qEl.focus();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && fichaAberta) { fecharFicha(); }
   });
 
   qEl.addEventListener("keydown", function (e) {

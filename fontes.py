@@ -37,6 +37,14 @@ FEEDS = [
     ("Globo Esporte / Santos", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Santos+futebol&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
     ("Globo Esporte Seleção", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/selecao-brasileira/"),
     ("Lance!", "FUTEBOL BRASIL", "https://www.lance.com.br/feed"),
+    # Reforço do noticiário nacional: vários feeds próprios saem do ar sem
+    # aviso, então estas buscas garantem cobertura mesmo quando isso acontece.
+    ("Brasileirão", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=Brasileir%C3%A3o+quando:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Copa do Brasil", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=%22Copa+do+Brasil%22+futebol+quando:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Seleção Brasileira", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=%22Sele%C3%A7%C3%A3o+Brasileira%22+quando:2d&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("UOL Esporte / Futebol", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:uol.com.br+futebol+quando:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Lance! / Busca", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:lance.com.br+quando:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Gazeta Esportiva / Busca", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:gazetaesportiva.com+quando:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
     ("Gazeta Esportiva", "FUTEBOL BRASIL", "https://www.gazetaesportiva.com/feed/"),
     ("Placar", "FUTEBOL BRASIL", "https://placar.abril.com.br/feed/"),
     ("Trivela", "AUTO", "https://trivela.com.br/feed/"),

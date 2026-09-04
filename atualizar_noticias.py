@@ -30,7 +30,10 @@ except ImportError:
     print("=" * 70)
     raise SystemExit(1)
 
-POR_FONTE = 8
+POR_FONTE = 6
+# Nenhuma fonte pode ocupar mais que isto em cada aba. Sem esse teto, um site
+# que publica muito (o Terra, por exemplo) domina a aba inteira.
+TETO_POR_FONTE_NA_ABA = 4
 POR_CANAL = 4
 LIMITE_POR_CATEGORIA = 60
 JANELA_HORAS = 24
@@ -228,6 +231,64 @@ def ler_canal(canal):
     return nome, resultado, ""
 
 
+# Notícias da ESPN por competição: vêm com foto em alta e resumo prontos.
+NOTICIAS_ESPN = [
+    ("ESPN Brasileirão", "FUTEBOL BRASIL", "soccer/bra.1"),
+    ("ESPN Copa do Brasil", "FUTEBOL BRASIL", "soccer/bra.copa_do_brazil"),
+    ("ESPN Libertadores", "FUT SUL-AMERICANO", "soccer/conmebol.libertadores"),
+    ("ESPN Sul-Americana", "FUT SUL-AMERICANO", "soccer/conmebol.sudamericana"),
+    ("ESPN Champions", "FUT EUROPEU", "soccer/uefa.champions"),
+    ("ESPN Premier League", "FUT EUROPEU", "soccer/eng.1"),
+    ("ESPN LaLiga", "FUT EUROPEU", "soccer/esp.1"),
+    ("ESPN Serie A", "FUT EUROPEU", "soccer/ita.1"),
+    ("ESPN NBA", "OUTROS ESPORTES", "basketball/nba"),
+    ("ESPN NFL", "OUTROS ESPORTES", "football/nfl"),
+    ("ESPN Fórmula 1", "OUTROS ESPORTES", "racing/f1"),
+    ("ESPN MMA", "OUTROS ESPORTES", "mma/ufc"),
+]
+
+
+def ler_noticias_espn(fonte):
+    nome, categoria, caminho = fonte
+    url = "https://site.api.espn.com/apis/site/v2/sports/%s/news" % caminho
+    try:
+        dados = json.loads(baixar(url).decode("utf-8", "ignore"))
+    except Exception as erro:
+        return nome, [], str(erro)[:60]
+
+    resultado = []
+    for artigo in (dados.get("articles") or [])[:6]:
+        titulo = limpar(artigo.get("headline") or artigo.get("title") or "")
+        link = (((artigo.get("links") or {}).get("web") or {}).get("href")) or ""
+        if not titulo or not link:
+            continue
+        foto = ""
+        for imagem in (artigo.get("images") or []):
+            if imagem.get("url") and imagem.get("type") != "Media":
+                foto = imagem["url"]
+                break
+        if not foto and artigo.get("images"):
+            foto = artigo["images"][0].get("url", "")
+        resumo = limpar(artigo.get("description") or "")[:170]
+        quando_txt = artigo.get("published") or ""
+        try:
+            marca = int(datetime.fromisoformat(
+                quando_txt.replace("Z", "+00:00")).timestamp() * 1000)
+        except Exception:
+            marca = 0
+        resultado.append({
+            "title": titulo,
+            "link": link,
+            "desc": resumo,
+            "img": foto,
+            "src": nome,
+            "cat": classificar(titulo, resumo, categoria),
+            "when": marca,
+            "tipo": "noticia",
+        })
+    return nome, resultado, ""
+
+
 def coletar(lista, funcao, rotulo):
     print("\n%s (%d):" % (rotulo, len(lista)))
     saida = []
@@ -244,6 +305,7 @@ def main():
     caminho_json = sys.argv[2] if len(sys.argv) > 2 else "noticias.json"
 
     noticias = coletar(FEEDS, ler_feed, "Sites")
+    noticias += coletar(NOTICIAS_ESPN, ler_noticias_espn, "Notícias ESPN")
     videos = coletar(CANAIS, ler_canal, "Canais do YouTube")
 
     if len(noticias) < 10:
@@ -270,13 +332,31 @@ def main():
         vistos.add(chave)
         unicos.append(item)
 
+    # Reveza as fontes: pega no máximo TETO por fonte em cada rodada, depois
+    # volta e pega mais. Assim a aba mistura veículos em vez de empilhar um só.
     contagem = {}
+    por_fonte = {}
     final = []
+    sobra = []
     for item in unicos:
+        chave = (item["cat"], item["tipo"])
+        assinatura = (item["cat"], item["tipo"], item["src"])
+        por_fonte[assinatura] = por_fonte.get(assinatura, 0) + 1
+        if por_fonte[assinatura] > TETO_POR_FONTE_NA_ABA:
+            sobra.append(item)
+            continue
+        contagem[chave] = contagem.get(chave, 0) + 1
+        if contagem[chave] <= LIMITE_POR_CATEGORIA:
+            final.append(item)
+
+    # O que passou do teto entra depois, para não perder notícia.
+    for item in sobra:
         chave = (item["cat"], item["tipo"])
         contagem[chave] = contagem.get(chave, 0) + 1
         if contagem[chave] <= LIMITE_POR_CATEGORIA:
             final.append(item)
+
+    final.sort(key=lambda n: -n["when"])
 
     agora = datetime.now(timezone.utc)
     carimbo = agora.astimezone(BRASILIA).strftime("%d/%m/%Y, %Hh%M")
