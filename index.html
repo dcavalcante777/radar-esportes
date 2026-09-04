@@ -336,6 +336,9 @@
     color:var(--txt-dim)}
   .legenda span{display:flex;align-items:center;gap:6px}
   .legenda i{inline-size:10px;block-size:10px;border-radius:3px;display:inline-block}
+  .canal{background:var(--chip);border:1px solid var(--border);color:var(--txt-dim);
+    font-size:9px;font-weight:700;letter-spacing:.4px;padding:2px 6px;border-radius:4px;
+    text-transform:none}
   .tnt{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#111;
     font-size:9px;font-weight:900;letter-spacing:.5px;padding:2px 6px;border-radius:4px;
     flex:none}
@@ -368,7 +371,7 @@
       <div class="logo"><img src="data:image/png;base64,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" alt="Radar Esportes"></div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v26</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v27</div>
       </div>
     </div>
     <div class="controls">
@@ -2121,24 +2124,19 @@
     });
   }
 
-  // Competições cujos direitos no Brasil são do grupo (TNT / Space / Max).
-  var COMPS_TNT = {
-    "Champions": 1, "Europa League": 1, "Libertadores": 1, "Sul-Americana": 1,
-    "Brasileirão A": 1, "Copa do Brasil": 1, "LaLiga": 1
-  };
-  var CANAIS_TNT = /tnt|space|max|hbo/i;
+  // ------- Competições que você acompanha -------
+  // Deixe aqui APENAS as competições que você tem certeza de que são suas.
+  // A lista começa vazia de propósito: adivinhar direitos de transmissão dá
+  // informação errada, porque eles mudam por temporada e por país.
+  // Para usar, escreva o nome exato como aparece nos botões da agenda, ex.:
+  //   var MINHAS_COMPETICOES = { "Champions": 1, "Libertadores": 1 };
+  var MINHAS_COMPETICOES = {};
 
-  function ehDaTNT(j) {
-    if (COMPS_TNT[j.comp]) { return true; }
-    if (j.canais && j.canais.length) {
-      for (var i = 0; i < j.canais.length; i++) {
-        if (CANAIS_TNT.test(j.canais[i])) { return true; }
-      }
-    }
-    return false;
+  function ehMinha(j) {
+    return !!MINHAS_COMPETICOES[j.comp];
   }
 
-  var soTNT = false;
+  var soMinhas = false;
 
   function nomeDoDia(ts) {
     var d = new Date(ts);
@@ -2206,13 +2204,20 @@
     var liga = document.createElement("div");
     liga.className = "liga-nome";
     liga.textContent = j.comp;
-    if (ehDaTNT(j)) {
+    if (j.canais && j.canais.length) {
+      var can = document.createElement("span");
+      can.className = "canal";
+      can.textContent = j.canais.slice(0, 2).join(" · ");
+      can.title = "Transmissão informada pela fonte: " + j.canais.join(", ")
+        + " (pode ser de outro país)";
+      liga.appendChild(document.createTextNode("  "));
+      liga.appendChild(can);
+    }
+    if (ehMinha(j)) {
       var st2 = document.createElement("span");
       st2.className = "tnt";
-      st2.textContent = "TNT";
-      st2.title = j.canais && j.canais.length
-        ? "Transmissão: " + j.canais.join(", ")
-        : "Competição do grupo TNT Sports";
+      st2.textContent = "★";
+      st2.title = "Competição marcada por você";
       liga.appendChild(document.createTextNode("  "));
       liga.appendChild(st2);
       a.className += " natnt";
@@ -2223,8 +2228,8 @@
   }
 
   function desenharAgenda(listaBruta) {
-    var lista = soTNT
-      ? listaBruta.filter(function (j) { return ehDaTNT(j); })
+    var lista = soMinhas
+      ? listaBruta.filter(function (j) { return ehMinha(j); })
       : listaBruta;
     corpoAgenda.textContent = "";
     if (!lista.length) {
@@ -2313,18 +2318,20 @@
   function montarChipsAgenda() {
     var caixa = document.getElementById("agenda-chips");
 
-    var btnTNT = document.createElement("button");
-    btnTNT.className = "comp-chip";
-    btnTNT.id = "so-tnt";
-    btnTNT.type = "button";
-    btnTNT.textContent = "📺 Só TNT / Space / Max";
-    btnTNT.setAttribute("aria-pressed", "false");
-    btnTNT.addEventListener("click", function () {
-      soTNT = !soTNT;
-      btnTNT.setAttribute("aria-pressed", soTNT ? "true" : "false");
-      carregarAgenda(agendaAtiva);
-    });
-    caixa.appendChild(btnTNT);
+    if (Object.keys(MINHAS_COMPETICOES).length) {
+      var btnMinhas = document.createElement("button");
+      btnMinhas.className = "comp-chip";
+      btnMinhas.id = "so-tnt";
+      btnMinhas.type = "button";
+      btnMinhas.textContent = "★ Só as minhas";
+      btnMinhas.setAttribute("aria-pressed", "false");
+      btnMinhas.addEventListener("click", function () {
+        soMinhas = !soMinhas;
+        btnMinhas.setAttribute("aria-pressed", soMinhas ? "true" : "false");
+        carregarAgenda(agendaAtiva);
+      });
+      caixa.appendChild(btnMinhas);
+    }
 
     var opcoes = [{ nome: "Todos os campeonatos", liga: "TODOS" }].concat(TABELAS);
     opcoes.forEach(function (comp) {
