@@ -332,6 +332,31 @@
   tr.z-pre td.time-col{border-inline-start-color:#9b59b6}
   tr.z-sula td.time-col{border-inline-start-color:#f1c40f}
   tr.z-queda td.time-col{border-inline-start-color:#e74c3c}
+  .sub-titulo{font-size:13px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;
+    color:var(--txt-dim);margin:26px 0 10px;display:flex;align-items:center;gap:10px}
+  .sub-titulo::after{content:"";flex:1;block-size:1px;background:var(--border)}
+  .duplo{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+  .lista-craques{background:var(--card);border:1px solid var(--border);border-radius:12px;
+    overflow:hidden}
+  .craque{display:flex;align-items:center;gap:10px;padding:9px 13px;
+    border-block-end:1px solid var(--border);font-size:13px}
+  .craque:last-child{border-block-end:0}
+  .craque .pos2{inline-size:20px;font-weight:800;color:var(--txt-dim);font-size:12px;flex:none}
+  .craque img{inline-size:22px;block-size:22px;border-radius:50%;object-fit:cover;flex:none;
+    background:var(--chip)}
+  .craque .quem{flex:1;min-inline-size:0}
+  .craque .nome2{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    display:block}
+  .craque .time2{font-size:10.5px;color:var(--txt-dim);text-transform:uppercase;
+    letter-spacing:.4px}
+  .craque .num{font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;flex:none}
+  .rodada-nav{display:flex;align-items:center;gap:10px;margin:10px 0 12px}
+  .rodada-nav button{inline-size:34px;block-size:34px;padding:0;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+  .rodada-nome{flex:1;text-align:center;font-size:13px;font-weight:800;letter-spacing:.5px;
+    text-transform:uppercase;color:var(--txt)}
+  .aviso-vazio{padding:18px;text-align:center;color:var(--txt-dim);font-size:13px;
+    background:var(--card);border:1px solid var(--border);border-radius:12px}
   .legenda{display:flex;gap:14px;flex-wrap:wrap;margin:10px 2px 0;font-size:11px;
     color:var(--txt-dim)}
   .legenda span{display:flex;align-items:center;gap:6px}
@@ -371,7 +396,7 @@
       <div class="logo"><img src="data:image/png;base64,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" alt="Radar Esportes"></div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v27</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v29</div>
       </div>
     </div>
     <div class="controls">
@@ -2265,7 +2290,11 @@
     });
   }
 
+  var agendaMontadaPara = null;
+
   function carregarAgenda(chave) {
+    if (agendaMontadaPara === chave && corpoAgenda.children.length) { return; }
+    agendaMontadaPara = chave;
     if (cacheAgenda[chave]) { desenharAgenda(cacheAgenda[chave]); return; }
 
     corpoAgenda.textContent = "";
@@ -2328,6 +2357,7 @@
       btnMinhas.addEventListener("click", function () {
         soMinhas = !soMinhas;
         btnMinhas.setAttribute("aria-pressed", soMinhas ? "true" : "false");
+        agendaMontadaPara = null;
         carregarAgenda(agendaAtiva);
       });
       caixa.appendChild(btnMinhas);
@@ -2342,6 +2372,7 @@
       b.setAttribute("aria-pressed", comp.liga === agendaAtiva ? "true" : "false");
       b.addEventListener("click", function () {
         agendaAtiva = comp.liga;
+        agendaMontadaPara = null;
         Array.prototype.forEach.call(caixa.children, function (x) {
           x.setAttribute("aria-pressed", x === b ? "true" : "false");
         });
@@ -2612,13 +2643,245 @@
     });
   }
 
+  // ---------------- Artilheiros e assistências ----------------
+  function nomeCurto(a) {
+    return (a && (a.displayName || a.shortName || a.fullName)) || "";
+  }
+
+  function lerCraques(liga, tipo) {
+    var ordem = tipo === "gols" ? "offensive.totalGoals" : "offensive.goalAssists";
+    var url = "https://site.web.api.espn.com/apis/common/v3/sports/soccer/" + liga
+      + "/statistics/byathlete?sort=" + ordem + "%3Adesc&limit=10";
+    return pegarJson(url, 30 * 60 * 1000).then(function (d) {
+      if (!d || !d.athletes || !d.athletes.length) { return []; }
+      var saida = [];
+      d.athletes.forEach(function (linha) {
+        var atleta = linha.athlete || {};
+        var valor = null;
+        (linha.categories || []).forEach(function (cat) {
+          (cat.totals || []).forEach(function (v, i) {
+            var nomes = (cat.names || [])[i] || "";
+            if (valor === null && (
+              (tipo === "gols" && /totalGoals|^goals$/i.test(nomes)) ||
+              (tipo === "assist" && /goalAssists|^assists$/i.test(nomes))
+            )) { valor = v; }
+          });
+        });
+        if (valor === null && linha.statistics) {
+          (linha.statistics || []).forEach(function (st) {
+            if (valor === null && st.name && (
+              (tipo === "gols" && /goals/i.test(st.name)) ||
+              (tipo === "assist" && /assist/i.test(st.name))
+            )) { valor = st.displayValue || st.value; }
+          });
+        }
+        if (!nomeCurto(atleta)) { return; }
+        saida.push({
+          nome: nomeCurto(atleta),
+          time: (linha.team && (linha.team.abbreviation || linha.team.displayName)) || "",
+          foto: atleta.headshot && atleta.headshot.href,
+          valor: (valor === null || valor === undefined) ? "-" : String(valor)
+        });
+      });
+      return saida.slice(0, 10);
+    }).catch(function () { return []; });
+  }
+
+  function montarCraques(titulo, lista) {
+    var caixa = document.createElement("div");
+    var t = document.createElement("div");
+    t.className = "sub-titulo";
+    t.appendChild(document.createTextNode(titulo));
+    caixa.appendChild(t);
+
+    if (!lista.length) {
+      var v = document.createElement("div");
+      v.className = "aviso-vazio";
+      v.textContent = "A fonte não está publicando esses números para esta competição.";
+      caixa.appendChild(v);
+      return caixa;
+    }
+
+    var lst = document.createElement("div");
+    lst.className = "lista-craques";
+    lista.forEach(function (c, i) {
+      var linha = document.createElement("div");
+      linha.className = "craque";
+      var p = document.createElement("span");
+      p.className = "pos2";
+      p.textContent = String(i + 1);
+      linha.appendChild(p);
+      if (c.foto) {
+        var img = document.createElement("img");
+        img.src = c.foto;
+        img.alt = "";
+        img.loading = "lazy";
+        img.referrerPolicy = "no-referrer";
+        img.addEventListener("error", function () { img.remove(); });
+        linha.appendChild(img);
+      }
+      var quem = document.createElement("span");
+      quem.className = "quem";
+      var n = document.createElement("b");
+      n.className = "nome2";
+      n.textContent = c.nome;
+      var tm = document.createElement("span");
+      tm.className = "time2";
+      tm.textContent = c.time;
+      quem.appendChild(n);
+      quem.appendChild(tm);
+      linha.appendChild(quem);
+      var num = document.createElement("span");
+      num.className = "num";
+      num.textContent = c.valor;
+      linha.appendChild(num);
+      lst.appendChild(linha);
+    });
+    caixa.appendChild(lst);
+    return caixa;
+  }
+
+  function carregarCraques(liga, destino) {
+    Promise.all([lerCraques(liga, "gols"), lerCraques(liga, "assist")])
+      .then(function (r) {
+        if (tabelaAtiva !== liga) { return; }
+        if (!r[0].length && !r[1].length) { return; }
+        var dupla = document.createElement("div");
+        dupla.className = "duplo";
+        dupla.appendChild(montarCraques("⚽ Artilheiros", r[0]));
+        dupla.appendChild(montarCraques("🅰 Assistências", r[1]));
+        destino.appendChild(dupla);
+      });
+  }
+
+  // ---------------- Confrontos por rodada ----------------
+  var deslocamentoRodada = 0;
+
+  function faixaDaRodada(passo) {
+    var base = new Date();
+    base.setDate(base.getDate() + passo * 7);
+    var dia = base.getDay();
+    var inicio = new Date(base);
+    inicio.setDate(base.getDate() - ((dia + 4) % 7));
+    var fim = new Date(inicio);
+    fim.setDate(inicio.getDate() + 6);
+    return { inicio: inicio, fim: fim };
+  }
+
+  function carregarRodada(liga, destino) {
+    var faixa = faixaDaRodada(deslocamentoRodada);
+    var url = "https://site.api.espn.com/apis/site/v2/sports/soccer/" + liga
+      + "/scoreboard?dates=" + aaaammdd(faixa.inicio) + "-" + aaaammdd(faixa.fim);
+
+    var titulo = document.createElement("div");
+    titulo.className = "sub-titulo";
+    titulo.appendChild(document.createTextNode("📅 Confrontos da rodada"));
+    destino.appendChild(titulo);
+
+    var nav = document.createElement("div");
+    nav.className = "rodada-nav";
+    var esq = document.createElement("button");
+    esq.type = "button";
+    esq.textContent = "‹";
+    esq.title = "Semana anterior";
+    var rot = document.createElement("span");
+    rot.className = "rodada-nome";
+    var dir = document.createElement("button");
+    dir.type = "button";
+    dir.textContent = "›";
+    dir.title = "Próxima semana";
+    nav.appendChild(esq);
+    nav.appendChild(rot);
+    nav.appendChild(dir);
+    destino.appendChild(nav);
+
+    var lista = document.createElement("div");
+    lista.className = "jogos-lista";
+    destino.appendChild(lista);
+
+    function pintar(jogos, rodada) {
+      var f = faixaDaRodada(deslocamentoRodada);
+      var periodo = f.inicio.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })
+        + " a " + f.fim.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+      rot.textContent = rodada ? ("Rodada " + rodada + " · " + periodo) : periodo;
+      lista.textContent = "";
+      if (!jogos.length) {
+        var v = document.createElement("div");
+        v.className = "aviso-vazio";
+        v.style.gridColumn = "1/-1";
+        v.textContent = "Sem jogos nesta semana.";
+        lista.appendChild(v);
+        return;
+      }
+      jogos.forEach(function (j) { lista.appendChild(linhaAgenda(j)); });
+    }
+
+    function buscar2() {
+      var f = faixaDaRodada(deslocamentoRodada);
+      var alvo = "https://site.api.espn.com/apis/site/v2/sports/soccer/" + liga
+        + "/scoreboard?dates=" + aaaammdd(f.inicio) + "-" + aaaammdd(f.fim);
+      rot.textContent = "carregando…";
+      pegarJson(alvo).then(function (d) {
+        if (tabelaAtiva !== liga) { return; }
+        var jogos = [];
+        var rodada = null;
+        if (d && d.events) {
+          d.events.forEach(function (ev) {
+            var c = ev.competitions && ev.competitions[0];
+            if (!c || !c.competitors || c.competitors.length < 2) { return; }
+            var casa = null;
+            var fora = null;
+            c.competitors.forEach(function (t) {
+              if (t.homeAway === "home") { casa = t; } else { fora = t; }
+            });
+            if (!casa || !fora) { return; }
+            if (!rodada && ev.week && ev.week.number) { rodada = ev.week.number; }
+            var st = (ev.status && ev.status.type) || {};
+            jogos.push({
+              comp: "", canais: [],
+              quando: ev.date ? new Date(ev.date).getTime() : 0,
+              estado: st.state || "pre",
+              relogio: (ev.status && ev.status.displayClock) || "",
+              link: (ev.links && ev.links[0] && ev.links[0].href) || "",
+              casa: dadosTime(casa), fora: dadosTime(fora)
+            });
+          });
+        }
+        jogos.sort(function (a, b) { return a.quando - b.quando; });
+        pintar(jogos, rodada);
+      });
+    }
+
+    esq.addEventListener("click", function () { deslocamentoRodada -= 1; buscar2(); });
+    dir.addEventListener("click", function () { deslocamentoRodada += 1; buscar2(); });
+    buscar2();
+  }
+
+  // Os extras ficam isolados: se algum falhar, a tabela e os botões continuam.
+  function montarExtras(liga) {
+    try {
+      carregarRodada(liga, corpoTabela);
+    } catch (e) { /* segue sem os confrontos */ }
+    try {
+      carregarCraques(liga, corpoTabela);
+    } catch (e) { /* segue sem artilheiros */ }
+  }
+
+  var tabelaMontadaPara = null;
+
   function carregarTabela(liga) {
     var comp = null;
     TABELAS.forEach(function (c) { if (c.liga === liga) { comp = c; } });
     if (!comp) { return; }
 
+    // Já está desenhada na tela: não refaz nada. Sem isso, cada atualização
+    // da página empilhava uma cópia nova e o site travava.
+    if (tabelaMontadaPara === liga && corpoTabela.children.length) { return; }
+
     if (cacheTabela[liga]) {
       desenharTabela(cacheTabela[liga], comp);
+      montarExtras(liga);
+      tabelaMontadaPara = liga;
       return;
     }
 
@@ -2634,6 +2897,8 @@
       var grupos = gruposDaResposta(dados);
       cacheTabela[liga] = grupos;
       desenharTabela(grupos, comp);
+      montarExtras(liga);
+      tabelaMontadaPara = liga;
     });
   }
 
@@ -2647,6 +2912,8 @@
       b.setAttribute("aria-pressed", comp.liga === tabelaAtiva ? "true" : "false");
       b.addEventListener("click", function () {
         tabelaAtiva = comp.liga;
+        deslocamentoRodada = 0;
+        tabelaMontadaPara = null;
         Array.prototype.forEach.call(caixa.children, function (x) {
           x.setAttribute("aria-pressed", x === b ? "true" : "false");
         });
