@@ -197,6 +197,50 @@
     background:var(--accent-2);color:#fff;font-size:10px;font-weight:900;
     min-inline-size:18px;block-size:18px;border-radius:9px;display:flex;
     align-items:center;justify-content:center;padding:0 5px}
+  header{padding-block-end:0}
+  .top{padding-block-end:2px}
+  h1{font-size:21px}
+  input[type=search]{transition:.18s;border-radius:11px}
+  input[type=search]:focus{outline:0;border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(255,212,0,.14)}
+  .icone{transition:.15s}
+  .icone:hover{transform:translateY(-2px)}
+  .card{border-radius:15px}
+  .ttl{letter-spacing:-.1px}
+  .grid{gap:18px}
+  main{padding-block-start:22px}
+  .status{padding:9px 13px;background:var(--card);border:1px solid var(--border);
+    border-radius:10px;margin-block-end:18px}
+  .tab{font-size:12.5px;padding:11px 13px}
+  .tab .n{background:var(--chip);border-radius:8px;padding:1px 5px;font-size:10px}
+  .tab[aria-selected="true"] .n{background:var(--accent);color:#111}
+  .meta{gap:7px}
+  .src{font-size:10px}
+  .card.destaque .body{gap:12px}
+  .xcard{transition:.15s}
+  .xcard:hover{transform:translateY(-2px)}
+  .jogo{border-radius:12px}
+  .comp-chip{transition:.15s}
+  .comp-chip:hover{color:var(--txt);border-color:var(--txt-dim)}
+  footer{border-block-start:1px solid var(--border);margin-block-start:36px;padding-block-start:22px}
+  .barra-nav{display:flex;align-items:stretch;gap:10px;margin-block-start:12px}
+  .nav-caixa{flex:1;min-inline-size:0}
+  .modos{display:flex;gap:6px;align-items:center;padding-inline-start:10px;
+    border-inline-start:1px solid var(--border);flex:none}
+  .modo{background:var(--chip);border:1px solid var(--border);color:var(--txt-dim);
+    padding:8px 13px;border-radius:9px;font-size:12.5px;font-weight:700;white-space:nowrap;
+    cursor:pointer;margin-block-end:8px;transition:.15s}
+  .modo:hover{color:var(--txt);border-color:var(--txt-dim)}
+  .modo[aria-pressed="true"]{background:var(--accent);color:#111;border-color:var(--accent)}
+  @media (max-width:820px){
+    .barra-nav{flex-direction:column;gap:0}
+    .modos{border-inline-start:0;padding-inline-start:0;padding-block:2px 8px}
+    .modo{flex:1;text-align:center}
+  }
+  .icone{inline-size:38px;block-size:38px;padding:0;border-radius:10px;font-size:16px;
+    display:flex;align-items:center;justify-content:center;flex:none}
+  input[type=search]{min-inline-size:250px}
+  @media (max-width:600px){input[type=search]{min-inline-size:150px}}
   .busca-caixa{position:relative;display:flex;align-items:center}
   .limpar{position:absolute;inset-inline-end:6px;background:none;border:0;padding:4px 7px;
     color:var(--txt-dim);font-size:16px;line-height:1;cursor:pointer;display:none;border-radius:6px}
@@ -324,26 +368,31 @@
       <div class="logo"><img src="data:image/png;base64,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" alt="Radar Esportes"></div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v24</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v26</div>
       </div>
     </div>
     <div class="controls">
       <span class="busca-caixa" id="busca-caixa">
-        <input type="search" id="q" placeholder="Buscar time, jogador, tema…" aria-label="Buscar">
+        <input type="search" id="q" placeholder="Buscar em tudo: time, jogador, tema…" aria-label="Buscar">
         <button class="limpar" id="limpar-busca" type="button" aria-label="Limpar busca">×</button>
       </span>
-      <button id="novas" type="button" aria-pressed="false" title="Ver só o que chegou desde a última visita">✨ Novidades</button>
-      <button id="avisar" type="button" aria-pressed="false" title="Avisar com som quando sair notícia quente">🔔 Avisar</button>
-      <button id="traduzir" type="button" aria-pressed="false" title="Traduzir os títulos em outros idiomas">🌐 Traduzir</button>
-      <button id="reload" class="primary" type="button">Atualizar agora</button>
+      <button class="icone" id="novas" type="button" aria-pressed="false" title="Ver só o que chegou desde a última visita">✨</button>
+      <button class="icone" id="avisar" type="button" aria-pressed="false" title="Avisar com som quando sair notícia quente">🔔</button>
+      <button class="icone" id="traduzir" type="button" aria-pressed="false" title="Traduzir títulos estrangeiros">🌐</button>
+      <button class="icone" id="reload" type="button" title="Buscar agora">⟳</button>
     </div>
   </div>
-  <div class="nav-caixa" id="nav-caixa">
-    <button class="nav-seta esq" id="nav-esq" type="button" aria-label="Abas anteriores">‹</button>
-    <nav id="abas" role="tablist"></nav>
-    <button class="nav-seta dir" id="nav-dir" type="button" aria-label="Próximas abas">›</button>
+  <div class="barra-nav">
+    <div class="nav-caixa" id="nav-caixa">
+      <button class="nav-seta esq" id="nav-esq" type="button" aria-label="Anterior">‹</button>
+      <nav id="abas" role="tablist"></nav>
+      <button class="nav-seta dir" id="nav-dir" type="button" aria-label="Próximo">›</button>
+    </div>
+    <div class="modos">
+      <button class="modo" id="modo-agenda" type="button" aria-pressed="false">📅 Agenda</button>
+      <button class="modo" id="modo-tabelas" type="button" aria-pressed="false">📊 Tabelas</button>
+    </div>
   </div>
-  <div class="aviso-abas">← arraste para ver todas as seções →</div>
 </header>
 
 <main>
@@ -1624,7 +1673,7 @@
     s.className = "src";
     s.textContent = it.src;
     meta.appendChild(s);
-    if (abaAtiva === "TUDO") {
+    if (abaAtiva === "TUDO" || qEl.value.trim()) {
       var g = document.createElement("span");
       g.className = "tag";
       g.textContent = rotulo(it.cat);
@@ -1667,10 +1716,13 @@
     var base = abaAtiva === "SALVOS" ? listaSalvos() : itens;
     var lista = base.filter(function (it) {
       if (it.tipo !== tipo) { return false; }
-      if (abaAtiva === "SALVOS") { return combina(it, q); }
+      if (!combina(it, q)) { return false; }
+      // Buscando, procura em todas as abas de uma vez.
+      if (q) { return true; }
+      if (abaAtiva === "SALVOS") { return true; }
       if (abaAtiva !== "TUDO" && it.cat !== abaAtiva) { return false; }
       if (soNovas && !ehNovaParaMim(it)) { return false; }
-      return combina(it, q);
+      return true;
     });
     if (tipo === "noticia") {
       // Assunto quente sobe, mas sem bagunçar a ordem do resto.
@@ -1764,10 +1816,17 @@
     });
     tvtitulo.hidden = videos.length === 0;
 
+    var busca = qEl.value.trim();
+    if (busca) {
+      statusEl.textContent = (noticias.length + videos.length)
+        + " resultado(s) para \u201c" + busca + "\u201d em todas as seções";
+    }
     var vazio = (noticias.length + videos.length) === 0;
     emptyEl.hidden = !vazio;
     if (vazio) {
-      emptyEl.textContent = abaAtiva === "SALVOS"
+      emptyEl.textContent = qEl.value.trim()
+        ? "Nada encontrado para \u201c" + qEl.value.trim() + "\u201d nas últimas 24h."
+        : abaAtiva === "SALVOS"
         ? "Nada guardado ainda. Passe o mouse numa notícia e toque na estrela para guardá-la aqui."
         : itens.length
         ? "Nada encontrado nessa aba com esse filtro."
@@ -1813,7 +1872,7 @@
   }
 
   function montarAbas() {
-    CATEGORIAS.concat(["SALVOS", "AGENDA", "TABELAS", "TUDO"]).forEach(function (cat) {
+    CATEGORIAS.concat(["SALVOS", "TUDO"]).forEach(function (cat) {
       var b = document.createElement("button");
       b.className = "tab";
       b.type = "button";
@@ -2705,7 +2764,32 @@
   buscar(true);
 
   function atualizarBolha() {
-    var botaoNovas = document.getElementById("novas");
+    var btAgenda = document.getElementById("modo-agenda");
+  var btTabelas = document.getElementById("modo-tabelas");
+  var abaAnterior = CATEGORIAS[0];
+
+  function marcarModos() {
+    btAgenda.setAttribute("aria-pressed", abaAtiva === "AGENDA" ? "true" : "false");
+    btTabelas.setAttribute("aria-pressed", abaAtiva === "TABELAS" ? "true" : "false");
+  }
+
+  function irParaModo(modo) {
+    if (abaAtiva === modo) {
+      abaAtiva = abaAnterior;
+    } else {
+      if (abaAtiva !== "AGENDA" && abaAtiva !== "TABELAS") { abaAnterior = abaAtiva; }
+      abaAtiva = modo;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    render(false);
+    marcarModos();
+    if (abaAtiva !== "AGENDA" && abaAtiva !== "TABELAS" && itens.length) { aviso("json"); }
+  }
+
+  btAgenda.addEventListener("click", function () { irParaModo("AGENDA"); });
+  btTabelas.addEventListener("click", function () { irParaModo("TABELAS"); });
+
+  var botaoNovas = document.getElementById("novas");
     if (!botaoNovas) { return; }
     var n = contarNovas();
     var b = botaoNovas.querySelector(".bolha");
