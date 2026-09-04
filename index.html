@@ -43,11 +43,11 @@
     border-block-end:1px solid var(--border);padding:12px 20px 0;box-shadow:var(--shadow)}
   .top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
   .brand{display:flex;align-items:center;gap:12px}
-  .logo{inline-size:46px;block-size:46px;border-radius:14px;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:flex;align-items:center;justify-content:center;font-weight:900;color:#111;
-    font-size:19px;letter-spacing:-.5px;box-shadow:0 4px 16px rgba(226,0,26,.34)}
-  h1{background:linear-gradient(90deg,var(--txt),var(--accent));
+  .logo{inline-size:46px;block-size:46px;border-radius:14px;flex:none;
+    background:#0d0f14;display:flex;align-items:center;justify-content:center;
+    overflow:hidden;box-shadow:0 4px 16px rgba(255,0,228,.30)}
+  .logo img{inline-size:100%;block-size:100%;object-fit:cover;display:block}
+  h1{background:linear-gradient(90deg,var(--txt),#ff00e4);
     -webkit-background-clip:text;background-clip:text;color:transparent}
   h1{font-size:20px;margin:0;letter-spacing:.3px}
   .sub{font-size:12px;color:var(--txt-dim);margin-block-start:2px}
@@ -321,10 +321,10 @@
 
   <div class="top">
     <div class="brand">
-      <div class="logo">TS</div>
+      <div class="logo"><img src="data:image/png;base64,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" alt="Radar Esportes"></div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v23</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v24</div>
       </div>
     </div>
     <div class="controls">
