@@ -1,7 +1,7 @@
 // Radar Esportes — permite abrir o site mesmo sem internet.
 // Guarda a última versão da página; o conteúdo continua vindo ao vivo.
 
-var CACHE = "radar-v1";
+var CACHE = "radar-v30";
 var ESSENCIAIS = ["./", "./index.html", "./manifest.json",
   "./icone-192.png", "./icone-512.png", "./icone-mask.png"];
 
