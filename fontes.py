@@ -22,30 +22,31 @@ CATEGORIAS = [
 # categoria "AUTO" = decidir pelo assunto do titulo.
 FEEDS = [
     # ---------------- FUTEBOL BRASILEIRO ----------------
-    ("ge Futebol", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/"),
-    ("ge Brasileirão", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/brasileirao-serie-a/"),
-    ("ge Copa do Brasil", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/copa-do-brasil/"),
-    ("ge Flamengo", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/flamengo/"),
-    ("ge Palmeiras", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/palmeiras/"),
-    ("ge Corinthians", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/corinthians/"),
-    ("ge São Paulo", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/sao-paulo/"),
-    ("ge Vasco", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/vasco/"),
-    ("ge Fluminense", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/fluminense/"),
-    ("ge Botafogo", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/botafogo/"),
-    ("ge Grêmio", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/gremio/"),
-    ("ge Internacional", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/internacional/"),
-    ("ge Cruzeiro", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/cruzeiro/"),
-    ("ge Atlético-MG", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/atletico-mg/"),
-    ("ge Santos", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/santos/"),
-    ("ge Bahia", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/bahia/"),
-    ("ge Seleção", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/selecao-brasileira/"),
+    ("Globo Esporte Futebol", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/"),
+    ("Globo Esporte Brasileirão", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/brasileirao-serie-a/"),
+    ("Globo Esporte Copa do Brasil", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/copa-do-brasil/"),
+    # Notícias por clube: o ge não publica mais feed próprio de time,
+    # então cada clube vem por uma busca do Google Notícias restrita ao ge.globo.com.
+    ("Globo Esporte / Flamengo", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Flamengo&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / Palmeiras", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Palmeiras&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / Corinthians", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Corinthians&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / São Paulo", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+%22S%C3%A3o+Paulo%22+futebol&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / Vasco", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Vasco&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / Fluminense", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Fluminense&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / Botafogo", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Botafogo&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / Grêmio", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Gr%C3%AAmio&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / Internacional", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Internacional+futebol&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / Cruzeiro", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Cruzeiro&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / Atlético-MG", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+%22Atl%C3%A9tico-MG%22&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte / Santos", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Santos+futebol&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Globo Esporte Seleção", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/selecao-brasileira/"),
     ("Lance!", "FUTEBOL BRASIL", "https://www.lance.com.br/feed"),
     ("Gazeta Esportiva", "FUTEBOL BRASIL", "https://www.gazetaesportiva.com/feed/"),
     ("Placar", "FUTEBOL BRASIL", "https://placar.abril.com.br/feed/"),
     ("Trivela", "AUTO", "https://trivela.com.br/feed/"),
 
     # ---------------- GERAIS (classificados pelo assunto) ----------------
-    ("ge", "AUTO", "https://ge.globo.com/rss/ge/"),
+    ("Globo Esporte", "AUTO", "https://ge.globo.com/rss/ge/"),
     ("UOL Esporte", "AUTO", "https://rss.uol.com.br/feed/esporte.xml"),
     ("CNN Esportes", "AUTO", "https://www.cnnbrasil.com.br/esportes/feed/"),
     ("Terra Esportes", "AUTO", "https://www.terra.com.br/esportes/rss.xml"),
@@ -57,14 +58,17 @@ FEEDS = [
     ("Sky Sports", "FUT EUROPEU", "https://www.skysports.com/rss/12040"),
     ("Guardian Futebol", "FUT EUROPEU", "https://www.theguardian.com/football/rss"),
     ("MARCA", "FUT EUROPEU", "https://e00-marca.uecdn.es/rss/futbol/futbol-internacional.xml"),
+    ("MARCA Primeira", "FUT EUROPEU", "https://e00-marca.uecdn.es/rss/futbol/primera-division.xml"),
+    ("MARCA Portada", "AUTO", "https://e00-marca.uecdn.es/rss/portada.xml"),
     ("AS", "FUT EUROPEU", "https://as.com/rss/futbol/primera.xml"),
+    ("AS Portada", "AUTO", "https://as.com/rss/portada.xml"),
     ("ESPN FC", "FUT EUROPEU", "https://www.espn.com/espn/rss/soccer/news"),
     ("Goal", "FUT EUROPEU", "https://www.goal.com/feeds/en/news"),
-    ("ge Futebol Internacional", "FUT EUROPEU", "https://ge.globo.com/rss/ge/futebol/futebol-internacional/"),
+    ("Globo Esporte Futebol Internacional", "FUT EUROPEU", "https://ge.globo.com/rss/ge/futebol/futebol-internacional/"),
 
     # ---------------- FUTEBOL SUL-AMERICANO ----------------
-    ("ge Libertadores", "FUT SUL-AMERICANO", "https://ge.globo.com/rss/ge/futebol/libertadores/"),
-    ("ge Sul-Americana", "FUT SUL-AMERICANO", "https://ge.globo.com/rss/ge/futebol/copa-sul-americana/"),
+    ("Globo Esporte Libertadores", "FUT SUL-AMERICANO", "https://ge.globo.com/rss/ge/futebol/libertadores/"),
+    ("Globo Esporte Sul-Americana", "FUT SUL-AMERICANO", "https://ge.globo.com/rss/ge/futebol/copa-sul-americana/"),
     ("Olé", "FUT SUL-AMERICANO", "https://www.ole.com.ar/rss/futbol-primera/"),
     ("Depor", "FUT SUL-AMERICANO", "https://depor.com/arcio/rss/"),
 
@@ -110,32 +114,44 @@ FEEDS = [
     ("Clarín Deportes", "FUT SUL-AMERICANO", "https://www.clarin.com/deportes/rss"),
     ("Infobae Deportes", "AUTO", "https://www.infobae.com/deportes/rss"),
 
+    # ---------------- ESPN / CBS / ENTIDADES ----------------
+    ("ESPN", "AUTO", "https://www.espn.com/espn/rss/news"),
+    ("ESPN Brasil", "AUTO", "https://news.google.com/rss/search?q=site:espn.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("CBS Sports Futebol", "FUT EUROPEU", "https://www.cbssports.com/rss/headlines/soccer/"),
+    ("CBS Sports", "AUTO", "https://www.cbssports.com/rss/headlines/"),
+    ("CBS Sports NBA", "BASQUETE", "https://www.cbssports.com/rss/headlines/nba/"),
+    # FIFA, CBF e Bleacher Report não publicam feed próprio: vêm por busca
+    # do Google Notícias restrita ao domínio de cada um.
+    ("FIFA", "AUTO", "https://news.google.com/rss/search?q=site:fifa.com&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("CBF", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:cbf.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("Bleacher Report", "AUTO", "https://news.google.com/rss/search?q=site:bleacherreport.com&hl=en-US&gl=US&ceid=US:en"),
+
     # ---------------- BASQUETE ----------------
-    ("ge Basquete", "BASQUETE", "https://ge.globo.com/rss/ge/basquete/"),
+    ("Globo Esporte Basquete", "BASQUETE", "https://ge.globo.com/rss/ge/basquete/"),
     ("ESPN NBA", "BASQUETE", "https://www.espn.com/espn/rss/nba/news"),
     ("NBA.com", "BASQUETE", "https://www.nba.com/rss/nba_rss.xml"),
 
     # ---------------- FÓRMULA 1 ----------------
-    ("ge Fórmula 1", "F1", "https://ge.globo.com/rss/ge/motor/formula-1/"),
+    ("Globo Esporte Fórmula 1", "F1", "https://ge.globo.com/rss/ge/motor/formula-1/"),
     ("BBC F1", "F1", "https://feeds.bbci.co.uk/sport/formula1/rss.xml"),
     ("Motorsport", "F1", "https://www.motorsport.com/rss/f1/news/"),
     ("Autosport", "F1", "https://www.autosport.com/rss/f1/news/"),
 
     # ---------------- LUTAS ----------------
-    ("ge Lutas", "LUTAS", "https://ge.globo.com/rss/ge/lutas/"),
+    ("Globo Esporte Lutas", "LUTAS", "https://ge.globo.com/rss/ge/lutas/"),
     ("ESPN MMA", "LUTAS", "https://www.espn.com/espn/rss/mma/news"),
     ("BBC Boxe", "LUTAS", "https://feeds.bbci.co.uk/sport/boxing/rss.xml"),
 
     # ---------------- ESPORTE OLÍMPICO ----------------
-    ("ge Olimpíadas", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/olimpiadas/"),
-    ("ge Atletismo", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/atletismo/"),
-    ("ge Natação", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/natacao/"),
+    ("Globo Esporte Olimpíadas", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/olimpiadas/"),
+    ("Globo Esporte Atletismo", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/atletismo/"),
+    ("Globo Esporte Natação", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/natacao/"),
     ("BBC Olimpíadas", "ESPORTE OLÍMPICO", "https://feeds.bbci.co.uk/sport/olympics/rss.xml"),
 
     # ---------------- OUTROS ESPORTES ----------------
-    ("ge Vôlei", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/volei/"),
-    ("ge Tênis", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/tenis/"),
-    ("ge Surfe", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/surfe/"),
+    ("Globo Esporte Vôlei", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/volei/"),
+    ("Globo Esporte Tênis", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/tenis/"),
+    ("Globo Esporte Surfe", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/surfe/"),
     ("BBC Tênis", "OUTROS ESPORTES", "https://feeds.bbci.co.uk/sport/tennis/rss.xml"),
     ("BBC Sport", "AUTO", "https://feeds.bbci.co.uk/sport/rss.xml"),
 ]
@@ -143,7 +159,7 @@ FEEDS = [
 # Canais do YouTube. O codigo do canal e descoberto sozinho pelo @.
 CANAIS = [
     ("TNT Sports Brasil", "FUTEBOL BRASIL", "tntsportsbr"),
-    ("ge tv", "FUTEBOL BRASIL", "getv"),
+    ("Globo Esporte tv", "FUTEBOL BRASIL", "getv"),
     ("CazéTV", "FUTEBOL BRASIL", "CazeTV"),
     ("ESPN Brasil", "FUTEBOL BRASIL", "ESPNBrasil"),
     ("Lance!", "FUTEBOL BRASIL", "lancenet"),

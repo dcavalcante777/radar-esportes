@@ -260,7 +260,7 @@
       <div class="logo">TS</div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v15</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v19</div>
       </div>
     </div>
     <div class="controls">
@@ -452,10 +452,54 @@
   ];
 
   var PROXIES = [
-    function (u) { return u; },
     function (u) { return "https://api.allorigins.win/raw?url=" + encodeURIComponent(u); },
-    function (u) { return "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(u); }
+    function (u) { return "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(u); },
+    function (u) { return "https://corsproxy.io/?url=" + encodeURIComponent(u); },
+    function (u) { return u; }
   ];
+
+  // Guarda qual caminho funcionou da última vez e começa por ele.
+  var CHAVE_PROXY = "radar:proxy";
+  var proxyBom = 0;
+  try {
+    var g = parseInt(localStorage.getItem(CHAVE_PROXY), 10);
+    if (!isNaN(g) && g >= 0 && g < PROXIES.length) { proxyBom = g; }
+  } catch (e) { /* sem armazenamento */ }
+
+  function anotarProxy(indice) {
+    if (indice === proxyBom) { return; }
+    proxyBom = indice;
+    try { localStorage.setItem(CHAVE_PROXY, String(indice)); } catch (e) { /* ok */ }
+  }
+
+  // Ordem de tentativa: o que funcionou por último vem primeiro.
+  function ordemProxies() {
+    var ordem = [proxyBom];
+    for (var i = 0; i < PROXIES.length; i++) {
+      if (i !== proxyBom) { ordem.push(i); }
+    }
+    return ordem;
+  }
+
+  var TEMPO_LIMITE = 9000;
+
+  // Desiste de um endereço que não responde, em vez de esperar o navegador.
+  function buscarComPrazo(url, opcoes, prazo) {
+    return new Promise(function (resolve, reject) {
+      var caiu = false;
+      var relogio = setTimeout(function () {
+        caiu = true;
+        reject(new Error("demorou"));
+      }, prazo || TEMPO_LIMITE);
+      fetch(url, opcoes).then(function (r) {
+        clearTimeout(relogio);
+        if (!caiu) { resolve(r); }
+      }).catch(function (e) {
+        clearTimeout(relogio);
+        if (!caiu) { reject(e); }
+      });
+    });
+  }
 
   var PLACAR_INTERVALO = 60 * 1000;
   var GIRO = 5000;
@@ -662,20 +706,25 @@
 
   // Fontes lidas direto pelo navegador quando o noticias.json nao existe.
   var FEEDS_VIVO = [
-    ["ge Futebol", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/"],
-    ["ge Brasileirão", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/brasileirao-serie-a/"],
-    ["ge Copa do Brasil", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/copa-do-brasil/"],
-    ["ge Flamengo", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/flamengo/"],
-    ["ge Palmeiras", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/palmeiras/"],
-    ["ge Corinthians", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/times/corinthians/"],
+    ["Globo Esporte Futebol", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/"],
+    ["Globo Esporte Brasileirão", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/brasileirao-serie-a/"],
+    ["Globo Esporte Copa do Brasil", "FUTEBOL BRASIL", "https://ge.globo.com/rss/ge/futebol/copa-do-brasil/"],
+    ["Globo Esporte / Flamengo", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Flamengo&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Globo Esporte / Palmeiras", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Palmeiras&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Globo Esporte / Corinthians", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Corinthians&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Globo Esporte / Vasco", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Vasco&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Globo Esporte / Fluminense", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Fluminense&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Globo Esporte / Botafogo", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Botafogo&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Globo Esporte / Cruzeiro", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+Cruzeiro&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Globo Esporte / Grêmio e Inter", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:ge.globo.com+(Gr%C3%AAmio+OR+Internacional)&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
     ["Lance!", "FUTEBOL BRASIL", "https://www.lance.com.br/feed"],
     ["Gazeta Esportiva", "FUTEBOL BRASIL", "https://www.gazetaesportiva.com/feed/"],
-    ["ge", "AUTO", "https://ge.globo.com/rss/ge/"],
+    ["Globo Esporte", "AUTO", "https://ge.globo.com/rss/ge/"],
     ["UOL Esporte", "AUTO", "https://rss.uol.com.br/feed/esporte.xml"],
     ["CNN Esportes", "AUTO", "https://www.cnnbrasil.com.br/esportes/feed/"],
     ["Terra Esportes", "AUTO", "https://www.terra.com.br/esportes/rss.xml"],
-    ["ge Libertadores", "FUT SUL-AMERICANO", "https://ge.globo.com/rss/ge/futebol/libertadores/"],
-    ["ge Internacional", "FUT EUROPEU", "https://ge.globo.com/rss/ge/futebol/futebol-internacional/"],
+    ["Globo Esporte Libertadores", "FUT SUL-AMERICANO", "https://ge.globo.com/rss/ge/futebol/libertadores/"],
+    ["Globo Esporte Internacional", "FUT EUROPEU", "https://ge.globo.com/rss/ge/futebol/futebol-internacional/"],
     ["BBC Football", "FUT EUROPEU", "https://feeds.bbci.co.uk/sport/football/rss.xml"],
     ["Guardian Futebol", "FUT EUROPEU", "https://www.theguardian.com/football/rss"],
     ["MARCA", "FUT EUROPEU", "https://e00-marca.uecdn.es/rss/futbol/futbol-internacional.xml"],
@@ -694,12 +743,20 @@
     ["Olé", "FUT SUL-AMERICANO", "https://www.ole.com.ar/rss/ultimas-noticias/"],
     ["Clarín Deportes", "FUT SUL-AMERICANO", "https://www.clarin.com/deportes/rss"],
     ["Infobae Deportes", "AUTO", "https://www.infobae.com/deportes/rss"],
-    ["ge Basquete", "BASQUETE", "https://ge.globo.com/rss/ge/basquete/"],
-    ["ge Fórmula 1", "F1", "https://ge.globo.com/rss/ge/motor/formula-1/"],
-    ["ge Lutas", "LUTAS", "https://ge.globo.com/rss/ge/lutas/"],
-    ["ge Olimpíadas", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/olimpiadas/"],
-    ["ge Vôlei", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/volei/"],
-    ["ge Tênis", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/tenis/"]
+    ["ESPN", "AUTO", "https://www.espn.com/espn/rss/news"],
+    ["ESPN FC", "FUT EUROPEU", "https://www.espn.com/espn/rss/soccer/news"],
+    ["CBS Sports Futebol", "FUT EUROPEU", "https://www.cbssports.com/rss/headlines/soccer/"],
+    ["CBS Sports", "AUTO", "https://www.cbssports.com/rss/headlines/"],
+    ["AS", "FUT EUROPEU", "https://as.com/rss/futbol/primera.xml"],
+    ["FIFA", "AUTO", "https://news.google.com/rss/search?q=site:fifa.com&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["CBF", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:cbf.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Bleacher Report", "AUTO", "https://news.google.com/rss/search?q=site:bleacherreport.com&hl=en-US&gl=US&ceid=US:en"],
+    ["Globo Esporte Basquete", "BASQUETE", "https://ge.globo.com/rss/ge/basquete/"],
+    ["Globo Esporte Fórmula 1", "F1", "https://ge.globo.com/rss/ge/motor/formula-1/"],
+    ["Globo Esporte Lutas", "LUTAS", "https://ge.globo.com/rss/ge/lutas/"],
+    ["Globo Esporte Olimpíadas", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/olimpiadas/"],
+    ["Globo Esporte Vôlei", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/volei/"],
+    ["Globo Esporte Tênis", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/tenis/"]
   ];
 
   var FOFOCA = ["namorad", "affair", "casamento", "noiv", "divórcio", "separação",
@@ -790,16 +847,33 @@
     return m ? m[0] : "";
   }
 
+  // O Google Notícias entrega título com sufixo e link de redirecionamento.
+  // Aqui recuperamos o endereço real da matéria e limpamos o título.
+  function arrumarGoogle(no, titulo, link) {
+    if (link.indexOf("news.google.com") < 0) { return { title: titulo, link: link, desc: null }; }
+    var bruto = texto(no, ["description", "summary"]);
+    var m = bruto.match(/<a href="(https?:\/\/[^"]+)"/i);
+    if (m) { link = m[1]; }
+    var corte = titulo.lastIndexOf(" - ");
+    if (corte > 0 && (titulo.length - corte) < 43) {
+      titulo = titulo.slice(0, corte).trim();
+    }
+    return { title: titulo, link: link, desc: "" };
+  }
+
   function lerFeed(fonte) {
     var nome = fonte[0];
     var padrao = fonte[1];
     var endereco = fonte[2];
+    var ordem = ordemProxies();
     var i = 0;
 
     function tentar() {
-      if (i >= PROXIES.length) { return Promise.resolve([]); }
-      return fetch(PROXIES[i++](endereco), { cache: "no-store" })
+      if (i >= ordem.length) { return Promise.resolve([]); }
+      var qual = ordem[i++];
+      return buscarComPrazo(PROXIES[qual](endereco), { cache: "no-store" })
         .then(function (r) { if (!r.ok) { throw new Error("http"); } return r.text(); })
+        .then(function (t) { anotarProxy(qual); return t; })
         .then(function (bruto) {
           var doc = new DOMParser().parseFromString(bruto, "text/xml");
           if (doc.getElementsByTagName("parsererror").length) { throw new Error("xml"); }
@@ -817,6 +891,10 @@
             }
             if (!titulo || !link) { continue; }
             var resumo = semTags(texto(n, ["description", "summary"])).slice(0, 170);
+            var arr = arrumarGoogle(n, titulo, link);
+            titulo = arr.title;
+            link = arr.link;
+            if (arr.desc !== null) { resumo = arr.desc; }
             var quandoTxt = texto(n, ["pubDate", "published", "updated", "dc:date"]);
             var ts = quandoTxt ? new Date(quandoTxt).getTime() : 0;
             saida.push({
@@ -838,19 +916,46 @@
     return tentar();
   }
 
-  function buscarAoVivo() {
-    statusEl.textContent = "Buscando as manchetes direto nos sites…";
-    return Promise.all(FEEDS_VIVO.map(lerFeed)).then(function (todos) {
-      var lista = [];
-      var vistos = {};
-      todos.forEach(function (arr) {
-        arr.forEach(function (it) {
-          var chave = it.title.toLowerCase().slice(0, 70);
-          if (!vistos[chave]) { vistos[chave] = 1; lista.push(it); }
-        });
+  var POR_VEZ = 6;
+
+  // Busca as fontes em pequenos grupos e vai mostrando o que chega,
+  // em vez de esperar as 38 responderem.
+  function buscarAoVivo(aoChegar) {
+    var lista = [];
+    var vistos = {};
+    var prontas = 0;
+    var proxima = 0;
+
+    function guardar(itens) {
+      var novidade = false;
+      itens.forEach(function (it) {
+        var chave = it.title.toLowerCase().slice(0, 70);
+        if (!vistos[chave]) { vistos[chave] = 1; lista.push(it); novidade = true; }
       });
-      lista.sort(function (a, b) { return b.when - a.when; });
-      return lista;
+      if (novidade) {
+        lista.sort(function (a, b) { return b.when - a.when; });
+      }
+      return novidade;
+    }
+
+    return new Promise(function (resolve) {
+      function seguir() {
+        if (proxima >= FEEDS_VIVO.length) { return; }
+        var fonte = FEEDS_VIVO[proxima++];
+        lerFeed(fonte).then(function (itens) {
+          prontas += 1;
+          var novidade = guardar(itens);
+          statusEl.textContent = "Buscando manchetes… " + prontas + " de "
+            + FEEDS_VIVO.length + " fontes • " + lista.length + " notícias";
+          if (novidade && aoChegar) { aoChegar(lista.slice()); }
+          if (prontas >= FEEDS_VIVO.length) {
+            resolve(lista);
+          } else {
+            seguir();
+          }
+        });
+      }
+      for (var k = 0; k < POR_VEZ; k++) { seguir(); }
     });
   }
 
@@ -1082,7 +1187,10 @@
     "Sky Sports": "en", "Guardian Futebol": "en", "talkSPORT": "en",
     "FourFourTwo": "en", "Sports Mole": "en", "Football España": "en",
     "ESPN FC": "en", "ESPN NBA": "en", "ESPN MMA": "en", "Goal": "en",
-    "NBA.com": "en", "Motorsport": "en", "Autosport": "en"
+    "NBA.com": "en", "Motorsport": "en", "Autosport": "en",
+    "ESPN": "en", "CBS Sports": "en", "CBS Sports Futebol": "en",
+    "CBS Sports NBA": "en", "Bleacher Report": "en",
+    "MARCA Primeira": "es", "MARCA Portada": "es", "AS Portada": "es"
   };
 
   var CACHE_TRAD = "radar:trad:";
@@ -1761,21 +1869,89 @@
     return "-";
   }
 
+  function numeroStat(stats, nomes) {
+    var v = valorStat(stats, nomes);
+    if (v === "-") { return null; }
+    var n = parseFloat(String(v).replace(/[^0-9.\-]/g, ""));
+    return isNaN(n) ? null : n;
+  }
+
+  // A fonte nem sempre devolve a tabela na ordem certa (o caso da MLS).
+  // Aqui reordenamos pelo critério padrão do futebol.
+  function ordenarTabela(entradas) {
+    var lista = entradas.slice();
+    lista.sort(function (a, b) {
+      var pa = numeroStat(a.stats, ["points"]);
+      var pb = numeroStat(b.stats, ["points"]);
+      if (pa === null) { pa = -1; }
+      if (pb === null) { pb = -1; }
+      if (pb !== pa) { return pb - pa; }
+
+      var sa = numeroStat(a.stats, ["pointDifferential", "goalDifference"]);
+      var sb = numeroStat(b.stats, ["pointDifferential", "goalDifference"]);
+      if (sa === null) { sa = 0; }
+      if (sb === null) { sb = 0; }
+      if (sb !== sa) { return sb - sa; }
+
+      var ga = numeroStat(a.stats, ["pointsFor", "goalsFor"]);
+      var gb = numeroStat(b.stats, ["pointsFor", "goalsFor"]);
+      if (ga === null) { ga = 0; }
+      if (gb === null) { gb = 0; }
+      if (gb !== ga) { return gb - ga; }
+
+      var va = numeroStat(a.stats, ["wins"]);
+      var vb = numeroStat(b.stats, ["wins"]);
+      if (va === null) { va = 0; }
+      if (vb === null) { vb = 0; }
+      if (vb !== va) { return vb - va; }
+
+      var na = (a.team && (a.team.displayName || a.team.name)) || "";
+      var nb = (b.team && (b.team.displayName || b.team.name)) || "";
+      return na.localeCompare(nb);
+    });
+    return lista;
+  }
+
+  // Champions, Libertadores e Sul-Americana devolvem os grupos dentro de uma
+  // fase — por isso é preciso descer todos os níveis, não só o primeiro.
   function gruposDaResposta(dados) {
-    if (!dados) { return []; }
     var grupos = [];
-    if (dados.children && dados.children.length) {
-      dados.children.forEach(function (c) {
-        var ent = c.standings && c.standings.entries;
-        if (ent && ent.length) {
-          grupos.push({ nome: c.name || c.displayName || "", entradas: ent });
+    var vistos = [];
+
+    function descer(no, rotulo) {
+      if (!no || typeof no !== "object" || vistos.indexOf(no) >= 0) { return; }
+      vistos.push(no);
+      var nome = no.name || no.displayName || no.shortName || rotulo || "";
+
+      var ent = no.standings && no.standings.entries;
+      if (ent && ent.length) {
+        grupos.push({ nome: nome, entradas: ordenarTabela(ent) });
+      }
+      if (no.entries && no.entries.length && !ent) {
+        grupos.push({ nome: nome, entradas: ordenarTabela(no.entries) });
+      }
+      if (no.children && no.children.length) {
+        no.children.forEach(function (filho) { descer(filho, nome); });
+      }
+      if (no.standings && no.standings.children) {
+        no.standings.children.forEach(function (filho) { descer(filho, nome); });
+      }
+    }
+
+    descer(dados, "");
+
+    // Se o mesmo grupo apareceu em mais de um nível, fica só o mais completo.
+    var limpos = [];
+    grupos.forEach(function (g) {
+      var repetido = false;
+      limpos.forEach(function (j) {
+        if (j.nome === g.nome && j.entradas.length === g.entradas.length) {
+          repetido = true;
         }
       });
-    }
-    if (!grupos.length && dados.standings && dados.standings.entries) {
-      grupos.push({ nome: "", entradas: dados.standings.entries });
-    }
-    return grupos;
+      if (!repetido) { limpos.push(g); }
+    });
+    return limpos;
   }
 
   function linhaTabela(entrada, posicao) {
@@ -1924,7 +2100,11 @@
 
   function completarAoVivo() {
     statusEl.textContent = "O conteúdo salvo está atrasado — buscando direto nos sites…";
-    return buscarAoVivo().then(function (lista) {
+    return buscarAoVivo(function (parcial) {
+      if (parcial.length && parcial[0].when > maisRecente()) {
+        aplicar({ carimbo: "", categorias: [], itens: parcial }, true, true);
+      }
+    }).then(function (lista) {
       if (!lista.length) { aviso("velho"); return; }
       var novoTopo = lista[0].when || 0;
       if (novoTopo > maisRecente()) {
@@ -1955,12 +2135,17 @@
         if (estaVelho()) { return completarAoVivo(); }
       })
       .catch(function () {
-        return buscarAoVivo().then(function (lista) {
+        var jaMostrou = false;
+        return buscarAoVivo(function (parcial) {
+          jaMostrou = true;
+          aplicar({ carimbo: "", categorias: [], itens: parcial }, false, true);
+        }).then(function (lista) {
           if (lista.length) {
             aplicar({ carimbo: "", categorias: [], itens: lista }, !primeira, true);
             aviso("aovivo");
             return;
           }
+          if (jaMostrou) { aviso("aovivo"); return; }
           var reserva = melhorInicio();
           aplicar(reserva.dados, false);
           if (itens.length) {

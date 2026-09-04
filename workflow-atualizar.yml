@@ -31,6 +31,40 @@ jobs:
         with:
           python-version: "3.12"
 
+      # OPCIONAL: se você cadastrar os links de compartilhamento do OneDrive
+      # nas variáveis do repositório, o site se atualiza sozinho, sem precisar
+      # subir arquivo nenhum. Sem as variáveis, usa os arquivos do repositório.
+      - name: Buscar versões novas no OneDrive (se configurado)
+        env:
+          URL_INDEX: ${{ vars.ONEDRIVE_INDEX }}
+          URL_FONTES: ${{ vars.ONEDRIVE_FONTES }}
+          URL_ROTINA: ${{ vars.ONEDRIVE_ROTINA }}
+        run: |
+          baixar () {
+            url="$1"; destino="$2"
+            if [ -z "$url" ]; then return 0; fi
+            if curl -fsSL --max-time 60 "$url" -o "novo_$destino"; then
+              if [ -s "novo_$destino" ]; then
+                mv "novo_$destino" "$destino"
+                echo "- Atualizado do OneDrive: $destino" >> $GITHUB_STEP_SUMMARY
+              else
+                rm -f "novo_$destino"
+                echo "- Veio vazio, mantido o do repositório: $destino" >> $GITHUB_STEP_SUMMARY
+              fi
+            else
+              echo "- Não consegui baixar, mantido o do repositório: $destino" >> $GITHUB_STEP_SUMMARY
+            fi
+          }
+          if [ -z "$URL_INDEX$URL_FONTES$URL_ROTINA" ]; then
+            echo "## Origem dos arquivos" >> $GITHUB_STEP_SUMMARY
+            echo "Usando os arquivos do repositório (OneDrive não configurado)." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## Origem dos arquivos" >> $GITHUB_STEP_SUMMARY
+            baixar "$URL_INDEX"  "index.html"
+            baixar "$URL_FONTES" "fontes.py"
+            baixar "$URL_ROTINA" "atualizar_noticias.py"
+          fi
+
       - name: Conferir se os arquivos necessários estão no repositório
         run: |
           echo "## Arquivos no repositório" >> $GITHUB_STEP_SUMMARY

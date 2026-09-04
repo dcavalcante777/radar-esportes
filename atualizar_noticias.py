@@ -111,6 +111,33 @@ def quando(item):
     return int(data.timestamp() * 1000)
 
 
+LINK_REAL = re.compile(r'<a href="(https?://[^"]+)"', re.I)
+
+
+def arrumar_google(item, titulo, link, resumo):
+    """O Google Noticias devolve titulo com sufixo e link de redirecionamento.
+    Aqui pegamos o titulo limpo e o endereco real da materia."""
+    if "news.google.com" not in link:
+        return titulo, link, resumo
+
+    bruto = ""
+    for elemento in item.iter():
+        if elemento.tag.split("}")[-1] in ("description", "summary"):
+            bruto = elemento.text or ""
+            break
+    achado = LINK_REAL.search(html.unescape(bruto))
+    if achado:
+        link = achado.group(1)
+
+    # "Flamengo vence o Vasco - Globo Esporte" -> "Flamengo vence o Vasco"
+    if " - " in titulo:
+        pedaco = titulo.rsplit(" - ", 1)
+        if len(pedaco[1]) < 40:
+            titulo = pedaco[0].strip()
+
+    return titulo, link, ""
+
+
 def ler_feed(fonte):
     nome, categoria_padrao, url = fonte
     try:
@@ -134,6 +161,7 @@ def ler_feed(fonte):
         if not titulo or not link:
             continue
         resumo = limpar(achar(item, ("description", "summary", "content")))[:170]
+        titulo, link, resumo = arrumar_google(item, titulo, link, resumo)
         resultado.append(
             {
                 "title": titulo,
