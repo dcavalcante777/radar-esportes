@@ -260,7 +260,7 @@
       <div class="logo">TS</div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v19</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v20</div>
       </div>
     </div>
     <div class="controls">
@@ -512,12 +512,29 @@
   var giroPausado = false;
   var buscandoPlacar = false;
 
-  function pegarJson(endereco) {
+  // Guarda a resposta por alguns minutos: trocar de aba fica instantâneo.
+  var CACHE_JSON = {};
+  var VALIDADE_JSON = 4 * 60 * 1000;
+
+  function pegarJson(endereco, validade) {
+    var guardado = CACHE_JSON[endereco];
+    var prazo = validade === undefined ? VALIDADE_JSON : validade;
+    if (guardado && (Date.now() - guardado.em) < prazo) {
+      return Promise.resolve(guardado.dados);
+    }
+
+    var ordem = ordemProxies();
     var i = 0;
     function tentar() {
-      if (i >= PROXIES.length) { return Promise.resolve(null); }
-      return fetch(PROXIES[i++](endereco), { cache: "no-store" })
+      if (i >= ordem.length) { return Promise.resolve(null); }
+      var qual = ordem[i++];
+      return buscarComPrazo(PROXIES[qual](endereco), { cache: "no-store" })
         .then(function (r) { if (!r.ok) { throw new Error("http"); } return r.json(); })
+        .then(function (d) {
+          anotarProxy(qual);
+          CACHE_JSON[endereco] = { dados: d, em: Date.now() };
+          return d;
+        })
         .catch(function () { return tentar(); });
     }
     return tentar();
@@ -1814,20 +1831,41 @@
       ? TABELAS
       : TABELAS.filter(function (c) { return c.liga === chave; });
 
-    Promise.all(alvos.map(jogosDaComp)).then(function (todos) {
-      if (agendaAtiva !== chave) { return; }
-      var lista = [];
-      var vistos = {};
-      todos.forEach(function (arr) {
-        arr.forEach(function (j) {
+    // Vai desenhando conforme cada competição responde, em vez de
+    // esperar as 18 juntas.
+    var lista = [];
+    var vistos = {};
+    var prontas = 0;
+    var proxima = 0;
+    var POR_VEZ_AGENDA = 5;
+
+    function seguir() {
+      if (proxima >= alvos.length) { return; }
+      var comp = alvos[proxima++];
+      jogosDaComp(comp).then(function (jogos2) {
+        if (agendaAtiva !== chave) { return; }
+        prontas += 1;
+        var novidade = false;
+        jogos2.forEach(function (j) {
           var id = j.quando + j.casa.nome + j.fora.nome;
-          if (!vistos[id]) { vistos[id] = 1; lista.push(j); }
+          if (!vistos[id]) { vistos[id] = 1; lista.push(j); novidade = true; }
         });
+        if (novidade) {
+          lista.sort(function (a, b) { return a.quando - b.quando; });
+          desenharAgenda(lista);
+        } else if (prontas === 1) {
+          carregando.textContent = "Carregando os próximos jogos… ("
+            + prontas + " de " + alvos.length + ")";
+        }
+        if (prontas >= alvos.length) {
+          cacheAgenda[chave] = lista;
+          if (!lista.length) { desenharAgenda(lista); }
+        } else {
+          seguir();
+        }
       });
-      lista.sort(function (a, b) { return a.quando - b.quando; });
-      cacheAgenda[chave] = lista;
-      desenharAgenda(lista);
-    });
+    }
+    for (var k = 0; k < POR_VEZ_AGENDA; k++) { seguir(); }
   }
 
   function montarChipsAgenda() {
