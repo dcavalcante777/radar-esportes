@@ -141,7 +141,7 @@
     box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--accent) 40%,var(--border))}
   .card:hover .thumb{transform:scale(1.07)}
   .card:hover .ttl{color:var(--accent)}
-  .card{animation:entra .4s ease backwards}
+  .card.anima{animation:entra .4s ease backwards}
   @keyframes entra{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   .capa{position:relative;aspect-ratio:16/9;background:var(--chip);overflow:hidden}
   .capa::after{content:"";position:absolute;inset:0;pointer-events:none;
@@ -481,7 +481,7 @@
       <div class="logo"><img src="data:image/png;base64,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" alt="Radar Esportes"></div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v37</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v38</div>
       </div>
     </div>
     <div class="controls">
@@ -2565,6 +2565,8 @@
     if (bt) { bt.setAttribute("aria-pressed", abaAtiva === "TABELAS" ? "true" : "false"); }
   }
 
+  var desenhouUmaVez = false;
+
   function render(novos) {
     marcarModos();
     if (abaAtiva === "AGENDA") {
@@ -2599,6 +2601,8 @@
 
     grid.textContent = "";
     var jaMarcouDivisor = false;
+    var primeiraVez = !desenhouUmaVez;
+    desenhouUmaVez = true;
     noticias.forEach(function (it, i) {
       if (!soNovas && marcoVisita && !jaMarcouDivisor && !ehNovaParaMim(it) && i > 0) {
         jaMarcouDivisor = true;
@@ -2608,7 +2612,10 @@
         grid.appendChild(dv);
       }
       var c = card(it, novos);
-      c.style.animationDelay = Math.min(i * 35, 500) + "ms";
+      if (primeiraVez) {
+        c.className += " anima";
+        c.style.animationDelay = Math.min(i * 35, 500) + "ms";
+      }
       if (i === 0 && noticias.length >= 3) {
         c.className += " destaque";
         var selo2 = document.createElement("span");
@@ -2622,7 +2629,10 @@
     vgrid.textContent = "";
     videos.forEach(function (it, i) {
       var c = card(it, novos);
-      c.style.animationDelay = Math.min(i * 35, 400) + "ms";
+      if (primeiraVez) {
+        c.className += " anima";
+        c.style.animationDelay = Math.min(i * 35, 400) + "ms";
+      }
       vgrid.appendChild(c);
     });
     tvtitulo.hidden = videos.length === 0;
@@ -3772,10 +3782,13 @@
 
   function completarAoVivo() {
     statusEl.textContent = "O conteúdo salvo está atrasado — buscando direto nos sites…";
+    var ultimo2 = 0;
     return buscarAoVivo(function (parcial) {
-      if (parcial.length && parcial[0].when > maisRecente()) {
-        aplicar({ carimbo: "", categorias: [], itens: parcial }, true, true);
-      }
+      if (!parcial.length || parcial[0].when <= maisRecente()) { return; }
+      var agora3 = Date.now();
+      if (agora3 - ultimo2 < 1200) { return; }
+      ultimo2 = agora3;
+      aplicar({ carimbo: "", categorias: [], itens: parcial }, false, true);
     }).then(function (lista) {
       if (!lista.length) { aviso("velho"); return; }
       var novoTopo = lista[0].when || 0;
@@ -3808,9 +3821,18 @@
       })
       .catch(function () {
         var jaMostrou = false;
+        var ultimoDesenho = 0;
+        var pendente = null;
         return buscarAoVivo(function (parcial) {
           jaMostrou = true;
-          aplicar({ carimbo: "", categorias: [], itens: parcial }, false, true);
+          // Sem esta trava, a tela era refeita a cada uma das ~60 fontes que
+          // respondem — o que fazia as notícias piscarem sem parar.
+          pendente = parcial;
+          var agora2 = Date.now();
+          if (agora2 - ultimoDesenho < 1200) { return; }
+          ultimoDesenho = agora2;
+          aplicar({ carimbo: "", categorias: [], itens: pendente }, false, true);
+          pendente = null;
         }).then(function (lista) {
           if (lista.length) {
             aplicar({ carimbo: "", categorias: [], itens: lista }, !primeira, true);
