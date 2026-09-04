@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="theme-color" content="#0d0f14">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Radar Esportes">
+<meta name="description" content="Radar de notícias, placares, tabelas e agenda do esporte.">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icone-192.png">
+<link rel="icon" href="icone-192.png">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Radar Esportes — TNT Sports</title>
@@ -168,6 +177,45 @@
   .tag-idioma{font-size:9px;letter-spacing:.6px;padding:2px 6px;border-radius:4px;
     background:var(--chip);border:1px solid var(--border);color:var(--txt-dim);font-weight:700}
   .traduzindo{opacity:.55}
+  .selo-calor{position:absolute;inset-block-start:10px;inset-inline-start:10px;z-index:2;
+    background:linear-gradient(135deg,#ff6a00,#e2001a);color:#fff;font-size:10px;
+    font-weight:900;letter-spacing:.7px;padding:5px 10px;border-radius:6px;
+    box-shadow:0 2px 12px rgba(226,0,26,.45)}
+  .card.destaque .selo-calor{inset-block-start:auto;inset-block-end:10px}
+  .card.fervendo{border-color:rgba(255,106,0,.6);
+    box-shadow:0 0 0 1px rgba(255,106,0,.25) inset}
+  .marca-nova{position:absolute;inset-block-start:0;inset-inline-start:0;
+    inline-size:4px;block-size:100%;background:var(--accent);z-index:3}
+  .card{position:relative}
+  .divisor-novas{grid-column:1/-1;display:flex;align-items:center;gap:12px;
+    margin:6px 0 2px;font-size:11px;font-weight:800;letter-spacing:1px;
+    text-transform:uppercase;color:var(--accent)}
+  .divisor-novas::before,.divisor-novas::after{content:"";flex:1;block-size:1px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+  #novas{position:relative}
+  #novas .bolha{position:absolute;inset-block-start:-6px;inset-inline-end:-6px;
+    background:var(--accent-2);color:#fff;font-size:10px;font-weight:900;
+    min-inline-size:18px;block-size:18px;border-radius:9px;display:flex;
+    align-items:center;justify-content:center;padding:0 5px}
+  .busca-caixa{position:relative;display:flex;align-items:center}
+  .limpar{position:absolute;inset-inline-end:6px;background:none;border:0;padding:4px 7px;
+    color:var(--txt-dim);font-size:16px;line-height:1;cursor:pointer;display:none;border-radius:6px}
+  .limpar:hover{background:var(--card-hover);color:var(--txt)}
+  .busca-caixa.tem-texto .limpar{display:block}
+  .busca-caixa.tem-texto input[type=search]{padding-inline-end:32px}
+  .salvar{position:absolute;inset-block-start:8px;inset-inline-end:8px;z-index:3;
+    inline-size:30px;block-size:30px;border-radius:50%;border:0;padding:0;cursor:pointer;
+    background:rgba(10,12,18,.62);color:#fff;font-size:14px;line-height:1;
+    display:flex;align-items:center;justify-content:center;opacity:0;transition:.15s}
+  .card:hover .salvar,.salvar.ativo{opacity:1}
+  .salvar:hover{background:rgba(10,12,18,.85);transform:scale(1.1)}
+  .salvar.ativo{background:var(--accent);color:#111}
+  @media (hover:none){.salvar{opacity:1}}
+  #salvos .bolha{position:absolute;inset-block-start:-6px;inset-inline-end:-6px;
+    background:var(--accent);color:#111;font-size:10px;font-weight:900;min-inline-size:18px;
+    block-size:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    padding:0 5px}
+  #salvos{position:relative}
   .selo-breaking{position:absolute;inset-block-start:10px;inset-inline-end:10px;z-index:2;
     background:var(--accent-2);color:#fff;font-size:10px;font-weight:900;letter-spacing:1.1px;
     padding:5px 10px;border-radius:6px;display:flex;align-items:center;gap:5px;
@@ -234,6 +282,22 @@
   .duelo .x{color:var(--txt-dim);font-size:11px;font-weight:700;flex:none}
   .liga-nome{font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--txt-dim)}
   .placar-mini{font-weight:800;font-variant-numeric:tabular-nums;flex:none;font-size:14px}
+  tbody td.time-col{border-inline-start:4px solid transparent}
+  tr.z-titulo td.time-col{border-inline-start-color:#2ecc71}
+  tr.z-liber td.time-col{border-inline-start-color:#3498db}
+  tr.z-pre td.time-col{border-inline-start-color:#9b59b6}
+  tr.z-sula td.time-col{border-inline-start-color:#f1c40f}
+  tr.z-queda td.time-col{border-inline-start-color:#e74c3c}
+  .legenda{display:flex;gap:14px;flex-wrap:wrap;margin:10px 2px 0;font-size:11px;
+    color:var(--txt-dim)}
+  .legenda span{display:flex;align-items:center;gap:6px}
+  .legenda i{inline-size:10px;block-size:10px;border-radius:3px;display:inline-block}
+  .tnt{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#111;
+    font-size:9px;font-weight:900;letter-spacing:.5px;padding:2px 6px;border-radius:4px;
+    flex:none}
+  .linha-jogo.natnt{border-color:rgba(255,212,0,.55);
+    box-shadow:0 0 0 1px rgba(255,212,0,.16) inset}
+  #so-tnt[aria-pressed="true"]{background:var(--accent);color:#111;border-color:var(--accent)}
   .carregando{padding:34px;text-align:center;color:var(--txt-dim);font-size:14px}
   .xgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
   .xcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;
@@ -260,11 +324,16 @@
       <div class="logo">TS</div>
       <div>
         <h1>Radar Esportes</h1>
-        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v20</div>
+        <div class="sub">Atualiza sozinho a cada 30 min • placares a cada 60s • v23</div>
       </div>
     </div>
     <div class="controls">
-      <input type="search" id="q" placeholder="Buscar time, jogador, tema…" aria-label="Buscar">
+      <span class="busca-caixa" id="busca-caixa">
+        <input type="search" id="q" placeholder="Buscar time, jogador, tema…" aria-label="Buscar">
+        <button class="limpar" id="limpar-busca" type="button" aria-label="Limpar busca">×</button>
+      </span>
+      <button id="novas" type="button" aria-pressed="false" title="Ver só o que chegou desde a última visita">✨ Novidades</button>
+      <button id="avisar" type="button" aria-pressed="false" title="Avisar com som quando sair notícia quente">🔔 Avisar</button>
       <button id="traduzir" type="button" aria-pressed="false" title="Traduzir os títulos em outros idiomas">🌐 Traduzir</button>
       <button id="reload" class="primary" type="button">Atualizar agora</button>
     </div>
@@ -409,15 +478,11 @@
     "MERCADO",
     "FUT EUROPEU",
     "FUT SUL-AMERICANO",
-    "BASQUETE",
-    "F1",
-    "LUTAS",
-    "ESPORTE OLÍMPICO",
     "OUTROS ESPORTES",
     "FOFOCAS"
   ];
 
-  var ROTULOS = { "FOFOCAS": "Fofocas" };
+  var ROTULOS = { "FOFOCAS": "Fofocas", "SALVOS": "★ Salvos" };
 
   var X_ACCOUNTS = [
     { n: "TNT Sports Brasil", h: "TNTSportsBR" },
@@ -768,10 +833,10 @@
     ["FIFA", "AUTO", "https://news.google.com/rss/search?q=site:fifa.com&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
     ["CBF", "FUTEBOL BRASIL", "https://news.google.com/rss/search?q=site:cbf.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
     ["Bleacher Report", "AUTO", "https://news.google.com/rss/search?q=site:bleacherreport.com&hl=en-US&gl=US&ceid=US:en"],
-    ["Globo Esporte Basquete", "BASQUETE", "https://ge.globo.com/rss/ge/basquete/"],
-    ["Globo Esporte Fórmula 1", "F1", "https://ge.globo.com/rss/ge/motor/formula-1/"],
-    ["Globo Esporte Lutas", "LUTAS", "https://ge.globo.com/rss/ge/lutas/"],
-    ["Globo Esporte Olimpíadas", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/olimpiadas/"],
+    ["Globo Esporte Basquete", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/basquete/"],
+    ["Fórmula 1 Brasil", "OUTROS ESPORTES", "https://news.google.com/rss/search?q=%22F%C3%B3rmula+1%22&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Lutas Brasil", "OUTROS ESPORTES", "https://news.google.com/rss/search?q=UFC+OR+MMA+OR+boxe&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
+    ["Olímpicos Brasil", "OUTROS ESPORTES", "https://news.google.com/rss/search?q=atletismo+OR+gin%C3%A1stica+OR+nata%C3%A7%C3%A3o+brasileiro&hl=pt-BR&gl=BR&ceid=BR:pt-419"],
     ["Globo Esporte Vôlei", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/volei/"],
     ["Globo Esporte Tênis", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/tenis/"]
   ];
@@ -790,13 +855,13 @@
     "release clause", "free agent"];
 
   var MAPA = [
-    ["F1", ["fórmula 1", "formula 1", "verstappen", "hamilton", "leclerc", "norris",
+    ["OUTROS ESPORTES", ["fórmula 1", "formula 1", "verstappen", "hamilton", "leclerc", "norris",
       "piastri", "gp de", "grande prêmio", "pole position", "mclaren", "stock car", "motogp"]],
-    ["BASQUETE", ["nba", "basquete", "lebron", "curry", "doncic", "nbb", "lakers",
+    ["OUTROS ESPORTES", ["nba", "basquete", "lebron", "curry", "doncic", "nbb", "lakers",
       "celtics", "warriors"]],
-    ["LUTAS", ["ufc", "mma", "boxe", "nocaute", "octógono", "jiu-jitsu", "wwe",
+    ["OUTROS ESPORTES", ["ufc", "mma", "boxe", "nocaute", "octógono", "jiu-jitsu", "wwe",
       "cinturão", "poatan", "mcgregor"]],
-    ["ESPORTE OLÍMPICO", ["olimpíada", "olímpic", "atletismo", "natação", "ginástica",
+    ["OUTROS ESPORTES", ["olimpíada", "olímpic", "atletismo", "natação", "ginástica",
       "judô", "handebol", "pan-americano", "paralímpic", "maratona"]],
     ["OUTROS ESPORTES", ["vôlei", "tênis", "wimbledon", "roland garros", "us open",
       "nfl", "futebol americano", "super bowl", "mlb", "nhl", "golfe", "surfe", "skate",
@@ -1284,6 +1349,232 @@
     });
   }
 
+  // ---------------- Medidor de calor ----------------
+  // Uma notícia é "quente" quando vários veículos publicam a mesma história
+  // em pouco tempo. Aqui agrupamos por palavras em comum no título.
+  var VAZIAS = {
+    "para": 1, "com": 1, "sem": 1, "por": 1, "que": 1, "dos": 1, "das": 1,
+    "uma": 1, "vai": 1, "tem": 1, "mais": 1, "após": 1, "apos": 1, "sobre": 1,
+    "pelo": 1, "pela": 1, "nos": 1, "nas": 1, "seu": 1, "sua": 1, "the": 1,
+    "and": 1, "for": 1, "his": 1, "her": 1, "from": 1, "with": 1, "este": 1,
+    "esta": 1, "isso": 1, "como": 1, "onde": 1, "quem": 1, "não": 1, "nao": 1,
+    "ser": 1, "vez": 1, "ver": 1, "diz": 1, "faz": 1, "veja": 1, "após": 1
+  };
+
+  var JANELA_CALOR = 90 * 60 * 1000;
+  var MINIMO_CALOR = 3;
+
+  function palavrasChave(titulo) {
+    var limpo = titulo.toLowerCase()
+      .replace(/[^a-záàâãéêíóôõúüç0-9\s]/gi, " ")
+      .split(/\s+/);
+    var saida = [];
+    limpo.forEach(function (p) {
+      if (p.length >= 4 && !VAZIAS[p] && saida.indexOf(p) < 0) { saida.push(p); }
+    });
+    return saida;
+  }
+
+  function parecidos(a, b) {
+    if (!a.length || !b.length) { return 0; }
+    var iguais = 0;
+    a.forEach(function (p) { if (b.indexOf(p) >= 0) { iguais += 1; } });
+    return iguais / Math.min(a.length, b.length);
+  }
+
+  function calcularCalor(lista) {
+    var recentes = [];
+    var agora = Date.now();
+    lista.forEach(function (it) {
+      it.calor = 0;
+      it.fontesQuentes = null;
+      if (it.tipo !== "noticia" || !it.when) { return; }
+      if ((agora - it.when) > JANELA_CALOR) { return; }
+      it.chaves = palavrasChave(it.title);
+      recentes.push(it);
+    });
+
+    var grupos = [];
+    recentes.forEach(function (it) {
+      var achou = null;
+      grupos.forEach(function (g) {
+        if (achou) { return; }
+        if (parecidos(it.chaves, g.chaves) >= 0.5) { achou = g; }
+      });
+      if (achou) {
+        achou.itens.push(it);
+        if (achou.fontes.indexOf(it.src) < 0) { achou.fontes.push(it.src); }
+      } else {
+        grupos.push({ chaves: it.chaves, itens: [it], fontes: [it.src] });
+      }
+    });
+
+    grupos.forEach(function (g) {
+      if (g.fontes.length < MINIMO_CALOR) { return; }
+      g.itens.forEach(function (it) {
+        it.calor = g.fontes.length;
+        it.fontesQuentes = g.fontes.slice();
+      });
+    });
+  }
+
+  // ---------------- O que é novo desde a última visita ----------------
+  var CHAVE_VISITA = "radar:visita";
+  var marcoVisita = 0;
+  try {
+    var mv = parseInt(localStorage.getItem(CHAVE_VISITA), 10);
+    if (!isNaN(mv)) { marcoVisita = mv; }
+  } catch (e) { /* sem armazenamento */ }
+
+  var soNovas = false;
+
+  function ehNovaParaMim(it) {
+    return marcoVisita > 0 && it.when > marcoVisita;
+  }
+
+  function contarNovas() {
+    var n = 0;
+    itens.forEach(function (it) {
+      if (it.tipo === "noticia" && ehNovaParaMim(it)) { n += 1; }
+    });
+    return n;
+  }
+
+  function marcarComoLido() {
+    marcoVisita = Date.now();
+    try { localStorage.setItem(CHAVE_VISITA, String(marcoVisita)); }
+    catch (e) { /* sem armazenamento */ }
+  }
+
+  // ---------------- Aviso de notícia quente ----------------
+  var CHAVE_AVISO = "radar:avisar";
+  var avisarAtivo = false;
+  try { avisarAtivo = localStorage.getItem(CHAVE_AVISO) === "1"; }
+  catch (e) { /* sem armazenamento */ }
+
+  var jaAvisadas = {};
+  var TITULO_BASE = "Radar Esportes";
+
+  function tocarSino() {
+    try {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) { return; }
+      var ctx = new Ctx();
+      [880, 1320].forEach(function (hz, i) {
+        var osc = ctx.createOscillator();
+        var vol = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = hz;
+        vol.gain.setValueAtTime(0.0001, ctx.currentTime + i * 0.14);
+        vol.gain.exponentialRampToValueAtTime(0.14, ctx.currentTime + i * 0.14 + 0.02);
+        vol.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i * 0.14 + 0.26);
+        osc.connect(vol);
+        vol.connect(ctx.destination);
+        osc.start(ctx.currentTime + i * 0.14);
+        osc.stop(ctx.currentTime + i * 0.14 + 0.3);
+      });
+    } catch (e) { /* som bloqueado, sem problema */ }
+  }
+
+  function avisarNaTela(it) {
+    try {
+      if (!("Notification" in window) || Notification.permission !== "granted") { return; }
+      var n = new Notification(it.calor >= MINIMO_CALOR ? "🔥 Assunto quente" : "Notícia agora",
+        { body: it.title + "\n" + it.src, tag: it.link });
+      n.onclick = function () { window.open(it.link, "_blank"); };
+    } catch (e) { /* sem permissão */ }
+  }
+
+  function checarAvisos() {
+    if (!avisarAtivo) { return; }
+    var agora = Date.now();
+    itens.forEach(function (it) {
+      if (it.tipo !== "noticia" || !it.when) { return; }
+      if ((agora - it.when) > LIMITE_BREAKING) { return; }
+      if (jaAvisadas[it.link]) { return; }
+      if (it.calor < MINIMO_CALOR && !ehNovaParaMim(it)) { return; }
+      jaAvisadas[it.link] = 1;
+      tocarSino();
+      avisarNaTela(it);
+    });
+  }
+
+  function atualizarTitulo() {
+    var n = contarNovas();
+    document.title = n ? "(" + n + ") " + TITULO_BASE : TITULO_BASE;
+  }
+
+  // ---------------- Guardar para depois ----------------
+  var CHAVE_SALVOS = "radar:salvos";
+  var salvos = {};
+  try {
+    salvos = JSON.parse(localStorage.getItem(CHAVE_SALVOS) || "{}") || {};
+  } catch (e) { salvos = {}; }
+
+  function gravarSalvos() {
+    try { localStorage.setItem(CHAVE_SALVOS, JSON.stringify(salvos)); }
+    catch (e) { /* espaço cheio */ }
+  }
+
+  function estaSalvo(it) { return !!salvos[it.link]; }
+
+  function alternarSalvo(it) {
+    if (salvos[it.link]) {
+      delete salvos[it.link];
+    } else {
+      salvos[it.link] = {
+        title: it.title, link: it.link, desc: it.desc, img: it.img,
+        src: it.src, cat: it.cat, when: it.when, tipo: it.tipo, em: Date.now()
+      };
+    }
+    gravarSalvos();
+    atualizarBolhaSalvos();
+  }
+
+  function listaSalvos() {
+    var saida = [];
+    Object.keys(salvos).forEach(function (k) { saida.push(salvos[k]); });
+    saida.sort(function (a, b) { return (b.em || 0) - (a.em || 0); });
+    return saida;
+  }
+
+  function botaoSalvar(it) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "salvar" + (estaSalvo(it) ? " ativo" : "");
+    b.textContent = estaSalvo(it) ? "★" : "☆";
+    b.title = estaSalvo(it) ? "Remover dos salvos" : "Guardar para depois";
+    b.setAttribute("aria-label", b.title);
+    b.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      alternarSalvo(it);
+      var agora = estaSalvo(it);
+      b.className = "salvar" + (agora ? " ativo" : "");
+      b.textContent = agora ? "★" : "☆";
+      b.title = agora ? "Remover dos salvos" : "Guardar para depois";
+      if (abaAtiva === "SALVOS") { render(false); }
+    });
+    return b;
+  }
+
+  function atualizarBolhaSalvos() {
+    var bt = document.getElementById("salvos");
+    if (!bt) { return; }
+    var n = Object.keys(salvos).length;
+    var b = bt.querySelector(".bolha");
+    if (n > 0) {
+      if (!b) {
+        b = document.createElement("span");
+        b.className = "bolha";
+        bt.appendChild(b);
+      }
+      b.textContent = n > 99 ? "99+" : String(n);
+    } else if (b) {
+      b.remove();
+    }
+  }
+
   var LIMITE_BREAKING = 30 * 60 * 1000;
 
   function ehBreaking(it) {
@@ -1307,9 +1598,23 @@
     a.target = "_blank";
     a.rel = "noopener noreferrer";
 
+    if (it.calor >= MINIMO_CALOR) { a.className += " fervendo"; }
     var capa2 = montarCapa(it);
     if (ehBreaking(it)) { capa2.appendChild(seloBreaking()); }
+    if (it.calor >= MINIMO_CALOR) {
+      var sc = document.createElement("span");
+      sc.className = "selo-calor";
+      sc.textContent = "🔥 " + it.calor + " VEÍCULOS";
+      sc.title = "Cobertura simultânea: " + it.fontesQuentes.join(", ");
+      capa2.appendChild(sc);
+    }
+    capa2.appendChild(botaoSalvar(it));
     a.appendChild(capa2);
+    if (ehNovaParaMim(it)) {
+      var mn = document.createElement("span");
+      mn.className = "marca-nova";
+      a.appendChild(mn);
+    }
 
     var body = document.createElement("div");
     body.className = "body";
@@ -1359,11 +1664,24 @@
 
   function filtrar(tipo) {
     var q = qEl.value.toLowerCase().trim();
-    return itens.filter(function (it) {
+    var base = abaAtiva === "SALVOS" ? listaSalvos() : itens;
+    var lista = base.filter(function (it) {
       if (it.tipo !== tipo) { return false; }
+      if (abaAtiva === "SALVOS") { return combina(it, q); }
       if (abaAtiva !== "TUDO" && it.cat !== abaAtiva) { return false; }
+      if (soNovas && !ehNovaParaMim(it)) { return false; }
       return combina(it, q);
     });
+    if (tipo === "noticia") {
+      // Assunto quente sobe, mas sem bagunçar a ordem do resto.
+      lista.sort(function (a, b) {
+        var qa = (a.calor >= MINIMO_CALOR && (Date.now() - a.when) < JANELA_CALOR) ? a.calor : 0;
+        var qb = (b.calor >= MINIMO_CALOR && (Date.now() - b.when) < JANELA_CALOR) ? b.calor : 0;
+        if (qa !== qb) { return qb - qa; }
+        return b.when - a.when;
+      });
+    }
+    return lista;
   }
 
   function marcarAbas() {
@@ -1371,7 +1689,9 @@
     Array.prototype.forEach.call(abasEl.children, function (b) {
       var cat = b.getAttribute("data-cat");
       var n = 0;
-      if (cat !== "TABELAS" && cat !== "AGENDA") {
+      if (cat === "SALVOS") {
+        n = listaSalvos().filter(function (it) { return combina(it, q); }).length;
+      } else if (cat !== "TABELAS" && cat !== "AGENDA") {
         itens.forEach(function (it) {
           if (cat !== "TUDO" && it.cat !== cat) { return; }
           if (combina(it, q)) { n += 1; }
@@ -1415,7 +1735,15 @@
     var videos = filtrar("video");
 
     grid.textContent = "";
+    var jaMarcouDivisor = false;
     noticias.forEach(function (it, i) {
+      if (!soNovas && marcoVisita && !jaMarcouDivisor && !ehNovaParaMim(it) && i > 0) {
+        jaMarcouDivisor = true;
+        var dv = document.createElement("div");
+        dv.className = "divisor-novas";
+        dv.textContent = "você já viu daqui para baixo";
+        grid.appendChild(dv);
+      }
       var c = card(it, novos);
       c.style.animationDelay = Math.min(i * 35, 500) + "ms";
       if (i === 0 && noticias.length >= 3) {
@@ -1439,7 +1767,9 @@
     var vazio = (noticias.length + videos.length) === 0;
     emptyEl.hidden = !vazio;
     if (vazio) {
-      emptyEl.textContent = itens.length
+      emptyEl.textContent = abaAtiva === "SALVOS"
+        ? "Nada guardado ainda. Passe o mouse numa notícia e toque na estrela para guardá-la aqui."
+        : itens.length
         ? "Nada encontrado nessa aba com esse filtro."
         : "Ainda não há conteúdo. Rode a rotina no GitHub em Actions › Atualizar Radar"
           + " Esportes › Run workflow — ela cria o arquivo noticias.json que alimenta"
@@ -1483,7 +1813,7 @@
   }
 
   function montarAbas() {
-    CATEGORIAS.concat(["AGENDA", "TABELAS", "TUDO"]).forEach(function (cat) {
+    CATEGORIAS.concat(["SALVOS", "AGENDA", "TABELAS", "TUDO"]).forEach(function (cat) {
       var b = document.createElement("button");
       b.className = "tab";
       b.type = "button";
@@ -1593,7 +1923,11 @@
     if (!dados || !dados.itens || !dados.itens.length) { return false; }
     itens = guardar ? juntar(dados.itens) : dados.itens;
     carimbo = dados.carimbo || "";
+    calcularCalor(itens);
     render(novos);
+    atualizarTitulo();
+    atualizarBolha();
+    checarAvisos();
     if (guardar) { salvarConteudo({ carimbo: carimbo, itens: itens }); }
     return true;
   }
@@ -1698,8 +2032,24 @@
         var st = (ev.status && ev.status.type) || {};
         var quando = ev.date ? new Date(ev.date).getTime() : 0;
         if (!quando) { return; }
+        var canais = [];
+        if (c.broadcasts) {
+          c.broadcasts.forEach(function (b) {
+            var nomes = b.names || (b.media && [b.media.shortName]) || [];
+            nomes.forEach(function (nm) {
+              if (nm && canais.indexOf(nm) < 0) { canais.push(nm); }
+            });
+          });
+        }
+        if (c.geoBroadcasts) {
+          c.geoBroadcasts.forEach(function (b) {
+            var nm = (b.media && (b.media.shortName || b.media.callLetters)) || "";
+            if (nm && canais.indexOf(nm) < 0) { canais.push(nm); }
+          });
+        }
         saida.push({
           comp: comp.nome,
+          canais: canais,
           quando: quando,
           estado: st.state || "pre",
           relogio: (ev.status && ev.status.displayClock) || "",
@@ -1711,6 +2061,25 @@
       return saida;
     });
   }
+
+  // Competições cujos direitos no Brasil são do grupo (TNT / Space / Max).
+  var COMPS_TNT = {
+    "Champions": 1, "Europa League": 1, "Libertadores": 1, "Sul-Americana": 1,
+    "Brasileirão A": 1, "Copa do Brasil": 1, "LaLiga": 1
+  };
+  var CANAIS_TNT = /tnt|space|max|hbo/i;
+
+  function ehDaTNT(j) {
+    if (COMPS_TNT[j.comp]) { return true; }
+    if (j.canais && j.canais.length) {
+      for (var i = 0; i < j.canais.length; i++) {
+        if (CANAIS_TNT.test(j.canais[i])) { return true; }
+      }
+    }
+    return false;
+  }
+
+  var soTNT = false;
 
   function nomeDoDia(ts) {
     var d = new Date(ts);
@@ -1778,12 +2147,26 @@
     var liga = document.createElement("div");
     liga.className = "liga-nome";
     liga.textContent = j.comp;
+    if (ehDaTNT(j)) {
+      var st2 = document.createElement("span");
+      st2.className = "tnt";
+      st2.textContent = "TNT";
+      st2.title = j.canais && j.canais.length
+        ? "Transmissão: " + j.canais.join(", ")
+        : "Competição do grupo TNT Sports";
+      liga.appendChild(document.createTextNode("  "));
+      liga.appendChild(st2);
+      a.className += " natnt";
+    }
     meio.appendChild(liga);
     a.appendChild(meio);
     return a;
   }
 
-  function desenharAgenda(lista) {
+  function desenharAgenda(listaBruta) {
+    var lista = soTNT
+      ? listaBruta.filter(function (j) { return ehDaTNT(j); })
+      : listaBruta;
     corpoAgenda.textContent = "";
     if (!lista.length) {
       var v = document.createElement("div");
@@ -1870,6 +2253,20 @@
 
   function montarChipsAgenda() {
     var caixa = document.getElementById("agenda-chips");
+
+    var btnTNT = document.createElement("button");
+    btnTNT.className = "comp-chip";
+    btnTNT.id = "so-tnt";
+    btnTNT.type = "button";
+    btnTNT.textContent = "📺 Só TNT / Space / Max";
+    btnTNT.setAttribute("aria-pressed", "false");
+    btnTNT.addEventListener("click", function () {
+      soTNT = !soTNT;
+      btnTNT.setAttribute("aria-pressed", soTNT ? "true" : "false");
+      carregarAgenda(agendaAtiva);
+    });
+    caixa.appendChild(btnTNT);
+
     var opcoes = [{ nome: "Todos os campeonatos", liga: "TODOS" }].concat(TABELAS);
     opcoes.forEach(function (comp) {
       var b = document.createElement("button");
@@ -1886,6 +2283,73 @@
       });
       caixa.appendChild(b);
     });
+  }
+
+  // Faixas coloridas: quantas vagas de cada tipo, por competição.
+  var ZONAS = {
+    "bra.1": [[4, "z-titulo", "Libertadores (fase de grupos)"],
+              [6, "z-liber", "Libertadores (pré)"],
+              [12, "z-sula", "Sul-Americana"],
+              [-4, "z-queda", "Rebaixamento"]],
+    "bra.2": [[4, "z-titulo", "Acesso à Série A"], [-4, "z-queda", "Rebaixamento"]],
+    "eng.1": [[4, "z-titulo", "Champions"], [5, "z-liber", "Europa League"],
+              [6, "z-sula", "Conference"], [-3, "z-queda", "Rebaixamento"]],
+    "esp.1": [[4, "z-titulo", "Champions"], [6, "z-liber", "Europa League"],
+              [7, "z-sula", "Conference"], [-3, "z-queda", "Rebaixamento"]],
+    "ita.1": [[4, "z-titulo", "Champions"], [5, "z-liber", "Europa League"],
+              [6, "z-sula", "Conference"], [-3, "z-queda", "Rebaixamento"]],
+    "ger.1": [[4, "z-titulo", "Champions"], [5, "z-liber", "Europa League"],
+              [6, "z-sula", "Conference"], [-2, "z-queda", "Rebaixamento"]],
+    "fra.1": [[3, "z-titulo", "Champions"], [4, "z-liber", "Champions (pré)"],
+              [5, "z-sula", "Europa League"], [-2, "z-queda", "Rebaixamento"]],
+    "por.1": [[2, "z-titulo", "Champions"], [3, "z-liber", "Champions (pré)"],
+              [-2, "z-queda", "Rebaixamento"]],
+    "ned.1": [[1, "z-titulo", "Champions"], [3, "z-liber", "Pré-eliminatórias"],
+              [-2, "z-queda", "Rebaixamento"]],
+    "arg.1": [[8, "z-titulo", "Classificados"], [-2, "z-queda", "Rebaixamento"]],
+    "ksa.1": [[3, "z-titulo", "Champions asiática"], [-3, "z-queda", "Rebaixamento"]],
+    "usa.1": [[8, "z-titulo", "Playoffs"]],
+    "conmebol.libertadores": [[2, "z-titulo", "Classificados"]],
+    "conmebol.sudamericana": [[1, "z-titulo", "Classificado direto"],
+                              [2, "z-liber", "Playoff"]],
+    "uefa.champions": [[8, "z-titulo", "Oitavas direto"], [24, "z-liber", "Playoff"]],
+    "uefa.europa": [[8, "z-titulo", "Oitavas direto"], [24, "z-liber", "Playoff"]],
+    "uefa.euro": [[2, "z-titulo", "Classificados"]]
+  };
+
+  function zonaDaPosicao(liga, posicao, total) {
+    var regras = ZONAS[liga];
+    if (!regras) { return null; }
+    for (var i = 0; i < regras.length; i++) {
+      var corte = regras[i][0];
+      if (corte > 0 && posicao <= corte) { return regras[i]; }
+      if (corte < 0 && posicao > (total + corte)) { return regras[i]; }
+    }
+    return null;
+  }
+
+  function montarLegenda(liga, total) {
+    var regras = ZONAS[liga];
+    if (!regras) { return null; }
+    var caixa = document.createElement("div");
+    caixa.className = "legenda";
+    var vistos = {};
+    regras.forEach(function (r) {
+      if (vistos[r[1]]) { return; }
+      vistos[r[1]] = 1;
+      var item = document.createElement("span");
+      var cor = document.createElement("i");
+      cor.className = "";
+      var tr = document.createElement("table");
+      item.appendChild(cor);
+      item.appendChild(document.createTextNode(r[2]));
+      cor.style.background = {
+        "z-titulo": "#2ecc71", "z-liber": "#3498db", "z-pre": "#9b59b6",
+        "z-sula": "#f1c40f", "z-queda": "#e74c3c"
+      }[r[1]];
+      caixa.appendChild(item);
+    });
+    return caixa;
   }
 
   var tabelaAtiva = TABELAS[0].liga;
@@ -1992,8 +2456,10 @@
     return limpos;
   }
 
-  function linhaTabela(entrada, posicao) {
+  function linhaTabela(entrada, posicao, liga, total) {
     var tr = document.createElement("tr");
+    var zona = zonaDaPosicao(liga, posicao, total);
+    if (zona) { tr.className = zona[1]; tr.title = zona[2]; }
     var time = entrada.team || {};
 
     var tdPos = document.createElement("td");
@@ -2027,7 +2493,7 @@
     return tr;
   }
 
-  function montarTabela(grupo) {
+  function montarTabela(grupo, liga) {
     var caixa = document.createElement("div");
     caixa.className = "tab-wrap";
     var tabela = document.createElement("table");
@@ -2050,7 +2516,7 @@
 
     var tbody = document.createElement("tbody");
     grupo.entradas.forEach(function (e, i) {
-      tbody.appendChild(linhaTabela(e, i + 1));
+      tbody.appendChild(linhaTabela(e, i + 1, liga, grupo.entradas.length));
     });
     tabela.appendChild(tbody);
     caixa.appendChild(tabela);
@@ -2074,7 +2540,9 @@
         t.textContent = g.nome;
         corpoTabela.appendChild(t);
       }
-      corpoTabela.appendChild(montarTabela(g));
+      corpoTabela.appendChild(montarTabela(g, comp.liga));
+      var leg = montarLegenda(comp.liga, g.entradas.length);
+      if (leg) { corpoTabela.appendChild(leg); }
     });
   }
 
@@ -2217,8 +2685,14 @@
     }
   }
 
+  // Permite instalar no celular e abrir mesmo sem internet.
+  if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+    navigator.serviceWorker.register("sw.js").catch(function () { /* sem suporte */ });
+  }
+
   montarAbas();
   ligarSetasAbas();
+  atualizarBolhaSalvos();
   montarChipsTabela();
   montarChipsAgenda();
   montarX();
@@ -2229,6 +2703,64 @@
   aplicar(inicio.dados, false);
   if (itens.length) { aviso(inicio.origem === "salvo" ? "salvo" : "embutido"); }
   buscar(true);
+
+  function atualizarBolha() {
+    var botaoNovas = document.getElementById("novas");
+    if (!botaoNovas) { return; }
+    var n = contarNovas();
+    var b = botaoNovas.querySelector(".bolha");
+    if (n > 0) {
+      if (!b) {
+        b = document.createElement("span");
+        b.className = "bolha";
+        botaoNovas.appendChild(b);
+      }
+      b.textContent = n > 99 ? "99+" : String(n);
+    } else if (b) {
+      b.remove();
+    }
+  }
+
+  var botaoNovas = document.getElementById("novas");
+  var botaoAvisar = document.getElementById("avisar");
+
+  botaoNovas.addEventListener("click", function () {
+    if (soNovas) {
+      soNovas = false;
+      botaoNovas.setAttribute("aria-pressed", "false");
+      marcarComoLido();
+      atualizarTitulo();
+      atualizarBolha();
+      render(false);
+      return;
+    }
+    if (!contarNovas()) {
+      statusEl.textContent = "Nada novo desde a sua última visita.";
+      return;
+    }
+    soNovas = true;
+    botaoNovas.setAttribute("aria-pressed", "true");
+    render(false);
+  });
+
+  botaoAvisar.setAttribute("aria-pressed", avisarAtivo ? "true" : "false");
+  botaoAvisar.addEventListener("click", function () {
+    avisarAtivo = !avisarAtivo;
+    botaoAvisar.setAttribute("aria-pressed", avisarAtivo ? "true" : "false");
+    try { localStorage.setItem(CHAVE_AVISO, avisarAtivo ? "1" : "0"); }
+    catch (e) { /* sem armazenamento */ }
+    if (avisarAtivo) {
+      tocarSino();
+      try {
+        if ("Notification" in window && Notification.permission === "default") {
+          Notification.requestPermission();
+        }
+      } catch (e) { /* sem suporte */ }
+      statusEl.textContent = "Aviso ligado — você será alertado quando sair notícia quente.";
+    } else {
+      statusEl.textContent = "Aviso desligado.";
+    }
+  });
 
   var botaoTrad = document.getElementById("traduzir");
   try {
@@ -2243,7 +2775,36 @@
     render(false);
   });
 
-  qEl.addEventListener("input", function () { render(false); });
+  var caixaBusca = document.getElementById("busca-caixa");
+  var botaoLimpar = document.getElementById("limpar-busca");
+
+  function marcarBusca() {
+    if (qEl.value) {
+      caixaBusca.className = "busca-caixa tem-texto";
+    } else {
+      caixaBusca.className = "busca-caixa";
+    }
+  }
+
+  botaoLimpar.addEventListener("click", function () {
+    qEl.value = "";
+    marcarBusca();
+    render(false);
+    qEl.focus();
+  });
+
+  qEl.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      qEl.value = "";
+      marcarBusca();
+      render(false);
+    }
+  });
+
+  qEl.addEventListener("input", function () {
+    marcarBusca();
+    render(false);
+  });
   document.getElementById("reload").addEventListener("click", function () {
     buscar(false);
     buscarPlacar();
@@ -2251,8 +2812,16 @@
 
   setInterval(function () { buscar(false); }, INTERVALO);
   document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) { buscar(false); buscarPlacar(); }
+    if (!document.hidden) {
+      buscar(false);
+      buscarPlacar();
+    } else if (!soNovas) {
+      marcarComoLido();
+    }
   });
+
+  if (!marcoVisita) { marcarComoLido(); }
+  atualizarTitulo();
 })();
 </script>
 </body>

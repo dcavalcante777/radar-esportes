@@ -10,10 +10,6 @@ CATEGORIAS = [
     "MERCADO",
     "FUT EUROPEU",
     "FUT SUL-AMERICANO",
-    "BASQUETE",
-    "F1",
-    "LUTAS",
-    "ESPORTE OLÍMPICO",
     "OUTROS ESPORTES",
     "FOFOCAS",
 ]
@@ -119,7 +115,7 @@ FEEDS = [
     ("ESPN Brasil", "AUTO", "https://news.google.com/rss/search?q=site:espn.com.br&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
     ("CBS Sports Futebol", "FUT EUROPEU", "https://www.cbssports.com/rss/headlines/soccer/"),
     ("CBS Sports", "AUTO", "https://www.cbssports.com/rss/headlines/"),
-    ("CBS Sports NBA", "BASQUETE", "https://www.cbssports.com/rss/headlines/nba/"),
+    ("CBS Sports NBA", "OUTROS ESPORTES", "https://www.cbssports.com/rss/headlines/nba/"),
     # FIFA, CBF e Bleacher Report não publicam feed próprio: vêm por busca
     # do Google Notícias restrita ao domínio de cada um.
     ("FIFA", "AUTO", "https://news.google.com/rss/search?q=site:fifa.com&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
@@ -127,31 +123,31 @@ FEEDS = [
     ("Bleacher Report", "AUTO", "https://news.google.com/rss/search?q=site:bleacherreport.com&hl=en-US&gl=US&ceid=US:en"),
 
     # ---------------- BASQUETE ----------------
-    ("Globo Esporte Basquete", "BASQUETE", "https://ge.globo.com/rss/ge/basquete/"),
-    ("ESPN NBA", "BASQUETE", "https://www.espn.com/espn/rss/nba/news"),
-    ("NBA.com", "BASQUETE", "https://www.nba.com/rss/nba_rss.xml"),
+    ("Globo Esporte Basquete", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/basquete/"),
+    ("ESPN NBA", "OUTROS ESPORTES", "https://www.espn.com/espn/rss/nba/news"),
+    ("NBA.com", "OUTROS ESPORTES", "https://www.nba.com/rss/nba_rss.xml"),
 
     # ---------------- FÓRMULA 1 ----------------
-    ("Globo Esporte Fórmula 1", "F1", "https://ge.globo.com/rss/ge/motor/formula-1/"),
-    ("BBC F1", "F1", "https://feeds.bbci.co.uk/sport/formula1/rss.xml"),
-    ("Motorsport", "F1", "https://www.motorsport.com/rss/f1/news/"),
-    ("Autosport", "F1", "https://www.autosport.com/rss/f1/news/"),
+    ("Fórmula 1 Brasil", "OUTROS ESPORTES", "https://news.google.com/rss/search?q=%22F%C3%B3rmula+1%22&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("BBC F1", "OUTROS ESPORTES", "https://feeds.bbci.co.uk/sport/formula1/rss.xml"),
+    ("Motorsport", "OUTROS ESPORTES", "https://www.motorsport.com/rss/f1/news/"),
+    ("Autosport", "OUTROS ESPORTES", "https://www.autosport.com/rss/f1/news/"),
 
     # ---------------- LUTAS ----------------
-    ("Globo Esporte Lutas", "LUTAS", "https://ge.globo.com/rss/ge/lutas/"),
-    ("ESPN MMA", "LUTAS", "https://www.espn.com/espn/rss/mma/news"),
-    ("BBC Boxe", "LUTAS", "https://feeds.bbci.co.uk/sport/boxing/rss.xml"),
+    ("Lutas Brasil", "OUTROS ESPORTES", "https://news.google.com/rss/search?q=UFC+OR+MMA+OR+boxe&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("ESPN MMA", "OUTROS ESPORTES", "https://www.espn.com/espn/rss/mma/news"),
+    ("BBC Boxe", "OUTROS ESPORTES", "https://feeds.bbci.co.uk/sport/boxing/rss.xml"),
 
     # ---------------- ESPORTE OLÍMPICO ----------------
-    ("Globo Esporte Olimpíadas", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/olimpiadas/"),
-    ("Globo Esporte Atletismo", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/atletismo/"),
-    ("Globo Esporte Natação", "ESPORTE OLÍMPICO", "https://ge.globo.com/rss/ge/natacao/"),
-    ("BBC Olimpíadas", "ESPORTE OLÍMPICO", "https://feeds.bbci.co.uk/sport/olympics/rss.xml"),
+    ("Globo Esporte Olimpíadas", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/olimpiadas/"),
+    ("Olímpicos Brasil", "OUTROS ESPORTES", "https://news.google.com/rss/search?q=atletismo+OR+gin%C3%A1stica+OR+nata%C3%A7%C3%A3o+brasileiro&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("NBA Brasil", "OUTROS ESPORTES", "https://news.google.com/rss/search?q=NBA+OR+basquete&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+    ("BBC Olimpíadas", "OUTROS ESPORTES", "https://feeds.bbci.co.uk/sport/olympics/rss.xml"),
 
     # ---------------- OUTROS ESPORTES ----------------
     ("Globo Esporte Vôlei", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/volei/"),
     ("Globo Esporte Tênis", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/tenis/"),
-    ("Globo Esporte Surfe", "OUTROS ESPORTES", "https://ge.globo.com/rss/ge/surfe/"),
+    ("Vôlei e Tênis Brasil", "OUTROS ESPORTES", "https://news.google.com/rss/search?q=v%C3%B4lei+OR+t%C3%AAnis+brasileiro&hl=pt-BR&gl=BR&ceid=BR:pt-419"),
     ("BBC Tênis", "OUTROS ESPORTES", "https://feeds.bbci.co.uk/sport/tennis/rss.xml"),
     ("BBC Sport", "AUTO", "https://feeds.bbci.co.uk/sport/rss.xml"),
 ]
@@ -165,10 +161,10 @@ CANAIS = [
     ("Lance!", "FUTEBOL BRASIL", "lancenet"),
     ("Desimpedidos", "FUTEBOL BRASIL", "desimpedidos"),
     ("UEFA Champions League", "FUT EUROPEU", "uefa"),
-    ("NBA", "BASQUETE", "NBA"),
-    ("Fórmula 1", "F1", "Formula1"),
-    ("UFC", "LUTAS", "UFC"),
-    ("Olympics", "ESPORTE OLÍMPICO", "olympics"),
+    ("NBA", "OUTROS ESPORTES", "NBA"),
+    ("Fórmula 1", "OUTROS ESPORTES", "Formula1"),
+    ("UFC", "OUTROS ESPORTES", "UFC"),
+    ("Olympics", "OUTROS ESPORTES", "olympics"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -201,22 +197,22 @@ MERCADO = [
 ]
 
 MAPA = [
-    ("F1", [
+    ("OUTROS ESPORTES", [
         "fórmula 1", "formula 1", "f1", "verstappen", "hamilton", "leclerc",
         "norris", "piastri", "ferrari", "mclaren", "red bull racing", "gp de",
         "grande prêmio", "grande premio", "pole position", "mercedes", "fia",
         "interlagos", "stock car", "fórmula e", "formula e", "motogp",
     ]),
-    ("BASQUETE", [
+    ("OUTROS ESPORTES", [
         "nba", "basquete", "lebron", "curry", "doncic", "wembanyama", "nbb",
         "lakers", "celtics", "warriors", "knicks", "playoffs da nba",
     ]),
-    ("LUTAS", [
+    ("OUTROS ESPORTES", [
         "ufc", "mma", "boxe", "nocaute", "octógono", "octogono", "jiu-jitsu",
         "jiu jitsu", "luta livre", "wwe", "peso pesado", "cinturão", "cinturao",
         "poatan", "pereira", "mcgregor", "canelo", "one championship",
     ]),
-    ("ESPORTE OLÍMPICO", [
+    ("OUTROS ESPORTES", [
         "olimpíada", "olimpiada", "olímpico", "olimpico", "coi", "atletismo",
         "natação", "natacao", "ginástica", "ginastica", "judô", "judo",
         "esgrima", "remo", "canoagem", "vela", "handebol", "pan-americano",
